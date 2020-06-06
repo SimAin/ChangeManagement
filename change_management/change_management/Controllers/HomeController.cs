@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 
 namespace change_management.Controllers
 {
-    public class HomeController : Controller
+ public class HomeController : Controller
     {
         public IActionResult Index()
         {
