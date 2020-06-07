@@ -1,11 +1,18 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace change_management.Controllers
 {
  public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
+        
+        public HomeController(IConfiguration configuration){
+            _configuration = configuration;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -13,6 +20,8 @@ namespace change_management.Controllers
 
         public IActionResult About()
         {
+            DatabaseService DatabaseService = new DatabaseService(_configuration);
+            DatabaseService.databaseSelect("users");
             ViewData["Message"] = "Your application description page.";
 
             return View();

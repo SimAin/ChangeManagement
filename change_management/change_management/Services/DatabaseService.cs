@@ -2,19 +2,22 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace change_management.Controllers
 {
- public class DatabaseController : Controller
+    public class DatabaseService
     {
-        private SqlConnection DatabaseConnector() {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
-            builder.DataSource = ""; 
-            builder.UserID = "";            
-            builder.Password = "";     
-            builder.InitialCatalog = "";
-            SqlConnection connection = new SqlConnection(builder.ConnectionString);
+        public DatabaseService(IConfiguration config){
+            _configuration = config;
+            _connectionString = config.GetConnectionString("db");
+        } 
+
+        private SqlConnection DatabaseConnector() {
+            SqlConnection connection = new SqlConnection(_connectionString);
             return connection;
         }
 
