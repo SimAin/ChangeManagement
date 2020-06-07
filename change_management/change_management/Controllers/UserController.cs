@@ -3,16 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System;
-using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 
 namespace change_management.Controllers
 {
- public class UserController : Controller
+    public class UserController : Controller
     {
         private readonly IConfiguration _configuration;
         

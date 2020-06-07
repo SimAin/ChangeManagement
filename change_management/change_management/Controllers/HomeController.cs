@@ -2,17 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System;
-using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 
 namespace change_management.Controllers
 {
- public class HomeController : Controller
+    public class HomeController : Controller
     {
         private readonly IConfiguration _configuration;
         
