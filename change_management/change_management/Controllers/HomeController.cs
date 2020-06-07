@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace change_management.Controllers
 {
@@ -18,13 +19,13 @@ namespace change_management.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Users()
         {
             DatabaseService DatabaseService = new DatabaseService(_configuration);
-            DatabaseService.databaseSelect("users");
+            List<User> users = DatabaseService.databaseSelect("users");
             ViewData["Message"] = "Your application description page.";
 
-            return View();
+            return View(users);
         }
 
         public IActionResult Contact()

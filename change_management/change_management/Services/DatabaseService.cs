@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+
+using change_management.Models;
 
 namespace change_management.Controllers
 {
@@ -21,7 +24,8 @@ namespace change_management.Controllers
             return connection;
         }
 
-        public void databaseSelect(string table){
+        public List<User> databaseSelect(string table){
+            var users = new List<User>();
             try {
                 var connection = DatabaseConnector();
                 using (connection)
@@ -35,15 +39,18 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
+                                users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
                                 Console.WriteLine("{0} {1} {2} {3}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
                             }
                         }
                     }
                 }
+                return users;
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
+                return users;
             }
         }
 
