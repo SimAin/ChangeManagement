@@ -1,0 +1,30 @@
+@model IEnumerable<change_management.Models.Team>
+
+@{
+    ViewData["Title"] = "Teams";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<div>
+    <a asp-area="" asp-controller="Team" asp-action="AddTeam">Add Team</a>
+</div>
+<p>
+All Teams:
+</p>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Team Name</th>
+    </tr>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.teamID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,15 @@
+@model change_management.Models.Team
+
+@{
+    ViewData["Title"] = "Teams";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="Team" asp-action="SubmitNewTeam" >
+    <div>
+        <label for="name">Team Name:</label>
+        <input asp-for="@Model.name"  type="text" name="name" value="" />
+    </div>
+    <button type="submit">Submit Form</button>
+</form>

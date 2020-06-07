@@ -47,13 +47,15 @@ C:/Users/srain/code/ChangeManagement/change_management/change_management/obj/Deb
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.TagHelpers.input.cache
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.TagHelpers.output.cache
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.RazorCoreGenerate.cache
-/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Home/Contact.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Home/Index.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Home/Privacy.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/Error.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/_Layout.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
+/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Team/AddTeam.cshtml.g.cs
+/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Team/Teams.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/User/AddUser.cshtml.g.cs
+/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/User/Users.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/_ViewImports.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/_ViewStart.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.RazorTargetAssemblyInfo.cache
@@ -63,4 +65,3 @@ C:/Users/srain/code/ChangeManagement/change_management/change_management/obj/Deb
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.pdb
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.genruntimeconfig.cache
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/change_management.csproj.CopyComplete
-/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/User/Users.cshtml.g.cs
