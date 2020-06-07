@@ -12,6 +12,20 @@ body {
     padding-right: 15px;
 }
 
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    height: 25px;
+    vertical-align: bottom;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
