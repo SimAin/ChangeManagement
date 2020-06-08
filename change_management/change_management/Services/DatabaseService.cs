@@ -91,7 +91,11 @@ namespace change_management.Controllers
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT * FROM " + table);
+                    String sql = ("SELECT systemId, systems.name, code, description, techStack, " + 
+                                    "users.userId, users.forename, users.surname, users.role, " + 
+                                    "teams.teamId, teams.name FROM systems " +
+                                    "JOIN users ON users.userId = systems.pointOfContact " + 
+                                    "JOIN teams ON teams.teamId = systems.owningTeam");
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -99,8 +103,14 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                systems.Add(new SystemEntity(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetInt32(6)));
-                                Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetInt32(6));
+                                systems.Add(new SystemEntity(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), 
+                                            new User(reader.GetInt32(5), reader.GetString(6), reader.GetString(7), reader.GetString(8)), 
+                                            new Team(reader.GetInt32(9), reader.GetString(10))));
+                                
+                                
+                                
+                                
+                                //Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetInt32(6));
                             }
                         }
                     }

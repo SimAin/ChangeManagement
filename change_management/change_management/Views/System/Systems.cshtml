@@ -40,10 +40,10 @@ All Systems:
                 @Html.DisplayFor(modelItem => item.techStack)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.pointOfContact)
+                @Html.DisplayFor(modelItem => item.pointOfContact.forename)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.owningTeam)
+                @Html.DisplayFor(modelItem => item.owningTeam.name)
             </td>
         </tr>
     }
