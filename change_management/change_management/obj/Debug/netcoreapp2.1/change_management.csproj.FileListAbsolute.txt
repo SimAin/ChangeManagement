@@ -52,6 +52,8 @@ C:/Users/srain/code/ChangeManagement/change_management/change_management/obj/Deb
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/Error.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/_Layout.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
+/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/System/AddSystem.cshtml.g.cs
+/home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/System/Systems.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Team/AddTeam.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/Team/Teams.cshtml.g.cs
 /home/simon/code/repos/ChangeManagement/change_management/change_management/obj/Debug/netcoreapp2.1/Razor/Views/User/AddUser.cshtml.g.cs

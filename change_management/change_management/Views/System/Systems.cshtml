@@ -1,0 +1,50 @@
+@model IEnumerable<change_management.Models.SystemEntity>
+
+@{
+    ViewData["Title"] = "Systems";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<div>
+    <a asp-area="" asp-controller="System" asp-action="AddSystem">Add System</a>
+</div>
+<p>
+All Systems:
+</p>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Description</th>
+        <th>Tech Stack</th>
+        <th>Point of contact</th>
+        <th>Owning Team</th>
+    </tr>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.systemID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.techStack)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pointOfContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.owningTeam)
+            </td>
+        </tr>
+    }
+</table>
