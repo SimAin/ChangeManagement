@@ -1,4 +1,4 @@
-@model change_management.Models.SystemEntity
+@model change_management.Models.ViewModels.AddSystemViewModel
 
 @{
     ViewData["Title"] = "Systems";
@@ -24,12 +24,12 @@
         <input asp-for="@Model.techStack"  type="text" name="techStack" value="" />
     </div>
     <div>
-        <label for="contact">Point of contact:</label>
-        <input asp-for="@Model.pointOfContact" type="number" name="contact" value="" />
+        <label for="selectedUser">Point of contact:</label>
+        <select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select>
     </div>
     <div>
-        <label for="team">Owning team:</label>
-        <input asp-for="@Model.owningTeam" type="number" name="team" value="" />
+        <label for="selectedTeam">Owning team:</label>
+        <select asp-for="@Model.selectedTeam" asp-items="Model.teams" name="selectedTeam" > </select>
     </div>
     <button type="submit">Submit Form</button>
 </form>

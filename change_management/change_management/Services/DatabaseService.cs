@@ -40,7 +40,6 @@ namespace change_management.Controllers
                             while (reader.Read())
                             {
                                 users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
-                                Console.WriteLine("{0} {1} {2} {3}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
                             }
                         }
                     }
@@ -70,7 +69,6 @@ namespace change_management.Controllers
                             while (reader.Read())
                             {
                                 teams.Add(new Team(reader.GetInt32(0), reader.GetString(1)));
-                                Console.WriteLine("{0} {1}", reader.GetInt32(0), reader.GetString(1));
                             }
                         }
                     }
@@ -106,11 +104,6 @@ namespace change_management.Controllers
                                 systems.Add(new SystemEntity(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), 
                                             new User(reader.GetInt32(5), reader.GetString(6), reader.GetString(7), reader.GetString(8)), 
                                             new Team(reader.GetInt32(9), reader.GetString(10))));
-                                
-                                
-                                
-                                
-                                //Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt32(5), reader.GetInt32(6));
                             }
                         }
                     }
@@ -184,8 +177,8 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param2", SqlDbType.NVarChar, 50).Value = system.code;
                         cmd.Parameters.Add("@param3", SqlDbType.NVarChar, 50).Value = system.description;
                         cmd.Parameters.Add("@param4", SqlDbType.NVarChar, 50).Value = system.techStack;
-                        cmd.Parameters.Add("@param5", SqlDbType.Int).Value = system.pointOfContact;
-                        cmd.Parameters.Add("@param6", SqlDbType.Int).Value = system.owningTeam;
+                        cmd.Parameters.Add("@param5", SqlDbType.Int).Value = system.pointOfContactID;
+                        cmd.Parameters.Add("@param6", SqlDbType.Int).Value = system.owningTeamID;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
