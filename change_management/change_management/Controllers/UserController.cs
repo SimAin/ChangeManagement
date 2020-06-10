@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace change_management.Controllers
 {
@@ -16,8 +17,8 @@ namespace change_management.Controllers
 
         public IActionResult Users()
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            List<User> users = DatabaseService.databaseSelect("users");
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            List<User> users = dbService.SelectAll().ToList();
             ViewData["Message"] = "User management page.";
 
             return View(users);
@@ -30,8 +31,8 @@ namespace change_management.Controllers
 
         public IActionResult SubmitNewUser(User user)
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            DatabaseService.databaseUserInsert(user.forename, user.surname, user.role);
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            dbService.Insert(new User(user.forename, user.surname, user.role));
             return RedirectToAction("Users");
         }
 

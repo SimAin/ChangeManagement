@@ -6,6 +6,7 @@ using change_management.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace change_management.Controllers
 {
@@ -19,8 +20,8 @@ namespace change_management.Controllers
 
         public IActionResult Systems()
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            List<SystemEntity> systems = DatabaseService.databaseSelectSystems("systems");
+            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
+            List<SystemEntity> systems = dbService.SelectAll().ToList();
             ViewData["Message"] = "System management page.";
 
             return View(systems);
@@ -28,10 +29,11 @@ namespace change_management.Controllers
 
         public IActionResult AddSystem()
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            var dbusers = DatabaseService.databaseSelect("users");
-            var dbteams = DatabaseService.databaseSelectTeams("teams");
+            var dbusers = new UserDatabaseService(_configuration).SelectAll();
+            var dbteams = new TeamDatabaseService(_configuration).SelectAll();
             List<SelectListItem> teams = new List<SelectListItem>();  
+            List<SelectListItem> users = new List<SelectListItem>(); 
+            
             foreach (var t in dbteams)
             {
                 teams.Add(new SelectListItem{
@@ -39,7 +41,7 @@ namespace change_management.Controllers
                     Value = t.teamID.ToString()
                 });
             }
-            List<SelectListItem> users = new List<SelectListItem>();  
+             
             foreach (var u in dbusers)
             {
                 users.Add(new SelectListItem{
@@ -55,8 +57,8 @@ namespace change_management.Controllers
         public IActionResult SubmitNewSystem(AddSystemViewModel s)
         {
             var system = new SystemEntity(s.name, s.code, s.description, s.techStack, Convert.ToInt32(s.selectedUser), Convert.ToInt32(s.selectedTeam));
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            DatabaseService.databaseSystemInsert(system);
+            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
+            dbService.Insert(system);
             return RedirectToAction("Systems");
         }
 

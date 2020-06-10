@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace change_management.Controllers
 {
@@ -16,8 +17,8 @@ namespace change_management.Controllers
 
         public IActionResult Teams()
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            List<Team> teams = DatabaseService.databaseSelectTeams("teams");
+            TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
+            List<Team> teams = dbService.SelectAll().ToList();
             ViewData["Message"] = "Team management page.";
 
             return View(teams);
@@ -30,8 +31,8 @@ namespace change_management.Controllers
 
         public IActionResult SubmitNewTeam(Team team)
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            DatabaseService.databaseTeamInsert(team.name);
+            TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
+            dbService.Insert(team);
             return RedirectToAction("Teams");
         }
 
