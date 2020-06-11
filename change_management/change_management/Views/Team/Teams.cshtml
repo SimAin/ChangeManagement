@@ -7,7 +7,7 @@
 <h3>@ViewData["Message"]</h3>
 
 <div>
-    <a asp-area="" asp-controller="Team" asp-action="AddTeam">Add Team</a>
+    <input type="button" value="Add Team" onclick="location.href='@Url.Action("AddTeam", "Team")'" />
 </div>
 <p>
 All Teams:
