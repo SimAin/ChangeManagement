@@ -1,0 +1,51 @@
+@model change_management.Models.ViewModels.AddChangeViewModel
+
+@{
+    ViewData["Title"] = "Changes";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="Change" asp-action="SubmitNewChange" >
+    <div>
+        <label for="selectedSystem">System:</label>
+        <select asp-for="@Model.selectedSystem" asp-items="Model.systems" name="selectedSystem" > </select>
+    </div>
+    <div>
+        <label for="type">Type:</label>
+        <input asp-for="@Model.type"  type="text" name="type" value="" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <input asp-for="@Model.description" type="text" name="description" value="" />
+    </div>
+    <div>
+        <label for="criticality">Criticality (Hard deadline 1-5 Soft deadline):</label>
+        <input asp-for="@Model.criticality" type="text" name="criticality" value="" />
+    </div>
+    <div>
+        <label for="deadline">Deadline:</label>
+        <input type="date" asp-for="@Model.deadline"  name="deadline" value="" />
+    </div>
+    <div>
+        <label for="priority">Priority (High 1-5 Low):</label>
+        <input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" />
+    </div>
+    <div>
+        <label for="selectedApprover">Approver:</label>
+        <select asp-for="@Model.selectedApprover" asp-items="Model.approver" name="selectedApprover" > </select>
+    </div>
+    <div>
+        <label for="selectedStakeholder">Stakeholder:</label>
+        <select asp-for="@Model.selectedStakeholder" asp-items="Model.stakeholder" name="selectedStakeholder" > </select>
+    </div>
+    <div>
+        <label for="selectedTeamResponsible">Team responsible:</label>
+        <select asp-for="@Model.selectedTeamResponsible" asp-items="Model.teamResponsible" name="selectedTeamResponsible" > </select>
+    </div>
+    <div>
+        <label for="selectedUserResponsible">User responsible:</label>
+        <select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select>
+    </div>
+    <button type="submit">Submit Form</button>
+</form>

@@ -25,6 +25,15 @@ namespace change_management.Models
             owningTeam = team;
         }
 
+        //Creating a simple system entity from the database
+        public SystemEntity(int id, string systemName, string systemCode, string desc, string tstack) {
+            systemID = id;
+            name = systemName;
+            code = systemCode;
+            description = desc;
+            techStack = tstack;
+        }
+
         //Initializing a system entity to be added
         public SystemEntity(string systemName, string systemCode, string desc, string tstack, int contact, int team) {
             systemID = 0;
