@@ -53,6 +53,35 @@ namespace change_management.Controllers
             }
         }
 
+        public string SelectTeam(int id){
+            string team = "";
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT name FROM teams WHERE teamId = " + id);
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                team = (reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+                return team;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return team;
+            }
+        }
+
         public IEnumerable<User> SelectAllMembers(int teamId){
             var users = new List<User>();
             try {
