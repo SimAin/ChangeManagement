@@ -30,8 +30,7 @@ namespace change_management.Controllers
         public IActionResult TeamMembers(int id)
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            List<User> users = dbService.SelectAllMembers().ToList();
-            Console.WriteLine(id);
+            List<User> users = dbService.SelectAllMembers(id).ToList();
             ViewBag.teamId = id;
             return View(users);
         }
@@ -49,19 +48,13 @@ namespace change_management.Controllers
                     Value = u.userID.ToString()
                 });
             }
-
             var m = new AddTeamMemberViewModel(usersSelect, teamId);
-
-            Console.WriteLine(teamId);
-            singleTeamID = teamId;
             return View(m);
         }
 
         public IActionResult SubmitNewUser(AddTeamMemberViewModel teamMember)
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            Console.WriteLine(teamMember.teamId);
-            Console.WriteLine(teamMember.teamId + " " + Convert.ToInt32(teamMember.selectedUser));
             dbService.InsertUser(teamMember.teamId, Convert.ToInt32(teamMember.selectedUser));
             return RedirectToAction("Teams");
         }

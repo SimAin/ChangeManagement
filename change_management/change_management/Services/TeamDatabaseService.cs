@@ -53,7 +53,7 @@ namespace change_management.Controllers
             }
         }
 
-        public IEnumerable<User> SelectAllMembers(){
+        public IEnumerable<User> SelectAllMembers(int teamId){
             var users = new List<User>();
             try {
                 var connection = DatabaseConnector();
@@ -64,7 +64,7 @@ namespace change_management.Controllers
                                     "FROM teams " + 
                                     "JOIN teamMembers ON teamMembers.teamId = teams.teamId " + 
                                     "JOIN users ON users.userId = teamMembers.userId " +
-                                    "WHERE teams.teamId = 3");
+                                    "WHERE teams.teamId = " + teamId);
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())

@@ -8,8 +8,13 @@
 
 <form asp-controller="Team" asp-action="SubmitNewUser" >
     <div>
-        <label for="selectedUser">User to add:</label>
-        <select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select>
+        <div>
+            @Html.HiddenFor(modelItem => @Model.teamId)
+        </div>
+        <div>
+            <label for="selectedUser">User to add:</label>
+            <select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select>
+        </div>
     </div>
     <button type="submit">Submit Form</button>
 </form>
