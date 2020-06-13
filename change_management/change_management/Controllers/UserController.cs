@@ -1,8 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
+using change_management.Models.ViewModels;
+using change_management.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace change_management.Controllers
 {
@@ -16,11 +20,24 @@ namespace change_management.Controllers
 
         public IActionResult Users()
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            List<User> users = DatabaseService.databaseSelect("users");
-            ViewData["Message"] = "User management page.";
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            List<User> users = dbService.SelectAll().ToList();
 
             return View(users);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult userLogin(LoginViewModel u)
+        {
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            var activeUser = dbService.Select(Convert.ToInt32(u.userId));
+            SessionService.loggedInUser = activeUser;
+            
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddUser()
@@ -30,8 +47,8 @@ namespace change_management.Controllers
 
         public IActionResult SubmitNewUser(User user)
         {
-            DatabaseService DatabaseService = new DatabaseService(_configuration);
-            DatabaseService.databaseUserInsert(user.forename, user.surname, user.role);
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            dbService.Insert(new User(user.forename, user.surname, user.role));
             return RedirectToAction("Users");
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using Microsoft.Extensions.Configuration;
+using change_management.Services;
 
 namespace change_management.Controllers
 {
@@ -15,18 +16,11 @@ namespace change_management.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (SessionService.loggedInUser != null) {
+                ViewData["Message"] = "Welcome " + SessionService.loggedInUser.forename + " " + SessionService.loggedInUser.surname;
+            } else {
+                ViewData["Message"] = "No User Logged In";
+            }
             return View();
         }
 

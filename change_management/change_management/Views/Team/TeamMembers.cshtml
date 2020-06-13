@@ -1,13 +1,13 @@
-﻿@model IEnumerable<change_management.Models.User>
+@model IEnumerable<change_management.Models.User>
 
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = "Teams Members";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<h3>@ViewBag.teamName</h3>
 
 <div>
-    <input type="button" value="Add User" onclick="location.href='@Url.Action("AddUser", "User")'" />
+    <input type="button" value="Add User" onclick="location.href='@Url.Action("AddTeamMember", "Team", new {teamId = @ViewBag.teamId})'" />
 </div>
 <p>
     All Users:

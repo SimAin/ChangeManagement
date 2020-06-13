@@ -1,0 +1,35 @@
+@model change_management.Models.ViewModels.AddSystemViewModel
+
+@{
+    ViewData["Title"] = "Systems";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="System" asp-action="SubmitNewSystem" >
+    <div>
+        <label for="name">Name:</label>
+        <input asp-for="@Model.name"  type="text" name="name" value="" />
+    </div>
+    <div>
+        <label for="code">Code:</label>
+        <input asp-for="@Model.code" type="text" name="code" value="" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <input asp-for="@Model.description" type="text" name="description" value="" />
+    </div>
+    <div>
+        <label for="techStack">Tech Stack:</label>
+        <input asp-for="@Model.techStack"  type="text" name="techStack" value="" />
+    </div>
+    <div>
+        <label for="selectedUser">Point of contact:</label>
+        <select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select>
+    </div>
+    <div>
+        <label for="selectedTeam">Owning team:</label>
+        <select asp-for="@Model.selectedTeam" asp-items="Model.teams" name="selectedTeam" > </select>
+    </div>
+    <button type="submit">Submit Form</button>
+</form>

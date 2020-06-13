@@ -9,12 +9,12 @@ using change_management.Models;
 
 namespace change_management.Controllers
 {
-    public class DatabaseService
+    public class UserDatabaseService : IDatabaseService<User>
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
 
-        public DatabaseService(IConfiguration config){
+        public UserDatabaseService(IConfiguration config){
             _configuration = config;
             _connectionString = config.GetConnectionString("db");
         } 
@@ -24,15 +24,14 @@ namespace change_management.Controllers
             return connection;
         }
 
-        public List<User> databaseSelect(string table){
+        public IEnumerable<User> SelectAll(){
             var users = new List<User>();
             try {
                 var connection = DatabaseConnector();
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT * FROM " + table);
-
+                    String sql = ("SELECT * FROM users");
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -40,7 +39,6 @@ namespace change_management.Controllers
                             while (reader.Read())
                             {
                                 users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
-                                Console.WriteLine("{0} {1} {2} {3}", reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
                             }
                         }
                     }
@@ -54,7 +52,35 @@ namespace change_management.Controllers
             }
         }
 
-        public void databaseUserInsert(string forename, string surname, string role){
+        public User Select(int userID){
+            User user = new User();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT * FROM users WHERE userId = " + userID);
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
+                            }
+                        }
+                    }
+                }
+                return user;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return user;
+            }
+        }
+
+        public void Insert(User u){
             try {
                 var connection = DatabaseConnector();
                 using (connection)
@@ -64,9 +90,9 @@ namespace change_management.Controllers
                             
                     using(SqlCommand cmd = new SqlCommand(sql2,connection)) 
                     {
-                        cmd.Parameters.Add("@param2", SqlDbType.NVarChar, 50).Value = forename;
-                        cmd.Parameters.Add("@param3", SqlDbType.NVarChar, 50).Value = surname;
-                        cmd.Parameters.Add("@param4", SqlDbType.NVarChar, 50).Value = role;
+                        cmd.Parameters.Add("@param2", SqlDbType.NVarChar, 50).Value = u.forename;
+                        cmd.Parameters.Add("@param3", SqlDbType.NVarChar, 50).Value = u.surname;
+                        cmd.Parameters.Add("@param4", SqlDbType.NVarChar, 50).Value = u.role;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
