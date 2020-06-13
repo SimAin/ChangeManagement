@@ -52,6 +52,34 @@ namespace change_management.Controllers
             }
         }
 
+        public User Select(int userID){
+            User user = new User();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT * FROM users WHERE userId = " + userID);
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
+                            }
+                        }
+                    }
+                }
+                return user;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return user;
+            }
+        }
+
         public void Insert(User u){
             try {
                 var connection = DatabaseConnector();

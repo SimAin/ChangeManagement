@@ -1,9 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
+using change_management.Models.ViewModels;
+using change_management.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace change_management.Controllers
 {
@@ -19,9 +22,22 @@ namespace change_management.Controllers
         {
             UserDatabaseService dbService = new UserDatabaseService(_configuration);
             List<User> users = dbService.SelectAll().ToList();
-            ViewData["Message"] = "User management page.";
 
             return View(users);
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult userLogin(LoginViewModel u)
+        {
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            var activeUser = dbService.Select(Convert.ToInt32(u.userId));
+            SessionService.loggedInUser = activeUser;
+            
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddUser()
