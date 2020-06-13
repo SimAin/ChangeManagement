@@ -53,6 +53,38 @@ namespace change_management.Controllers
             }
         }
 
+        public IEnumerable<User> SelectAllMembers(){
+            var users = new List<User>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT users.userId, users.forename, users.surname, users.role " +
+                                    "FROM teams " + 
+                                    "JOIN teamMembers ON teamMembers.teamId = teams.teamId " + 
+                                    "JOIN users ON users.userId = teamMembers.userId " +
+                                    "WHERE teams.teamId = 3");
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+                            }
+                        }
+                    }
+                }
+                return users;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return users;
+            }
+        }
+
         public void Insert(Team t){
             try {
                 var connection = DatabaseConnector();
@@ -64,6 +96,29 @@ namespace change_management.Controllers
                     using(SqlCommand cmd = new SqlCommand(sql2,connection)) 
                     {
                         cmd.Parameters.Add("@param2", SqlDbType.NVarChar, 50).Value = t.name;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.ExecuteNonQuery(); 
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public void InsertUser(int t, int u){
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    string sql2 = "INSERT INTO teamMembers(userId, teamId)   VALUES(@param1, @param2)";
+                            
+                    using(SqlCommand cmd = new SqlCommand(sql2,connection)) 
+                    {
+                        cmd.Parameters.Add("@param1", SqlDbType.Int).Value = u;
+                        cmd.Parameters.Add("@param2", SqlDbType.Int).Value = t;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }

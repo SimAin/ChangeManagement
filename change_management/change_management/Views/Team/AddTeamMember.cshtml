@@ -1,0 +1,15 @@
+@model change_management.Models.ViewModels.AddTeamMemberViewModel
+
+@{
+    ViewData["Title"] = "Add Team Member";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="Team" asp-action="SubmitNewUser" >
+    <div>
+        <label for="selectedUser">User to add:</label>
+        <select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select>
+    </div>
+    <button type="submit">Submit Form</button>
+</form>
