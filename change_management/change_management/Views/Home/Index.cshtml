@@ -1,5 +1,28 @@
-﻿@{
+﻿@model change_management.Models.ViewModels.HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <h3>@ViewData["Message"]</h3>
+
+<br/>
+<h4> My Team: @Model.team.name</h4>
+<div>
+    <table style="width: 40%;">
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+        </tr>
+        @foreach (var item in Model.team.teamMembers) {
+            <tr>
+                <td style="padding: 5px;">
+                    @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
+                </td>
+                <td style="padding: 5px;">
+                    @Html.DisplayFor(modelItem => item.role)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

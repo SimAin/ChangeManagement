@@ -80,6 +80,62 @@ namespace change_management.Controllers
             }
         }
 
+        public Team SelectUserTeam(int userID){
+            var users = new List<User>();
+            var team = new Team();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT users.userId, users.forename, users.surname, users.role, " +
+                                        "teams.teamId, teams.name " +
+                                    "FROM USERS  " +
+                                    "JOIN teamMembers ON teamMembers.userId = users.userId " +
+                                    "JOIN teams ON teams.teamId = teamMembers.teamId  " +
+                                    "WHERE teamMembers.teamId IN ( " +
+                                        "SELECT teamMembers.teamId " +
+                                        "FROM users  " +
+                                        "JOIN teamMembers ON teamMembers.userId = users.userId " +
+                                        "WHERE users.userId =" + userID + ")");
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                 users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+                            }
+                        }
+                    }
+
+                    String sql2 = ("SELECT teamMembers.teamId, teams.name " +
+                                    "FROM users " +
+                                    "JOIN teamMembers ON teamMembers.userId = users.userId " +
+                                    "JOIN teams ON teams.teamId = teamMembers.teamId " +
+                                    "WHERE users.userId =" + userID );
+
+                    using (SqlCommand command = new SqlCommand(sql2, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                team = new Team(reader.GetInt32(0), reader.GetString(1), users);
+                            }
+                        }
+                    }
+                }
+                return team;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return team;
+            }
+        }
+
         public void Insert(User u){
             try {
                 var connection = DatabaseConnector();

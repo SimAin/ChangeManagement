@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
+using change_management.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 using change_management.Services;
 
@@ -18,10 +19,11 @@ namespace change_management.Controllers
         {
             if (SessionService.loggedInUser != null) {
                 ViewData["Message"] = "Welcome " + SessionService.loggedInUser.forename + " " + SessionService.loggedInUser.surname;
-            } else {
-                ViewData["Message"] = "No User Logged In";
             }
-            return View();
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            Team myTeam = dbService.SelectUserTeam(SessionService.loggedInUser.userID);
+            var m = new HomeViewModel(myTeam);
+            return View(m);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
