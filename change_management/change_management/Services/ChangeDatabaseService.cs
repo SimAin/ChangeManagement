@@ -71,6 +71,94 @@ namespace change_management.Controllers
             }
         }
 
+        public Change Select(int changeId){
+            var change = new Change();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT changes.changeId, " +
+                                        "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
+                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, " +
+                                        "approver.userId, approver.forename, approver.surname, approver.role, " +
+                                        "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
+                                        "teams.teamId, teams.name, " +
+                                        "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
+                                    "FROM changes " + 
+                                    "JOIN systems ON systems.systemId = changes.systemId " +
+                                    "JOIN users AS approver ON approver.userId = changes.approverId " +
+                                    "JOIN users AS stakeholder ON stakeholder.userId = changes.stakeholderId " +
+                                    "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
+                                    "JOIN teams ON teamId = changes.teamResponsibleId " + 
+                                    "WHERE changes.changeId = " + changeId);
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                change = (new Change(reader.GetInt32(0), 
+                                            new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
+                                            reader.GetString(6), reader.GetString(7), reader.GetInt32(8), reader.GetDateTime(9), reader.GetInt32(10), 
+                                            new User(reader.GetInt32(11), reader.GetString(12), reader.GetString(13), reader.GetString(14)),
+                                            new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),  
+                                            new Team(reader.GetInt32(19), reader.GetString(20)),
+                                            new User(reader.GetInt32(21), reader.GetString(22), reader.GetString(23), reader.GetString(24))));
+                            }
+                        }
+                    }
+                }
+                return change;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return change;
+            }
+        }
+
+        public IEnumerable<Change> SelectTeamChanges(int id){
+            var changes = new List<Change>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT changes.changeId, " +
+                                        "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
+                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
+                                    "FROM changes " + 
+                                    "JOIN systems ON systems.systemId = changes.systemId " +
+                                    "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
+                                    "JOIN teams ON teamId = changes.teamResponsibleId " +
+                                    "WHERE changes.teamResponsibleId = " + id);
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                changes.Add(new Change(reader.GetInt32(0), 
+                                            new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
+                                            reader.GetString(6), reader.GetString(7), reader.GetInt32(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
+                                            new User(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15))));
+                            }
+                        }
+                    }
+                }
+                return changes;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return changes;
+            }
+        }
+
         public void Insert(Change c){
             try {
                 var connection = DatabaseConnector();

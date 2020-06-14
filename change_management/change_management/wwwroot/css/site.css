@@ -21,6 +21,12 @@ table {
     width: 100%;
 }
 
+th {
+    height: 25px;
+    vertical-align: bottom;
+    text-align: center;
+}
+
 td {
     height: 25px;
     vertical-align: bottom;
@@ -36,8 +42,8 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: grey; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
+    background-color: grey; 
+    overflow-x: hidden; 
     padding-top: 60px;
     text-align: center;
     color: black;

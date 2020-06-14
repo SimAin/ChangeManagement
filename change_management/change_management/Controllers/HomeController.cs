@@ -1,9 +1,13 @@
-﻿using System.Diagnostics;
+﻿using change_management.Services;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using change_management.Models;
 using change_management.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
-using change_management.Services;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace change_management.Controllers
 {
@@ -20,9 +24,13 @@ namespace change_management.Controllers
             if (SessionService.loggedInUser != null) {
                 ViewData["Message"] = "Welcome " + SessionService.loggedInUser.forename + " " + SessionService.loggedInUser.surname;
             }
-            UserDatabaseService dbService = new UserDatabaseService(_configuration);
-            Team myTeam = dbService.SelectUserTeam(SessionService.loggedInUser.userID);
-            var m = new HomeViewModel(myTeam);
+            UserDatabaseService dbService_u = new UserDatabaseService(_configuration);
+            Team myTeam = dbService_u.SelectUserTeam(SessionService.loggedInUser.userID);
+
+            ChangeDatabaseService dbService_c = new ChangeDatabaseService(_configuration);
+            List<Change> teamChanges = dbService_c.SelectTeamChanges(myTeam.teamID).ToList();
+
+            var m = new HomeViewModel(myTeam, teamChanges);
             return View(m);
         }
 

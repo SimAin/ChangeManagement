@@ -1,0 +1,56 @@
+@model change_management.Models.Change
+
+@{
+    ViewData["Title"] = "change";
+}
+<h2>@Model.type @ViewData["Title"]</h2>
+
+<div>
+    @* TODO *@
+    <input type="button" value="Edit Change" onclick="location.href='@Url.Action("AddChange", "Change")'" />
+</div>
+<br/>
+<table>
+    <tr>
+        <th>Id</th>
+        <td>
+            @Model.changeId
+        </td>
+    </tr>
+    <tr>
+        <th>Type</th>
+        <td>
+            @Model.type
+        </td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>
+            @Model.description
+        </td>
+    </tr>
+    <tr>
+        <th>Priority</th>
+        <td>
+            @Model.priority
+        </td>
+    </tr>
+    <tr>
+        <th>Deadline</th>
+        <td>
+            @Model.deadlineText
+        </td>
+    </tr>
+    <tr>
+        <th>Criticicality</th>
+        <td>
+            @Model.criticality
+        </td>
+    </tr>
+    <tr>
+        <th>Processing Time</th>
+        <td>
+            @Model.processingTime
+        </td>
+    </tr>
+</table>

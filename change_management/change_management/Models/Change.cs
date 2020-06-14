@@ -10,7 +10,9 @@ namespace change_management.Models
         public string description { get; set; }
         public int criticality { get; set; }
         public DateTime deadline { get; set; }
+        public String deadlineText { get; set; }
         public int priority {get;set;}
+        public int processingTime {get;set;}
         public User approver {get;set;}
         public User stakeholder {get;set;}
         public Team teamResponsible {get;set;}
@@ -31,10 +33,25 @@ namespace change_management.Models
             description = desc;
             criticality = critical;
             deadline = due;
+            deadlineText = due.ToString("dd/MM/yyyy");
             priority = pri;
             approver = app;
             stakeholder = stake;
             teamResponsible = team;
+            userResponsible = responsible;
+        }
+
+        //Creating a system entity lite view from the database
+        public Change(int id, SystemEntity sys, string t, string desc, int critical, DateTime due, int pri, int pt, User responsible) {
+            changeId = id;
+            system = sys;
+            type = t;
+            description = desc;
+            criticality = critical;
+            deadline = due;
+            deadlineText = due.ToString("dd/MM/yyyy");
+            priority = pri;
+            processingTime = pt;
             userResponsible = responsible;
         }
 

@@ -27,6 +27,15 @@ namespace change_management.Controllers
             return View(changes);
         }
 
+        public IActionResult Change(int changeId)
+        {
+            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
+            Change change = dbService.Select(changeId);
+            ViewData["Message"] = "Change management page.";
+
+            return View(change);
+        }
+
         public IActionResult AddChange()
         {
             var dbusers = new UserDatabaseService(_configuration).SelectAll();
