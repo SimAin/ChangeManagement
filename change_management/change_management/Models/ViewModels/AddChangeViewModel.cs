@@ -10,7 +10,7 @@ namespace change_management.Models.ViewModels
         public IEnumerable<SelectListItem> systems {get;set;}
         public string type { get; set; }
         public string description { get; set; }
-        public int criticality { get; set; }
+        public bool criticality { get; set; }
         public DateTime deadline { get; set; }
         public int priority {get;set;}
         public IEnumerable<SelectListItem> approver {get;set;}

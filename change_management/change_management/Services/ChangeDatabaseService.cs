@@ -53,7 +53,7 @@ namespace change_management.Controllers
                             {
                                 changes.Add(new Change(reader.GetInt32(0), 
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                            reader.GetString(6), reader.GetString(7), reader.GetInt32(8), reader.GetDateTime(9), reader.GetInt32(10), 
+                                            reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
                                             new User(reader.GetInt32(11), reader.GetString(12), reader.GetString(13), reader.GetString(14)),
                                             new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),  
                                             new Team(reader.GetInt32(19), reader.GetString(20)),
@@ -101,7 +101,7 @@ namespace change_management.Controllers
                             {
                                 change = (new Change(reader.GetInt32(0), 
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                            reader.GetString(6), reader.GetString(7), reader.GetInt32(8), reader.GetDateTime(9), reader.GetInt32(10), 
+                                            reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
                                             new User(reader.GetInt32(11), reader.GetString(12), reader.GetString(13), reader.GetString(14)),
                                             new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),  
                                             new Team(reader.GetInt32(19), reader.GetString(20)),
@@ -144,7 +144,7 @@ namespace change_management.Controllers
                             {
                                 changes.Add(new Change(reader.GetInt32(0), 
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                            reader.GetString(6), reader.GetString(7), reader.GetInt32(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
+                                            reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
                                             new User(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15))));
                             }
                         }
@@ -174,7 +174,7 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param1", SqlDbType.Int).Value = c.systemId;
                         cmd.Parameters.Add("@param2", SqlDbType.NVarChar, 50).Value = c.type;
                         cmd.Parameters.Add("@param3", SqlDbType.NVarChar, 50).Value = c.description;
-                        cmd.Parameters.Add("@param4", SqlDbType.Int).Value = c.criticality;
+                        cmd.Parameters.Add("@param4", SqlDbType.Bit).Value = c.criticality;
                         cmd.Parameters.Add("@param5", SqlDbType.DateTime).Value = c.deadline;
                         cmd.Parameters.Add("@param6", SqlDbType.Int).Value = c.priority;
                         cmd.Parameters.Add("@param7", SqlDbType.Int).Value = c.approverId;

@@ -8,11 +8,12 @@ namespace change_management.Models
         public SystemEntity system {get;set;}
         public string type { get; set; }
         public string description { get; set; }
-        public int criticality { get; set; }
+        public bool criticality { get; set; }
         public DateTime deadline { get; set; }
         public String deadlineText { get; set; }
         public int priority {get;set;}
         public int processingTime {get;set;}
+        public int laxity {get;set;}
         public User approver {get;set;}
         public User stakeholder {get;set;}
         public Team teamResponsible {get;set;}
@@ -26,7 +27,7 @@ namespace change_management.Models
         public Change() {}
 
         //Creating a system entity from the database
-        public Change(int id, SystemEntity sys, string t, string desc, int critical, DateTime due, int pri, User app, User stake, Team team, User responsible) {
+        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, User app, User stake, Team team, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -42,7 +43,7 @@ namespace change_management.Models
         }
 
         //Creating a system entity lite view from the database
-        public Change(int id, SystemEntity sys, string t, string desc, int critical, DateTime due, int pri, int pt, User responsible) {
+        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -56,7 +57,7 @@ namespace change_management.Models
         }
 
         //Initializing a system entity to be added
-        public Change(int sys, string t, string desc, int critical, DateTime due, int pri, int app, int stake, int team, int responsible) {
+        public Change(int sys, string t, string desc, bool critical, DateTime due, int pri, int app, int stake, int team, int responsible) {
             changeId = 0;
             systemId = sys;
             type = t;
