@@ -14,30 +14,15 @@ namespace change_management.Services
             List<Change> orderedCritical =  new List<Change>();
             List<Change> orderedNonCritical =  new List<Change>();
 
-            var critical = changeList.Where(c => c.criticality == true);
+            var critical = changeList.Where(c => c.criticality == true).ToList();
             if (critical.Count() > 1){
                 orderedCritical =  SplitList(critical);
                 
             }
-            var nonCritical = changeList.Where(c => c.criticality == false);
+            var nonCritical = changeList.Where(c => c.criticality == false).ToList();
             if (nonCritical.Count() > 1){
                 orderedNonCritical =  SplitList(nonCritical);
             }
-
-            // foreach (var item in changeList)
-            // {
-            //     var firstFiveItems = myList.Take(5);
-
-            //     var secondFiveItems = myList.Skip(5).Take(5);
-
-
-            //     //Laxity 
-            //     var di = (int) deadline = DateTime.now().Subtract(deadline).TotalDays();
-            //     item.laxity = di - item.processingTime;
-
-            //     //Priority
-            //     item.Priority
-            // }
 
             orderedCritical.AddRange(orderedNonCritical);
             List<Change> completeOrder = orderedCritical;
@@ -53,7 +38,6 @@ namespace change_management.Services
             List<Change> listOne = new List<Change>();
             List<Change> listTwo = new List<Change>();
 
-            //int middle = unOrdered.Count / 2;
             for (int i = 0; i < (unOrdered.Count / 2);i++)  
             {
                 var di = (int) DateTime.Now.Subtract(unOrdered[i].deadline).TotalDays;
@@ -66,8 +50,6 @@ namespace change_management.Services
                 unOrdered[i].laxity = di - unOrdered[i].processingTime;
                 listTwo.Add(unOrdered[i]);
             }
-
-            
 
             listOne = SplitList(listOne);
             listTwo = SplitList(listTwo);
