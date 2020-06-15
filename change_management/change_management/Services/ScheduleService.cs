@@ -1,0 +1,123 @@
+using change_management.Models;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace change_management.Services
+{
+    public class ScheduleService
+    {
+        private ScheduleService(){}
+
+        public List<Change> scheduleChanges(List<Change> changeList) {
+
+            List<Change> orderedCritical =  new List<Change>();
+            List<Change> orderedNonCritical =  new List<Change>();
+
+            var critical = changeList.Where(c => c.criticality == true);
+            if (critical.Count() > 1){
+                orderedCritical =  SplitList(critical);
+                
+            }
+            var nonCritical = changeList.Where(c => c.criticality == false);
+            if (nonCritical.Count() > 1){
+                orderedNonCritical =  SplitList(nonCritical);
+            }
+
+            // foreach (var item in changeList)
+            // {
+            //     var firstFiveItems = myList.Take(5);
+
+            //     var secondFiveItems = myList.Skip(5).Take(5);
+
+
+            //     //Laxity 
+            //     var di = (int) deadline = DateTime.now().Subtract(deadline).TotalDays();
+            //     item.laxity = di - item.processingTime;
+
+            //     //Priority
+            //     item.Priority
+            // }
+
+            orderedCritical.AddRange(orderedNonCritical);
+            List<Change> completeOrder = orderedCritical;
+            return critical.ToList();
+        }
+
+
+        private List<Change> SplitList(List<Change> unOrdered)
+        {
+            if (unOrdered.Count <= 1)
+                return unOrdered;
+
+            List<Change> listOne = new List<Change>();
+            List<Change> listTwo = new List<Change>();
+
+            //int middle = unOrdered.Count / 2;
+            for (int i = 0; i < (unOrdered.Count / 2);i++)  
+            {
+                var di = (int) DateTime.Now.Subtract(unOrdered[i].deadline).TotalDays;
+                unOrdered[i].laxity = di - unOrdered[i].processingTime;
+                listOne.Add(unOrdered[i]);
+            }
+            for (int i = (unOrdered.Count / 2); i < unOrdered.Count; i++)
+            {
+                var di = (int) DateTime.Now.Subtract(unOrdered[i].deadline).TotalDays;
+                unOrdered[i].laxity = di - unOrdered[i].processingTime;
+                listTwo.Add(unOrdered[i]);
+            }
+
+            
+
+            listOne = SplitList(listOne);
+            listTwo = SplitList(listTwo);
+            return Merge(listOne, listTwo);
+        }
+
+        private List<Change> Merge(List<Change> listOne, List<Change> listTwo)
+        {
+            List<Change> result = new List<Change>();
+
+            while(listOne.Count > 0 || listTwo.Count>0)
+            {
+                if (listOne.Count > 0 && listTwo.Count > 0)
+                {
+                    if(listOne.First().laxity < listTwo.First().laxity){
+
+                        result.Add(listOne.First());
+                        listOne.Remove(listOne.First());
+
+                    } else if(listOne.First().laxity > listTwo.First().laxity){
+
+                        result.Add(listTwo.First());
+                        listTwo.Remove(listTwo.First());
+
+                    } else {
+                        if(listOne.First().priority > listTwo.First().priority){
+
+                            result.Add(listOne.First());
+                            listOne.Remove(listOne.First());
+
+                        } else if(listOne.First().priority < listTwo.First().priority){
+
+                            result.Add(listTwo.First());
+                            listTwo.Remove(listTwo.First());
+
+                        }
+                    }
+                }
+                else if(listOne.Count>0)
+                {
+                    result.Add(listOne.First());
+                    listOne.Remove(listOne.First());
+                }
+                else if (listTwo.Count > 0)
+                {
+                    result.Add(listTwo.First());
+                    listTwo.Remove(listTwo.First());    
+                }    
+            }
+            return result;
+        }
+    }
+}
