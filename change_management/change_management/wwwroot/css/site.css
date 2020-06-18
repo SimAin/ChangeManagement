@@ -48,6 +48,10 @@ a {
     text-align: center;
     color: black;
 }
+.menunav ul li a:hover, ul li a:focus {
+    color: white;
+    background-color: rgb(44, 102, 53);
+   }
 
 /* Carousel */
 .carousel-caption p {
@@ -71,4 +75,25 @@ a {
     .carousel-caption {
         display: none;
     }
+}
+
+#dataTable{
+    border-collapse: collapse;
+}
+
+#dataTable td, #customers th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#dataTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#dataTable tr:hover {background-color: #ddd;}
+
+#dataTable th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: rgb(44, 102, 53);
+    color: white;
 }
