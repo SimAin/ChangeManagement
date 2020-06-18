@@ -7,7 +7,10 @@ namespace change_management.Services
 {
     public class ScheduleService
     {
-        private ScheduleService(){}
+        public ScheduleService(){}
+
+        // TODO: If it does not work, first come first served. 
+        // TODO: Boost up C0 if deadline has done etc
 
         public List<Change> scheduleChanges(List<Change> changeList) {
 
@@ -17,16 +20,19 @@ namespace change_management.Services
             var critical = changeList.Where(c => c.criticality == true).ToList();
             if (critical.Count() > 1){
                 orderedCritical =  SplitList(critical);
-                
+            } else {
+                orderedCritical =  critical;
             }
             var nonCritical = changeList.Where(c => c.criticality == false).ToList();
             if (nonCritical.Count() > 1){
                 orderedNonCritical =  SplitList(nonCritical);
+            } else {
+                orderedNonCritical =  nonCritical;
             }
 
             orderedCritical.AddRange(orderedNonCritical);
             List<Change> completeOrder = orderedCritical;
-            return critical.ToList();
+            return orderedCritical.ToList();
         }
 
 
@@ -64,12 +70,12 @@ namespace change_management.Services
             {
                 if (listOne.Count > 0 && listTwo.Count > 0)
                 {
-                    if(listOne.First().laxity < listTwo.First().laxity){
+                    if(listOne.First().laxity > listTwo.First().laxity){
 
                         result.Add(listOne.First());
                         listOne.Remove(listOne.First());
 
-                    } else if(listOne.First().laxity > listTwo.First().laxity){
+                    } else if(listOne.First().laxity < listTwo.First().laxity){
 
                         result.Add(listTwo.First());
                         listTwo.Remove(listTwo.First());
@@ -84,7 +90,6 @@ namespace change_management.Services
 
                             result.Add(listTwo.First());
                             listTwo.Remove(listTwo.First());
-
                         }
                     }
                 }
