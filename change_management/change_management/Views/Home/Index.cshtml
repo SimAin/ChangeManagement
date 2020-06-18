@@ -37,6 +37,7 @@
         <div>
             <table id="dataTable" style="width: 80%;">
                 <tr>
+                    <th>System</th>
                     <th>Type</th>
                     <th>Description</th>
                     <th>Priority</th>
@@ -48,6 +49,9 @@
                 </tr>
                 @foreach (var item in Model.changes) {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.type)
                         </td>

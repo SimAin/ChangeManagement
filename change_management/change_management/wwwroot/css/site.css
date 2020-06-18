@@ -81,7 +81,7 @@ a {
     border-collapse: collapse;
 }
 
-#dataTable td, #customers th {
+#dataTable td, th {
     border: 1px solid #ddd;
     padding: 5px;
 }
@@ -97,3 +97,25 @@ a {
     background-color: rgb(44, 102, 53);
     color: white;
 }
+
+#inputTable{
+    border-collapse: collapse;
+}
+
+#inputTable td, th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#inputTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#inputTable tr:hover {background-color: #ddd;}
+
+#inputTable th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+    background-color: rgb(44, 102, 53);
+    color: white;
+}
+
