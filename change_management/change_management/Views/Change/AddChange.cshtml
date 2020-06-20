@@ -1,7 +1,7 @@
 @model change_management.Models.ViewModels.AddChangeViewModel
 
 @{
-    ViewData["Title"] = "Create change";
+    ViewData["Title"] = "Create change ";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
@@ -31,6 +31,10 @@
         <tr>
             <th><label for="priority">Priority (High 1-5 Low):</label></th>
             <td><input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="processingTime">Processing time (days):</label></th>
+            <td><input type="text" asp-for="@Model.processingTime"  type="text" name="processingTime" value="" /></td>
         </tr>
         <tr>
             <th><label for="selectedApprover">Approver:</label></th>
