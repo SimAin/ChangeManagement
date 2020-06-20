@@ -114,6 +114,15 @@ namespace change_management.Controllers
             }
         }
 
+        public IEnumerable<Team> SelectAllMembers(){
+            var teams = SelectAll();   
+            foreach (var team in teams)
+            {
+                team.teamMembers = SelectAllMembers(team.teamID);
+            }
+            return teams;
+        }
+
         public void Insert(Team t){
             try {
                 var connection = DatabaseConnector();

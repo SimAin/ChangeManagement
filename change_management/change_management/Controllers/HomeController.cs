@@ -30,7 +30,10 @@ namespace change_management.Controllers
             ChangeDatabaseService dbService_c = new ChangeDatabaseService(_configuration);
             List<Change> teamChanges = dbService_c.SelectTeamChanges(myTeam.teamID).ToList();
 
-            var m = new HomeViewModel(myTeam, teamChanges);
+            ScheduleService scheduleService = new ScheduleService();
+            List<Change> orderedTeamChanges = scheduleService.scheduleChanges(teamChanges).ToList();
+
+            var m = new HomeViewModel(myTeam, orderedTeamChanges);
             return View(m);
         }
 

@@ -8,21 +8,19 @@
 }
 
 <div style="padding-top: 50px;">
-    <div class="centerBox">
-        <div class="centerText">
-            <h2>@ViewData["Title"]</h2>
+    <div class="centerText">
+        <h2>@ViewData["Title"]</h2>
 
-            <h3>Please login below:</h3>
+        <h3>Please login below:</h3>
 
-            <form asp-controller="User" asp-action="userLogIn" >
-                <div>
-                    <label for="userId">User Id:</label>
-                    <input asp-for="@Model.userId"  type="text" name="userId" value="" />
-                </div>
-                <br/>
-                <button type="submit">Login</button>
-            </form>
-        </div>
+        <form asp-controller="User" asp-action="userLogIn" >
+            <div>
+                <label for="userId">User Id:</label>
+                <input asp-for="@Model.userId"  type="text" name="userId" value="" />
+            </div>
+            <br/>
+            <button type="submit">Login</button>
+        </form>
     </div>
 </div>
 

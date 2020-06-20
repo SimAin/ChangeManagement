@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - change_management</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -23,6 +28,11 @@
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li><a asp-area="" asp-controller="User" asp-action="Users">Users</a></li>
             <li><a asp-area="" asp-controller="Team" asp-action="Teams">Teams</a></li>
+            <li><a asp-area="" asp-controller="System" asp-action="Systems">Systems</a></li>
+            <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
+
+            <li> __ </li>
+            <li><a asp-area="" asp-controller="Team" asp-action="Teams">Team</a></li>
             <li><a asp-area="" asp-controller="System" asp-action="Systems">Systems</a></li>
             <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
         </ul>

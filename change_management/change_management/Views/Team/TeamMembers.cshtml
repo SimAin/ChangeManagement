@@ -12,18 +12,14 @@
 <p>
     All Users:
 </p>
-<table>
+<table id="dataTable">
     <tr>
-        <th>Id</th>
         <th>Forename</th>
         <th>Surname</th>
         <th>Role</th>
     </tr>
     @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.userID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.forename)
             </td>

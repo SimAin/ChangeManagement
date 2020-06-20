@@ -7,73 +7,82 @@
 <h3>@ViewData["Message"]</h3>
 
 <br/>
-
-<div style="position: absolute; left: 70%">
-    <h4> My Team: @Model.team.name</h4>
-    <div>
-        <table style="width: 100%;">
-            <tr>
-                <th style="text-align: center;">Name</th>
-                <th style="text-align: center;">Role</th>
-            </tr>
-            @foreach (var item in Model.team.teamMembers) {
+<body>
+    <div >
+        <h4> My Team: @Model.team.name</h4>
+        <div>
+            <table id="dataTable" style="width: 25%;">
                 <tr>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.role)
-                    </td>
+                    <th>Name</th>
+                    <th>Role</th>
                 </tr>
-            }
-        </table>
+                @foreach (var item in Model.team.teamMembers) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.role)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
-</div>
 
-<div>
-    <h4> Team Changes: </h4>
+    <br/>
+
     <div>
-        <table style="width: 70%;">
-            <tr>
-                <th style="text-align: center;">Type</th>
-                <th style="text-align: center;">Description</th>
-                <th style="text-align: center;">Priority</th>
-                <th style="text-align: center;">Deadline</th>
-                <th style="text-align: center;">Criticicality</th>
-                <th style="text-align: center;">User Responsible</th>
-                <th style="text-align: center;">Processing time</th>
-                <th></th>
-            </tr>
-            @foreach (var item in Model.changes) {
+        <h4> Team Changes: </h4>
+        <div>
+            <table id="dataTable" style="width: 80%;">
                 <tr>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.type)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.description)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.priority)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.deadlineText)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.criticality)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.userResponsible.forename)
-                        @Html.DisplayFor(modelItem => item.userResponsible.surname)
-                    </td>
-                    <td style="padding: 5px;">
-                        @Html.DisplayFor(modelItem => item.processingTime) days
-                    </td>
-                    <td style="padding: 5px;">
-                        <input type="button" value="View Change" onclick="location.href='@Url.Action("Change", "Change", new { changeId = item.changeId })'" />
-                    </td>
+                    <th>System</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Deadline</th>
+                    <th>Criticical Deadline</th>
+                    <th>User Responsible</th>
+                    <th>Processing time</th>
+                    <th></th>
                 </tr>
-            }
-        </table>
+                @foreach (var item in Model.changes) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.priority)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.deadlineText)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.criticality)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userResponsible.forename)
+                            @Html.DisplayFor(modelItem => item.userResponsible.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.processingTime) days
+                        </td>
+                        <td>
+                            <input type="button" value="View Change" onclick="location.href='@Url.Action("Change", "Change", new { changeId = item.changeId })'" />
+                            <input type="button" value="Edit Change" onclick="location.href='@Url.Action("Change", "Change", new { changeId = item.changeId })'" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
-</div>
+</body>
+
 

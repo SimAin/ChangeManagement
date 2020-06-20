@@ -21,7 +21,8 @@ namespace change_management.Controllers
         public IActionResult Teams()
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            List<Team> teams = dbService.SelectAll().ToList();
+            List<Team> teams = dbService.SelectAllMembers().ToList();
+
             ViewData["Message"] = "Team management page.";
 
             return View(teams);

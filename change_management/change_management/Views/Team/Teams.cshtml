@@ -9,27 +9,36 @@
 <div>
     <input type="button" value="Add Team" onclick="location.href='@Url.Action("AddTeam", "Team")'" />
 </div>
+<br/>
 <p>
 All Teams:
 </p>
-<table>
+<table id="dataTable" style="width: 50%;">
     <tr>
-        <th>Id</th>
         <th>Team Name</th>
+        <th></th>
+        <th></th>
     </tr>
     @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.teamID)
+            <td> 
+                <strong>@Html.DisplayFor(modelItem => item.name)</strong>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                <input type="button" value="Team Members" onclick="location.href='@Url.Action("TeamMembers", "Team", new { id = item.teamID })'"/>
-                @* <input type="button" title="Delete"    onclick="location.href='@Url.Action("Delete", "movies",    new { id = item.ID })'" />
-                <input type="button" value="Let's Go!"    onclick="location.href='@Url.Action("Action", "Controller")'" /> *@
+            <td><strong>Team members</strong></td>
+            <td> 
+                <input type="button" value="Add User" onclick="location.href='@Url.Action("AddTeamMember", "Team", new {teamId = item.teamID})'" />
             </td>
         </tr>
+        @foreach (var member in item.teamMembers) {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => member.forename) @Html.DisplayFor(modelItem => member.surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => member.role)
+                </td>
+            </tr>
+        }
     }
 </table>

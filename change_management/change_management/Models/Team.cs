@@ -14,6 +14,7 @@ namespace change_management.Models
         public Team(int id, string n) {
             teamID = id;
             name = n;
+            teamMembers = new List<User>();
         }
 
         public Team(int id, string n, IEnumerable<User> users) {
