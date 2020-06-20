@@ -13,6 +13,7 @@ namespace change_management.Models.ViewModels
         public bool criticality { get; set; }
         public DateTime deadline { get; set; }
         public int priority {get;set;}
+        public int processingTime {get;set;}
         public IEnumerable<SelectListItem> approver {get;set;}
         public IEnumerable<SelectListItem> stakeholder {get;set;}
         public IEnumerable<SelectListItem> teamResponsible {get;set;}

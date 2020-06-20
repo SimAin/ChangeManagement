@@ -166,8 +166,8 @@ namespace change_management.Controllers
                 {
                     connection.Open();
                     string sql = "INSERT INTO changes(systemId, type, description, criticality, deadline, priority, " +
-                                    "approverId, stakeholderId, teamResponsibleId, userResponsibleId, statusId, dateCreated)" +
-                                    "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, @param9, @param10, @param11, @param12)";
+                                    "approverId, stakeholderId, teamResponsibleId, userResponsibleId, processingTimeDays, statusId, dateCreated)" +
+                                    "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, @param9, @param10, @param11, @param12, @param13)";
                             
                     using(SqlCommand cmd = new SqlCommand(sql,connection)) 
                     {
@@ -181,8 +181,9 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param8", SqlDbType.Int).Value = c.stakeholderId;
                         cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.teamResponsibleId;
                         cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.userResponsibleId;
-                        cmd.Parameters.Add("@param11", SqlDbType.Int).Value = 1;
-                        cmd.Parameters.Add("@param12", SqlDbType.DateTime).Value = DateTime.Now;
+                        cmd.Parameters.Add("@param11", SqlDbType.Int).Value = c.processingTime;
+                        cmd.Parameters.Add("@param12", SqlDbType.Int).Value = 1;
+                        cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = DateTime.Now;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
