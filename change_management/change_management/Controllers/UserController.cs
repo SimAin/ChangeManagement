@@ -33,9 +33,13 @@ namespace change_management.Controllers
 
         public IActionResult userLogin(LoginViewModel u)
         {
-            UserDatabaseService dbService = new UserDatabaseService(_configuration);
-            var activeUser = dbService.Select(Convert.ToInt32(u.userId));
+            UserDatabaseService dbService_u = new UserDatabaseService(_configuration);
+            UserDatabaseService dbService_t = new UserDatabaseService(_configuration);
+            var activeUser = dbService_u.Select(Convert.ToInt32(u.userId));
+            var activeUserTeam = dbService_t.SelectUserTeam(Convert.ToInt32(u.userId));
+
             SessionService.loggedInUser = activeUser;
+            SessionService.loggedInTeam = activeUserTeam;
             
             return RedirectToAction("Index", "Home");
         }

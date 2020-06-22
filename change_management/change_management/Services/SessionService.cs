@@ -16,21 +16,5 @@ namespace change_management.Services
         }
             return sessionService;
         }
-
-        public static void setLoggedInUser (User newUser) { 
-            loggedInUser = newUser;
-        }
-
-        public static User getLoggedInUser () { 
-            return loggedInUser;
-        }
-
-        public static void setLoggedInTeam (Team newTeam) { 
-            loggedInTeam = newTeam;
-        }
-
-        public static Team getLoggedInTeam () { 
-            return loggedInTeam;
-        }
     }
 }

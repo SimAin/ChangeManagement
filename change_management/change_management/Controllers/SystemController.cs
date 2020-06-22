@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using change_management.Models;
+using change_management.Services;
 using change_management.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -22,6 +23,15 @@ namespace change_management.Controllers
         {
             SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
             List<SystemEntity> systems = dbService.SelectAll().ToList();
+            ViewData["Message"] = "System management page.";
+
+            return View(systems);
+        }
+
+        public IActionResult TeamSystems()
+        {
+            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
+            List<SystemEntity> systems = dbService.SelectAll(SessionService.loggedInTeam.teamID).ToList();
             ViewData["Message"] = "System management page.";
 
             return View(systems);

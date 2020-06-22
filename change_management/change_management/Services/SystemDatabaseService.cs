@@ -59,6 +59,42 @@ namespace change_management.Controllers
             }
         }
 
+        public IEnumerable<SystemEntity> SelectAll(int id){
+            var systems = new List<SystemEntity>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT systemId, systems.name, code, description, techStack, " + 
+                                    "users.userId, users.forename, users.surname, users.role, " + 
+                                    "teams.teamId, teams.name FROM systems " +
+                                    "JOIN users ON users.userId = systems.pointOfContact " + 
+                                    "JOIN teams ON teams.teamId = systems.owningTeam " + 
+                                    "WHERE systems.owningTeam = " + id);
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                systems.Add(new SystemEntity(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), 
+                                            new User(reader.GetInt32(5), reader.GetString(6), reader.GetString(7), reader.GetString(8)), 
+                                            new Team(reader.GetInt32(9), reader.GetString(10))));
+                            }
+                        }
+                    }
+                }
+                return systems;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return systems;
+            }
+        }
+
         public void Insert(SystemEntity s){
             try {
                 var connection = DatabaseConnector();

@@ -82,6 +82,38 @@ namespace change_management.Controllers
             }
         }
 
+        public Team SelectUserTeam(int id){
+            Team team = new Team();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = ("SELECT teams.teamId, teams.name " +
+                                    "FROM teams " +
+                                    "JOIN teamMembers ON teamMembers.teamId = teams.teamId " +
+                                    "WHERE teamMembers.userId = " + id);
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                team = new Team(reader.GetInt32(0), reader.GetString(1));
+                            }
+                        }
+                    }
+                }
+                return team;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return team;
+            }
+        }
+
         public IEnumerable<User> SelectAllMembers(int teamId){
             var users = new List<User>();
             try {
