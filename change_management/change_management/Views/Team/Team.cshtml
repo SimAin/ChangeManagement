@@ -1,0 +1,30 @@
+@model change_management.Models.Team
+
+@{
+    ViewData["Title"] = "My Team";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<br/>
+<body>
+    <h4> My Team: @Model.name</h4>
+    <div>
+        <table id="dataTable" style="width: 25%;">
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+            @foreach (var item in Model.teamMembers) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.role)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>

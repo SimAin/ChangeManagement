@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using change_management.Models;
 using change_management.Models.ViewModels;
+using change_management.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,16 @@ namespace change_management.Controllers
             ViewData["Message"] = "Team management page.";
 
             return View(teams);
+        }
+
+        public IActionResult Team()
+        {
+            UserDatabaseService dbService_u = new UserDatabaseService(_configuration);
+            Team team = dbService_u.SelectUserTeam(SessionService.loggedInUser.userID);
+
+            ViewData["Message"] = "Team management page.";
+
+            return View(team);
         }
 
         public IActionResult TeamMembers(int id)

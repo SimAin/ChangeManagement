@@ -6,7 +6,8 @@ namespace change_management.Services
     {
         private static SessionService sessionService; 
         public static User loggedInUser {get;set;}
-
+        public static Team loggedInTeam {get;set;}
+         
         private SessionService(){}
 
         public static SessionService Instance () { 
@@ -22,6 +23,14 @@ namespace change_management.Services
 
         public static User getLoggedInUser () { 
             return loggedInUser;
+        }
+
+        public static void setLoggedInTeam (Team newTeam) { 
+            loggedInTeam = newTeam;
+        }
+
+        public static Team getLoggedInTeam () { 
+            return loggedInTeam;
         }
     }
 }

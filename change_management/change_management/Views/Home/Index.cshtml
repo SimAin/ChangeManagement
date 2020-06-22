@@ -8,34 +8,10 @@
 
 <br/>
 <body>
-    <div >
-        <h4> My Team: @Model.team.name</h4>
-        <div>
-            <table id="dataTable" style="width: 25%;">
-                <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                </tr>
-                @foreach (var item in Model.team.teamMembers) {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.role)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-    </div>
-
-    <br/>
-
     <div>
         <h4> Team Changes: </h4>
         <div>
-            <table id="dataTable" style="width: 80%;">
+            <table id="dataTable" style="width: 100%;">
                 <tr>
                     <th>System</th>
                     <th>Type</th>
