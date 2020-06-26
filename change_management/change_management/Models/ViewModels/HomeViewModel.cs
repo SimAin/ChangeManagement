@@ -6,13 +6,11 @@ namespace change_management.Models.ViewModels
 {
     public class HomeViewModel
     {
-        public Team team {get;set;}
         public IEnumerable<Change> changes {get;set;}
 
         public HomeViewModel() {}
 
-        public HomeViewModel(Team t, IEnumerable<Change> c) {
-            team = t;
+        public HomeViewModel(IEnumerable<Change> c) {
             changes = c;
         }
     }

@@ -19,19 +19,12 @@ namespace change_management.Controllers
             _configuration = configuration;
         }
 
+        #region System Admin
+
         public IActionResult Systems()
         {
             SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
             List<SystemEntity> systems = dbService.SelectAll().ToList();
-            ViewData["Message"] = "System management page.";
-
-            return View(systems);
-        }
-
-        public IActionResult TeamSystems()
-        {
-            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
-            List<SystemEntity> systems = dbService.SelectAll(SessionService.loggedInTeam.teamID).ToList();
             ViewData["Message"] = "System management page.";
 
             return View(systems);
@@ -71,6 +64,21 @@ namespace change_management.Controllers
             dbService.Insert(system);
             return RedirectToAction("Systems");
         }
+
+        #endregion
+
+        #region Team Systems
+
+        public IActionResult TeamSystems()
+        {
+            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
+            List<SystemEntity> systems = dbService.SelectAll(SessionService.loggedInTeam.teamID).ToList();
+            ViewData["Message"] = "System management page.";
+
+            return View(systems);
+        }
+
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

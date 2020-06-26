@@ -19,6 +19,8 @@ namespace change_management.Controllers
             _configuration = configuration;
         }
 
+        #region Teams Admin
+
         public IActionResult Teams()
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
@@ -29,15 +31,21 @@ namespace change_management.Controllers
             return View(teams);
         }
 
-        public IActionResult Team()
+        public IActionResult AddTeam()
         {
-            UserDatabaseService dbService_u = new UserDatabaseService(_configuration);
-            Team team = dbService_u.SelectUserTeam(SessionService.loggedInUser.userID);
-
-            ViewData["Message"] = "Team management page.";
-
-            return View(team);
+            return View();
         }
+
+        public IActionResult SubmitNewTeam(Team team)
+        {
+            TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
+            dbService.Insert(team);
+            return RedirectToAction("Teams");
+        }
+
+        #endregion
+
+        #region Teams Members
 
         public IActionResult TeamMembers(int id)
         {
@@ -65,24 +73,28 @@ namespace change_management.Controllers
             return View(m);
         }
 
-        public IActionResult SubmitNewUser(AddTeamMemberViewModel teamMember)
+        public IActionResult SubmitNewTeamMember(AddTeamMemberViewModel teamMember)
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
             dbService.InsertUser(teamMember.teamId, Convert.ToInt32(teamMember.selectedUser));
             return RedirectToAction("Teams");
         }
 
-        public IActionResult AddTeam()
+        #endregion
+        
+        #region Users Team
+
+        public IActionResult Team()
         {
-            return View();
+            UserDatabaseService dbService_u = new UserDatabaseService(_configuration);
+            Team team = dbService_u.SelectUserTeam(SessionService.loggedInUser.userID);
+
+            ViewData["Message"] = "Team management page.";
+
+            return View(team);
         }
 
-        public IActionResult SubmitNewTeam(Team team)
-        {
-            TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            dbService.Insert(team);
-            return RedirectToAction("Teams");
-        }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -18,6 +18,8 @@ namespace change_management.Controllers
             _configuration = configuration;
         }
 
+        #region Users Admin
+
         public IActionResult Users()
         {
             UserDatabaseService dbService = new UserDatabaseService(_configuration);
@@ -25,6 +27,22 @@ namespace change_management.Controllers
 
             return View(users);
         }
+
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+
+        public IActionResult SubmitNewUser(User user)
+        {
+            UserDatabaseService dbService = new UserDatabaseService(_configuration);
+            dbService.Insert(new User(user.forename, user.surname, user.role));
+            return RedirectToAction("Users");
+        }
+
+        #endregion
+
+        #region User Login
 
         public IActionResult Login()
         {
@@ -44,17 +62,7 @@ namespace change_management.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AddUser()
-        {
-            return View();
-        }
-
-        public IActionResult SubmitNewUser(User user)
-        {
-            UserDatabaseService dbService = new UserDatabaseService(_configuration);
-            dbService.Insert(new User(user.forename, user.surname, user.role));
-            return RedirectToAction("Users");
-        }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
