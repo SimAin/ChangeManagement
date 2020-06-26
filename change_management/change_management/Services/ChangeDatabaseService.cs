@@ -24,6 +24,34 @@ namespace change_management.Controllers
             return connection;
         }
 
+        private string GetCompleteChangeSql() {
+            return ("SELECT changes.changeId, " +
+                                        "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
+                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "status.status, " +
+                                        "approver.userId, approver.forename, approver.surname, approver.role, " +
+                                        "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
+                                        "teams.teamId, teams.name, " +
+                                        "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
+                                    "FROM changes " + 
+                                    "JOIN systems ON systems.systemId = changes.systemId " +
+                                    "JOIN status ON status.statusId = changes.statusId " +
+                                    "JOIN users AS approver ON approver.userId = changes.approverId " +
+                                    "JOIN users AS stakeholder ON stakeholder.userId = changes.stakeholderId " +
+                                    "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
+                                    "JOIN teams ON teamId = changes.teamResponsibleId");
+        }
+
+        private Change CreateChange(SqlDataReader reader){
+            return new Change(reader.GetInt32(0), 
+                                new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
+                                reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetString(12),
+                                new User(reader.GetInt32(13), reader.GetString(14), reader.GetString(15), reader.GetString(16)),
+                                new User(reader.GetInt32(17), reader.GetString(18), reader.GetString(19), reader.GetString(20)),  
+                                new Team(reader.GetInt32(21), reader.GetString(22)),
+                                new User(reader.GetInt32(23), reader.GetString(24), reader.GetString(25), reader.GetString(26)));
+        }
+
         public IEnumerable<Change> SelectAll(){
             var changes = new List<Change>();
             try {
@@ -31,19 +59,7 @@ namespace change_management.Controllers
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT changes.changeId, " +
-                                        "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
-                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, " +
-                                        "approver.userId, approver.forename, approver.surname, approver.role, " +
-                                        "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
-                                        "teams.teamId, teams.name, " +
-                                        "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
-                                    "FROM changes " + 
-                                    "JOIN systems ON systems.systemId = changes.systemId " +
-                                    "JOIN users AS approver ON approver.userId = changes.approverId " +
-                                    "JOIN users AS stakeholder ON stakeholder.userId = changes.stakeholderId " +
-                                    "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
-                                    "JOIN teams ON teamId = changes.teamResponsibleId");
+                    String sql = GetCompleteChangeSql();
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -51,13 +67,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                changes.Add(new Change(reader.GetInt32(0), 
-                                            new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                            reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
-                                            new User(reader.GetInt32(11), reader.GetString(12), reader.GetString(13), reader.GetString(14)),
-                                            new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),  
-                                            new Team(reader.GetInt32(19), reader.GetString(20)),
-                                            new User(reader.GetInt32(21), reader.GetString(22), reader.GetString(23), reader.GetString(24))));
+                                changes.Add(CreateChange(reader));
                             }
                         }
                     }
@@ -78,20 +88,7 @@ namespace change_management.Controllers
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT changes.changeId, " +
-                                        "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
-                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, " +
-                                        "approver.userId, approver.forename, approver.surname, approver.role, " +
-                                        "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
-                                        "teams.teamId, teams.name, " +
-                                        "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
-                                    "FROM changes " + 
-                                    "JOIN systems ON systems.systemId = changes.systemId " +
-                                    "JOIN users AS approver ON approver.userId = changes.approverId " +
-                                    "JOIN users AS stakeholder ON stakeholder.userId = changes.stakeholderId " +
-                                    "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
-                                    "JOIN teams ON teamId = changes.teamResponsibleId " + 
-                                    "WHERE changes.changeId = " + changeId);
+                    String sql = GetCompleteChangeSql() + " WHERE changes.changeId = " + changeId;
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -99,13 +96,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                change = (new Change(reader.GetInt32(0), 
-                                            new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                            reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
-                                            new User(reader.GetInt32(11), reader.GetString(12), reader.GetString(13), reader.GetString(14)),
-                                            new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),  
-                                            new Team(reader.GetInt32(19), reader.GetString(20)),
-                                            new User(reader.GetInt32(21), reader.GetString(22), reader.GetString(23), reader.GetString(24))));
+                                change = CreateChange(reader);
                             }
                         }
                     }
@@ -146,6 +137,35 @@ namespace change_management.Controllers
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
                                             reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
                                             new User(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15))));
+                            }
+                        }
+                    }
+                }
+                return changes;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return changes;
+            }
+        }
+
+        public IEnumerable<Change> SelectSystemChanges(int systemID){
+            var changes = new List<Change>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = GetCompleteChangeSql() + " WHERE systems.systemId = " + systemID;
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                changes.Add(CreateChange(reader));
                             }
                         }
                     }

@@ -80,6 +80,15 @@ namespace change_management.Controllers
 
         #endregion
 
+        public IActionResult History(int systemID)
+        {
+            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
+            List<Change> systems = dbService.SelectSystemChanges(systemID).ToList();
+            ViewData["Message"] = "System management page.";
+
+            return View(systems);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

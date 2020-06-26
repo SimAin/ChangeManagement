@@ -31,7 +31,6 @@ namespace change_management.Controllers
         {
             ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
             Change change = dbService.Select(changeId);
-            ViewData["Message"] = "Change management page.";
 
             return View(change);
         }

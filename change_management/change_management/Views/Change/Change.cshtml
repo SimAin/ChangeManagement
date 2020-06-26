@@ -6,11 +6,13 @@
 <h2>@Model.type @ViewData["Title"]</h2>
 
 <div>
-    @* TODO *@
-    <input type="button" value="Edit Change" onclick="location.href='@Url.Action("AddChange", "Change")'" />
+    @if (@Model.status != "Complete")
+    {
+        <input type="button" value="Edit Change" onclick="location.href='@Url.Action("AddChange", "Change")'" />
+    }
 </div>
 <br/>
-<table id="dataTable">
+<table id="dataTable" style="width: 50%;">
     <tr>
         <th>Id</th>
         <td>

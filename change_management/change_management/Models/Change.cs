@@ -13,6 +13,7 @@ namespace change_management.Models
         public String deadlineText { get; set; }
         public int priority {get;set;}
         public int processingTime {get;set;}
+        public string status {get;set;}
         public int laxity {get;set;}
         public User approver {get;set;}
         public User stakeholder {get;set;}
@@ -26,8 +27,8 @@ namespace change_management.Models
 
         public Change() {}
 
-        //Creating a system entity from the database
-        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, User app, User stake, Team team, User responsible) {
+        //Creating a change from the database
+        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, string state, User app, User stake, Team team, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -36,13 +37,15 @@ namespace change_management.Models
             deadline = due;
             deadlineText = due.ToString("dd/MM/yyyy");
             priority = pri;
+            processingTime = pt;
+            status = state;
             approver = app;
             stakeholder = stake;
             teamResponsible = team;
             userResponsible = responsible;
         }
 
-        //Creating a system entity lite view from the database
+        //Creating a changelite view from the database
         public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, User responsible) {
             changeId = id;
             system = sys;
@@ -56,7 +59,7 @@ namespace change_management.Models
             userResponsible = responsible;
         }
 
-        //Initializing a system entity to be added
+        //Initializing a change to be added
         public Change(int sys, string t, string desc, bool critical, DateTime due, int pri, int app, int stake, int team, int responsible) {
             changeId = 0;
             systemId = sys;
