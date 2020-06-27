@@ -8,6 +8,8 @@ namespace change_management.Models.ViewModels
     public class EditChangeViewModel
     {
         public Change currentChange {get;set;}
+        public int changeId {get;set;}
+
 
         public IEnumerable<SelectListItem> systems {get;set;}
         public IEnumerable<SelectListItem> approver {get;set;}
@@ -34,6 +36,16 @@ namespace change_management.Models.ViewModels
             stakeholder = steakl;            
             userResponsible = ul;
             teamResponsible = tl;
+
+            setPreSelected(currentChange);
+        }
+
+        private void setPreSelected(Change ch){
+            selectedDescription = ch.description;
+            selectedCriticality = ch.criticality;
+            selectedDeadline = ch.deadline;
+            selectedPriority =ch.priority;
+            selectedProcessingTime = ch.processingTime;
         }
     }
 }

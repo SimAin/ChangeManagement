@@ -76,7 +76,7 @@ namespace change_management.Models
 
         //Initializing a change to be edited
         public Change(int id, string desc, bool critical, DateTime due, int process, int pri, int app, int stake, int team, int responsible) {
-            changeId = 0;
+            changeId = id;
             description = desc;
             criticality = critical;
             deadline = due;

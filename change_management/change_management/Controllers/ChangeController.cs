@@ -175,7 +175,7 @@ namespace change_management.Controllers
 
         public IActionResult SubmitEditChange(EditChangeViewModel c)
         {
-            var updatedChange = new Change(Convert.ToInt32(c.currentChange.changeId), c.selectedDescription, 
+            var updatedChange = new Change(c.changeId, c.selectedDescription, 
                                             c.selectedCriticality, c.selectedDeadline, Convert.ToInt32(c.selectedPriority), 
                                             Convert.ToInt32(c.selectedProcessingTime), Convert.ToInt32(c.selectedApprover), Convert.ToInt32(c.selectedStakeholder), 
                                             Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible));
