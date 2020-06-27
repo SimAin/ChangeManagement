@@ -1,0 +1,60 @@
+@model change_management.Models.ViewModels.EditChangeViewModel
+
+@{
+    ViewData["Title"] = "Edit change ";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="Change" asp-action="SubmitEditChange" >
+    <table id="inputTable" style="width: 50%;">
+        <tr>
+            <th><label id="inputLabel" for="selectedSystem">System:</label></th>
+            <td>
+                <input asp-for="@Model.currentChange" type="text" name="currentChange" value="@Model.currentChange" hidden/>
+                <input asp-for="@Model.currentChange.system.name"  type="text" name="name" value="@Model.currentChange.system.name" readonly/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="type">Type:</label></th>
+            <td><input asp-for="@Model.currentChange.type"  type="text" name="type" value="@Model.currentChange.type" readonly/></td>
+        </tr>
+        <tr>
+            <th><label for="description">Description:</label></th>
+            <td><input asp-for="@Model.selectedDescription" type="text" name="description" value="@Model.currentChange.description" /></td>
+        </tr>
+        <tr>
+            <th><label for="criticality">Criticality (Hard deadline):</label></th>
+            <td><input asp-for="@Model.selectedCriticality" type="checkbox" name="criticality" value="@Model.currentChange.criticality" /></td>
+        </tr>
+        <tr>
+            <th><label for="deadline">Deadline:</label></th>
+            <td><input type="date" asp-for="@Model.selectedDeadline"  name="deadline" value="@Model.currentChange.deadline" /></td>
+        </tr>
+        <tr>
+            <th><label for="priority">Priority (High 1-5 Low):</label></th>
+            <td><input type="text" asp-for="@Model.selectedPriority"  type="text" name="priority" value="@Model.currentChange.priority" /></td>
+        </tr>
+        <tr>
+            <th><label for="processingTime">Processing time (days):</label></th>
+            <td><input type="text" asp-for="@Model.selectedProcessingTime"  type="text" name="processingTime" value="@Model.currentChange.processingTime" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedApprover">Approver:</label></th>
+            <td><select asp-for="@Model.selectedApprover" asp-items="Model.approver" name="selectedApprover" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedStakeholder">Stakeholder:</label></th>
+            <td><select asp-for="@Model.selectedStakeholder" asp-items="Model.stakeholder" name="selectedStakeholder" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedTeamResponsible">Team responsible:</label></th>
+            <td><select asp-for="@Model.selectedTeamResponsible" asp-items="Model.teamResponsible" name="selectedTeamResponsible" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedUserResponsible">User responsible:</label></th>
+            <td><select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select></td>
+        </tr>
+    </table>
+    <button type="submit">Submit Change</button>
+</form>

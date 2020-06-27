@@ -8,7 +8,7 @@
 <div>
     @if (@Model.status != "Complete")
     {
-        <input type="button" value="Edit Change" onclick="location.href='@Url.Action("AddChange", "Change")'" />
+        <input type="button" value="Edit Change" onclick="location.href='@Url.Action("EditChange", "Change", new { changeId = @Model.changeId})'" />
     }
 </div>
 <br/>

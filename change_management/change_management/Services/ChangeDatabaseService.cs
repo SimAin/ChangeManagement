@@ -214,5 +214,42 @@ namespace change_management.Controllers
                 Console.WriteLine(e.ToString());
             }
         }
+
+        public void Update(Change c){
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();
+
+                    string sql ="UPDATE changes " +
+                                "SET description=@param1, criticality=@param2, " +
+                                    "deadline=@param3, priority=@param4, approverId=@param5, " + 
+                                    "stakeholderId=@param6, teamResponsibleId=@param7, userResponsibleId=@param8, " +
+                                    "processingTimeDays=@param9, statusId=@param10 " +
+                                "WHERE changeId = " + c.changeId;
+
+                    using(SqlCommand cmd = new SqlCommand(sql,connection)) 
+                    {
+                        cmd.Parameters.Add("@param1", SqlDbType.NVarChar, 50).Value = c.description;
+                        cmd.Parameters.Add("@param2", SqlDbType.Bit).Value = c.criticality;
+                        cmd.Parameters.Add("@param3", SqlDbType.DateTime).Value = c.deadline;
+                        cmd.Parameters.Add("@param4", SqlDbType.Int).Value = c.priority;
+                        cmd.Parameters.Add("@param5", SqlDbType.Int).Value = c.approverId;
+                        cmd.Parameters.Add("@param6", SqlDbType.Int).Value = c.stakeholderId;
+                        cmd.Parameters.Add("@param7", SqlDbType.Int).Value = c.teamResponsibleId;
+                        cmd.Parameters.Add("@param8", SqlDbType.Int).Value = c.userResponsibleId;
+                        cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.processingTime;
+                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = 1;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.ExecuteNonQuery(); 
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
     }
 }
