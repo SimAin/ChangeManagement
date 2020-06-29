@@ -15,10 +15,13 @@ namespace change_management.Models
         public int processingTime {get;set;}
         public string status {get;set;}
         public int laxity {get;set;}
+        public DateTime createdDate { get; set; }
+
         public User approver {get;set;}
         public User stakeholder {get;set;}
         public Team teamResponsible {get;set;}
         public User userResponsible {get;set;}
+
         public int systemId {get;set;}
         public int approverId {get;set;}
         public int stakeholderId {get;set;}
@@ -28,7 +31,7 @@ namespace change_management.Models
         public Change() {}
 
         //Creating a change from the database
-        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, string state, User app, User stake, Team team, User responsible) {
+        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, DateTime create, string state, User app, User stake, Team team, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -38,6 +41,7 @@ namespace change_management.Models
             deadlineText = due.ToString("dd/MM/yyyy");
             priority = pri;
             processingTime = pt;
+            createdDate = create;
             status = state;
             approver = app;
             stakeholder = stake;

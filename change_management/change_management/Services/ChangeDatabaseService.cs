@@ -27,7 +27,8 @@ namespace change_management.Controllers
         private string GetCompleteChangeSql() {
             return ("SELECT changes.changeId, " +
                                         "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
-                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, " + 
+                                        "changes.processingTimeDays, changes.dateCreated," + 
                                         "status.status, " +
                                         "approver.userId, approver.forename, approver.surname, approver.role, " +
                                         "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
@@ -45,11 +46,13 @@ namespace change_management.Controllers
         private Change CreateChange(SqlDataReader reader){
             return new Change(reader.GetInt32(0), 
                                 new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetString(12),
-                                new User(reader.GetInt32(13), reader.GetString(14), reader.GetString(15), reader.GetString(16)),
-                                new User(reader.GetInt32(17), reader.GetString(18), reader.GetString(19), reader.GetString(20)),  
-                                new Team(reader.GetInt32(21), reader.GetString(22)),
-                                new User(reader.GetInt32(23), reader.GetString(24), reader.GetString(25), reader.GetString(26)));
+                                reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
+                                reader.GetInt32(11), reader.GetDateTime(12),
+                                reader.GetString(13),
+                                new User(reader.GetInt32(14), reader.GetString(15), reader.GetString(16), reader.GetString(17)),
+                                new User(reader.GetInt32(18), reader.GetString(19), reader.GetString(20), reader.GetString(21)),  
+                                new Team(reader.GetInt32(22), reader.GetString(23)),
+                                new User(reader.GetInt32(24), reader.GetString(25), reader.GetString(26), reader.GetString(27)));
         }
 
         public IEnumerable<Change> SelectAll(){

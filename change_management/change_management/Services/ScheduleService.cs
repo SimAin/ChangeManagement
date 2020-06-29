@@ -70,26 +70,37 @@ namespace change_management.Services
             {
                 if (listOne.Count > 0 && listTwo.Count > 0)
                 {
-                    if(listOne.First().laxity > listTwo.First().laxity){
+                    if (listOne.First().laxity > listTwo.First().laxity) {
 
                         result.Add(listOne.First());
                         listOne.Remove(listOne.First());
 
-                    } else if(listOne.First().laxity < listTwo.First().laxity){
+                    } else if(listOne.First().laxity < listTwo.First().laxity) {
 
                         result.Add(listTwo.First());
                         listTwo.Remove(listTwo.First());
 
                     } else {
-                        if(listOne.First().priority > listTwo.First().priority){
+                        if (listOne.First().priority > listTwo.First().priority) {
 
                             result.Add(listOne.First());
                             listOne.Remove(listOne.First());
 
-                        } else if(listOne.First().priority < listTwo.First().priority){
+                        } else if (listOne.First().priority < listTwo.First().priority) {
 
                             result.Add(listTwo.First());
                             listTwo.Remove(listTwo.First());
+                        } else {
+                            if (listOne.First().createdDate > listTwo.First().createdDate) {
+
+                                result.Add(listOne.First());
+                                listOne.Remove(listOne.First());
+
+                            } else if (listOne.First().createdDate < listTwo.First().createdDate) {
+
+                                result.Add(listTwo.First());
+                                listTwo.Remove(listTwo.First());
+                            }
                         }
                     }
                 }

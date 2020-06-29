@@ -10,7 +10,6 @@ namespace change_management.Models.ViewModels
         public Change currentChange {get;set;}
         public int changeId {get;set;}
 
-
         public IEnumerable<SelectListItem> systems {get;set;}
         public IEnumerable<SelectListItem> approver {get;set;}
         public IEnumerable<SelectListItem> stakeholder {get;set;}
@@ -36,7 +35,7 @@ namespace change_management.Models.ViewModels
             stakeholder = steakl;            
             userResponsible = ul;
             teamResponsible = tl;
-
+            
             setPreSelected(currentChange);
         }
 
