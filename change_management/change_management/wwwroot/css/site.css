@@ -119,3 +119,9 @@ a {
     color: white;
 }
 
+.Critical-True {
+    color:red;
+}
+.Critical-False {
+    color:green;
+}

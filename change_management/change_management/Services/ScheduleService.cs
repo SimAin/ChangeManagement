@@ -44,7 +44,7 @@ namespace change_management.Services
             List<Change> listOne = new List<Change>();
             List<Change> listTwo = new List<Change>();
 
-            for (int i = 0; i < (unOrdered.Count / 2);i++)  
+            for (int i = 0; i < (unOrdered.Count / 2); i++)  
             {
                 var di = (int) DateTime.Now.Subtract(unOrdered[i].deadline).TotalDays;
                 unOrdered[i].laxity = di - unOrdered[i].processingTime;

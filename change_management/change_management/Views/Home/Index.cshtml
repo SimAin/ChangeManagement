@@ -18,9 +18,9 @@
                     <th>Description</th>
                     <th>Priority</th>
                     <th>Deadline</th>
-                    <th>Criticical Deadline</th>
                     <th>User Responsible</th>
-                    <th>Processing time</th>
+                    <th>Effort</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model.changes) {
@@ -37,11 +37,8 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.priority)
                         </td>
-                        <td>
+                        <td class="Critical-@item.criticality">
                             @Html.DisplayFor(modelItem => item.deadlineText)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.criticality)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.userResponsible.forename)
@@ -51,8 +48,11 @@
                             @Html.DisplayFor(modelItem => item.processingTime) days
                         </td>
                         <td>
-                            <input type="button" value="View Change" onclick="location.href='@Url.Action("Change", "Change", new { changeId = item.changeId })'" />
-                            <input type="button" value="Edit Change" onclick="location.href='@Url.Action("EditChange", "Change", new { changeId = item.changeId })'" />
+                            @Html.DisplayFor(modelItem => item.status) 
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                         </td>
                     </tr>
                 }

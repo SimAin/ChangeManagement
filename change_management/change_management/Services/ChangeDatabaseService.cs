@@ -123,9 +123,11 @@ namespace change_management.Controllers
                     String sql = ("SELECT changes.changeId, " +
                                         "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
                                         "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "status.status, " +
                                         "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
                                     "FROM changes " + 
                                     "JOIN systems ON systems.systemId = changes.systemId " +
+                                    "JOIN status ON status.statusId = changes.statusId " +
                                     "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
                                     "JOIN teams ON teamId = changes.teamResponsibleId " +
                                     "WHERE changes.teamResponsibleId = " + id);
@@ -139,7 +141,8 @@ namespace change_management.Controllers
                                 changes.Add(new Change(reader.GetInt32(0), 
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
                                             reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
-                                            new User(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15))));
+                                            reader.GetString(12),
+                                            new User(reader.GetInt32(13), reader.GetString(14), reader.GetString(15), reader.GetString(16))));
                             }
                         }
                     }
@@ -243,7 +246,7 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param7", SqlDbType.Int).Value = c.teamResponsibleId;
                         cmd.Parameters.Add("@param8", SqlDbType.Int).Value = c.userResponsibleId;
                         cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.processingTime;
-                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = 1;
+                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.statusId;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
@@ -252,6 +255,35 @@ namespace change_management.Controllers
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
+            }
+        }
+
+        public IEnumerable<Status> SelectStatuss(){
+            var statuss = new List<Status>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = "SELECT * FROM status";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                statuss.Add(new Status(reader.GetInt32(0), reader.GetString(1)));
+                            }
+                        }
+                    }
+                }
+                return statuss;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return statuss;
             }
         }
     }

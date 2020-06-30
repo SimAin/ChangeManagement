@@ -15,6 +15,7 @@ namespace change_management.Models.ViewModels
         public IEnumerable<SelectListItem> stakeholder {get;set;}
         public IEnumerable<SelectListItem> teamResponsible {get;set;}
         public IEnumerable<SelectListItem> userResponsible {get;set;}
+        public IEnumerable<SelectListItem> statuss {get;set;}
 
         public string selectedDescription { get; set; }
         public bool selectedCriticality { get; set; }
@@ -25,16 +26,18 @@ namespace change_management.Models.ViewModels
         public string selectedStakeholder {get;set;}
         public string selectedTeamResponsible {get;set;}
         public string selectedUserResponsible {get;set;}
+        public string selectedStatus {get;set;}
 
         public EditChangeViewModel() {}
 
-        public EditChangeViewModel(Change ch, IEnumerable<SelectListItem> sysl, IEnumerable<SelectListItem> appl, IEnumerable<SelectListItem> steakl, IEnumerable<SelectListItem> tl, IEnumerable<SelectListItem> ul) {
+        public EditChangeViewModel(Change ch, IEnumerable<SelectListItem> sysl, IEnumerable<SelectListItem> appl, IEnumerable<SelectListItem> steakl, IEnumerable<SelectListItem> tl, IEnumerable<SelectListItem> ul, IEnumerable<SelectListItem> sl ) {
             currentChange = ch;
             systems = sysl;
             approver = appl;
             stakeholder = steakl;            
             userResponsible = ul;
             teamResponsible = tl;
+            statuss = sl;
             
             setPreSelected(currentChange);
         }
@@ -45,6 +48,7 @@ namespace change_management.Models.ViewModels
             selectedDeadline = ch.deadline;
             selectedPriority =ch.priority;
             selectedProcessingTime = ch.processingTime;
+            selectedStatus = ch.status;
         }
     }
 }

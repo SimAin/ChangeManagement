@@ -27,6 +27,7 @@ namespace change_management.Models
         public int stakeholderId {get;set;}
         public int teamResponsibleId {get;set;}
         public int userResponsibleId {get;set;}
+        public int statusId {get;set;}
 
         public Change() {}
 
@@ -50,7 +51,7 @@ namespace change_management.Models
         }
 
         //Creating a changelite view from the database
-        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, User responsible) {
+        public Change(int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, string stat, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -60,6 +61,7 @@ namespace change_management.Models
             deadlineText = due.ToString("dd/MM/yyyy");
             priority = pri;
             processingTime = pt;
+            status = stat;
             userResponsible = responsible;
         }
 
@@ -79,7 +81,7 @@ namespace change_management.Models
         }
 
         //Initializing a change to be edited
-        public Change(int id, string desc, bool critical, DateTime due, int process, int pri, int app, int stake, int team, int responsible) {
+        public Change(int id, string desc, bool critical, DateTime due, int process, int pri, int app, int stake, int team, int responsible, int status) {
             changeId = id;
             description = desc;
             criticality = critical;
@@ -90,6 +92,7 @@ namespace change_management.Models
             stakeholderId = stake;
             teamResponsibleId = team;
             userResponsibleId = responsible;
+            statusId = status;
         }
     }
 }
