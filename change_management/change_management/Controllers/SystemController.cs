@@ -65,6 +65,58 @@ namespace change_management.Controllers
             return RedirectToAction("Systems");
         }
 
+        public IActionResult EditSystem(int systemId)
+        {
+            var system = new SystemDatabaseService(_configuration).Select(systemId);
+            var dbusers = new UserDatabaseService(_configuration).SelectAll();
+            var dbteams = new TeamDatabaseService(_configuration).SelectAll();
+            List<SelectListItem> teams = new List<SelectListItem>();  
+            List<SelectListItem> users = new List<SelectListItem>(); 
+            
+            foreach (var t in dbteams)
+            {
+                if(t.teamID == system.owningTeam.teamID){
+                    teams.Add(new SelectListItem{
+                        Text = t.name,  
+                        Value = t.teamID.ToString(),
+                        Selected = true
+                    });
+                } else {
+                    teams.Add(new SelectListItem{
+                        Text = t.name,  
+                        Value = t.teamID.ToString()
+                    });
+                }
+            }
+             
+            foreach (var u in dbusers)
+            {
+                if(u.userID == system.pointOfContact.userID){
+                    users.Add(new SelectListItem{
+                        Text = u.forename + " " + u.surname,  
+                        Value = u.userID.ToString(),
+                        Selected = true
+                    });
+                } else {
+                    users.Add(new SelectListItem{
+                        Text = u.forename + " " + u.surname,  
+                        Value = u.userID.ToString()
+                    });
+                }
+            }
+
+            var m = new EditSystemViewModel(system, users, teams);
+            return View(m);
+        }
+
+        public IActionResult SubmitEditSystem(EditSystemViewModel s)
+        {
+            var system = new SystemEntity(s.currentSystemId, s.selectedName, s.selectedCode, s.selectedDescription, s.selectedTechStack, Convert.ToInt32(s.selectedUser), Convert.ToInt32(s.selectedTeam));
+            SystemDatabaseService dbService = new SystemDatabaseService(_configuration);
+            dbService.Update(system);
+            return RedirectToAction("TeamSystems");
+        }
+
         #endregion
 
         #region Team Systems

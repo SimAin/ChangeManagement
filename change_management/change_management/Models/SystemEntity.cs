@@ -44,5 +44,16 @@ namespace change_management.Models
             pointOfContactID = contact;
             owningTeamID = team;
         }
+
+        //Initializing a system entity to be edited
+        public SystemEntity(int sysid, string systemName, string systemCode, string desc, string tstack, int contact, int team) {
+            systemID = sysid;
+            name = systemName;
+            code = systemCode;
+            description = desc;
+            techStack = tstack;
+            pointOfContactID = contact;
+            owningTeamID = team;
+        }
     }
 }

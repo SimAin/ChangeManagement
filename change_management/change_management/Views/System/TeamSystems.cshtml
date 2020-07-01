@@ -41,7 +41,8 @@
                 @Html.DisplayFor(modelItem => item.owningTeam.name)
             </td>
             <td>
-                <input type="button" value="View History" onclick="location.href='@Url.Action("History", "System", new { systemID = item.systemID })'" />
+                <a asp-area="" asp-controller="System" asp-action="History" asp-route-systemID=@item.systemID>History</a> | 
+                <a asp-area="" asp-controller="System" asp-action="EditSystem" asp-route-systemId=@item.systemID>Edit</a>
             </td>
         </tr>
     }
