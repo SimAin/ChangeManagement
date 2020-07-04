@@ -194,12 +194,17 @@ namespace change_management.Controllers
 
         public IActionResult SubmitEditChange(EditChangeViewModel c)
         {
+            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
+            DateTime? started = null;
+            if ((dbService.SelectChangeStatus(c.changeId) != Convert.ToInt32(c.selectedStatus)) && Convert.ToInt32(c.selectedStatus) == 2) {
+                started = DateTime.Now;
+            }
+
             var updatedChange = new Change(c.changeId, c.selectedDescription, 
                                             c.selectedCriticality, c.selectedDeadline, Convert.ToInt32(c.selectedPriority), 
                                             Convert.ToInt32(c.selectedProcessingTime), Convert.ToInt32(c.selectedApprover), Convert.ToInt32(c.selectedStakeholder), 
-                                            Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible), Convert.ToInt32(c.selectedStatus));
+                                            Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible), Convert.ToInt32(c.selectedStatus), started);
 
-            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
             dbService.Update(updatedChange);
             return RedirectToAction("Changes");
         }
