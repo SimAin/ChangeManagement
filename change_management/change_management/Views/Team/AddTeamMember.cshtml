@@ -15,6 +15,10 @@
             <th><label for="selectedUser">User to add:</label></th>
             <td><select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select></td>
         </tr>
+        <tr>
+            <th><label for="selectedThroughput" >Estimated days per week:</label></th>
+            <td data-toggle="popover" data-placement="right" title="Days assigned" data-content="The estimated number of days this users is assigned to working on changes for this team per week."><input asp-for="@Model.selectedThroughput"  type="text" name="selectedThroughput" value="" /></td>
+        </tr>
     </table>
     <button type="submit">Submit Change</button>
 </form>

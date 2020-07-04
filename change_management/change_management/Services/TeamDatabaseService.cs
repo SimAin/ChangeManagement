@@ -177,18 +177,19 @@ namespace change_management.Controllers
             }
         }
 
-        public void InsertUser(int t, int u){
+        public void InsertUser(int t, int u, int throughput){
             try {
                 var connection = DatabaseConnector();
                 using (connection)
                 {
                     connection.Open();       
-                    string sql2 = "INSERT INTO teamMembers(userId, teamId)   VALUES(@param1, @param2)";
+                    string sql2 = "INSERT INTO teamMembers(userId, teamId, throughput)   VALUES(@param1, @param2, @param3)";
                             
                     using(SqlCommand cmd = new SqlCommand(sql2,connection)) 
                     {
                         cmd.Parameters.Add("@param1", SqlDbType.Int).Value = u;
                         cmd.Parameters.Add("@param2", SqlDbType.Int).Value = t;
+                        cmd.Parameters.Add("@param3", SqlDbType.Int).Value = throughput;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
