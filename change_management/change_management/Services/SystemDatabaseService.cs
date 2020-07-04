@@ -33,7 +33,8 @@ namespace change_management.Controllers
                     connection.Open();       
                     String sql = ("SELECT systemId, systems.name, code, description, techStack, " + 
                                     "users.userId, users.forename, users.surname, users.role, " + 
-                                    "teams.teamId, teams.name FROM systems " +
+                                    "teams.teamId, teams.name " + 
+                                    "FROM systems " +
                                     "JOIN users ON users.userId = systems.pointOfContact " + 
                                     "JOIN teams ON teams.teamId = systems.owningTeam");
 

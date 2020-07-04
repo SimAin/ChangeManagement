@@ -110,7 +110,7 @@ namespace change_management.Controllers
                         }
                     }
 
-                    String sql2 = ("SELECT teamMembers.teamId, teams.name " +
+                    String sql2 = ("SELECT teamMembers.teamId, teams.name, throughput = (SELECT SUM(throughput) FROM teamMembers WHERE teamMembers.teamId = teams.teamId) " +
                                     "FROM users " +
                                     "JOIN teamMembers ON teamMembers.userId = users.userId " +
                                     "JOIN teams ON teams.teamId = teamMembers.teamId " +
@@ -122,7 +122,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                team = new Team(reader.GetInt32(0), reader.GetString(1), users);
+                                team = new Team(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), users);
                             }
                         }
                     }
