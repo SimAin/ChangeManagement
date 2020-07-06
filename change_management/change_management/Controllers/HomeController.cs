@@ -30,6 +30,7 @@ namespace change_management.Controllers
 
             ScheduleService scheduleService = new ScheduleService();
             List<Change> orderedTeamChanges = scheduleService.scheduleChanges(teamChanges).ToList();
+            scheduleService.calculateDeadlineStatus(orderedTeamChanges);
 
             var m = new HomeViewModel(orderedTeamChanges);
             return View(m);

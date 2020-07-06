@@ -9,7 +9,6 @@ namespace change_management.Services
     {
         public ScheduleService(){}
 
-        // TODO: If it does not work, first come first served. 
         // TODO: Boost up C0 if deadline has done etc
 
         public List<Change> scheduleChanges(List<Change> changeList) {
@@ -116,6 +115,35 @@ namespace change_management.Services
                 }    
             }
             return result;
+        }
+
+        public List<Change> calculateDeadlineStatus(List<Change> changeList) {
+
+            foreach (var item in changeList)
+            {
+                item.deadlineStatus = 99;
+
+                if(item.status == "In progress"){
+                    //It is in progress therefore it wil have a start date. 
+                    int daysRemaining = item.processingTime - ((int) (item.startedDate ?? DateTime.Now).Subtract(DateTime.Now).TotalDays);
+                    int twentyP = (int) Math.Ceiling(item.processingTime * 0.2);
+                    
+                    if(DateTime.Now.AddDays(daysRemaining) < item.deadline.AddDays(- twentyP)){
+                        item.deadlineStatus = 1;
+                    } 
+                    if((DateTime.Now.AddDays(daysRemaining) >= item.deadline.AddDays(- twentyP)) && (DateTime.Now.AddDays(daysRemaining) < item.deadline)) {
+                        item.deadlineStatus = 2;
+                    }
+                    if(DateTime.Now.AddDays(daysRemaining) >= item.deadline) {
+                        item.deadlineStatus = 4;
+                    }
+                }
+                if ((item.status != "In Progress") && (item.laxity < item.processingTime)) {
+                    item.deadlineStatus = 5;
+                }
+            }
+
+            return changeList;
         }
     }
 }
