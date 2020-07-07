@@ -76,7 +76,7 @@ namespace change_management.Controllers
         public IActionResult SubmitNewTeamMember(AddTeamMemberViewModel teamMember)
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            dbService.InsertUser(teamMember.teamId, Convert.ToInt32(teamMember.selectedUser));
+            dbService.InsertUser(teamMember.teamId, Convert.ToInt32(teamMember.selectedUser), Convert.ToInt32(teamMember.selectedThroughput));
             return RedirectToAction("Teams");
         }
 

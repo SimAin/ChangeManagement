@@ -94,16 +94,35 @@ namespace change_management.Controllers
 
         public IActionResult EditChange(int changeId)
         {
-            var change = new ChangeDatabaseService(_configuration).Select(changeId);
+            var changedbs = new ChangeDatabaseService(_configuration);
+            var change = changedbs.Select(changeId);
+            var dbstatus = changedbs.SelectStatuss();
             var dbusers = new UserDatabaseService(_configuration).SelectAll();
             var dbteams = new TeamDatabaseService(_configuration).SelectAll();
             var dbsystems = new SystemDatabaseService(_configuration).SelectAll();
+            List<SelectListItem> status = new List<SelectListItem>(); 
             List<SelectListItem> teams = new List<SelectListItem>();  
             List<SelectListItem> users = new List<SelectListItem>(); 
             List<SelectListItem> approvers = new List<SelectListItem>();  
             List<SelectListItem> steakholders = new List<SelectListItem>(); 
             List<SelectListItem> systems = new List<SelectListItem>(); 
             
+            foreach (var s in dbstatus)
+            {
+                if (s.status == change.status) {
+                    status.Add(new SelectListItem{
+                        Text = s.status,  
+                        Value = s.statusID.ToString(),
+                        Selected = true
+                    });
+                } else {
+                    status.Add(new SelectListItem{
+                        Text = s.status,  
+                        Value = s.statusID.ToString()
+                    });
+                }
+            }
+
             foreach (var t in dbteams)
             {
                 if (t.teamID == change.teamResponsible.teamID) {
@@ -169,18 +188,23 @@ namespace change_management.Controllers
                 }
             }
 
-            var m = new EditChangeViewModel(change, systems, approvers, steakholders, teams, users);
+            var m = new EditChangeViewModel(change, systems, approvers, steakholders, teams, users, status);
             return View(m);
         }
 
         public IActionResult SubmitEditChange(EditChangeViewModel c)
         {
-            var updatedChange = new Change(Convert.ToInt32(c.currentChange.changeId), c.selectedDescription, 
+            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
+            DateTime? started = null;
+            if ((dbService.SelectChangeStatus(c.changeId) != Convert.ToInt32(c.selectedStatus)) && Convert.ToInt32(c.selectedStatus) == 2) {
+                started = DateTime.Now;
+            }
+
+            var updatedChange = new Change(c.changeId, c.selectedDescription, 
                                             c.selectedCriticality, c.selectedDeadline, Convert.ToInt32(c.selectedPriority), 
                                             Convert.ToInt32(c.selectedProcessingTime), Convert.ToInt32(c.selectedApprover), Convert.ToInt32(c.selectedStakeholder), 
-                                            Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible));
+                                            Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible), Convert.ToInt32(c.selectedStatus), started);
 
-            ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
             dbService.Update(updatedChange);
             return RedirectToAction("Changes");
         }

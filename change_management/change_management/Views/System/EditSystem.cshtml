@@ -1,0 +1,41 @@
+@model change_management.Models.ViewModels.EditSystemViewModel
+
+@{
+    ViewData["Title"] = "Systems";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="System" asp-action="SubmitEditSystem" >
+    <table id="inputTable" style="width: 50%;">
+        <tr>
+            
+            <th><label for="selectedName">Name:</label></th>
+            <td>
+                <input asp-for="@Model.currentSystemId" type="text" name="currentSystemId" value="@Model.currentSystemId"hidden/>
+                <input asp-for="@Model.selectedName"  type="text" name="selectedName" value="@Model.selectedName" readonly/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="selectedCode">Code:</label></th>
+            <td><input asp-for="@Model.selectedCode" type="text" name="selectedCode"/></td>
+        </tr>
+        <tr>
+            <th><label for="selectedDescription">Description:</label></th>
+            <td><input asp-for="@Model.selectedDescription" type="text" name="selectedDescription"  /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedTechStack">Tech Stack:</label></th>
+            <td><input asp-for="@Model.selectedTechStack"  type="text" name="selectedTechStack" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedUser">Point of contact:</label></th>
+            <td><select asp-for="@Model.selectedUser" asp-items="Model.users" name="selectedUser" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedTeam">Owning team:</label></th>
+            <td><select asp-for="@Model.selectedTeam" asp-items="Model.teams" name="selectedTeam" > </select></td>
+        </tr>
+    </table>
+    <button type="submit">Submit System</button>
+</form>

@@ -27,7 +27,8 @@ namespace change_management.Controllers
         private string GetCompleteChangeSql() {
             return ("SELECT changes.changeId, " +
                                         "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
-                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, " + 
+                                        "changes.processingTimeDays, changes.dateCreated, changes.dateStarted, " + 
                                         "status.status, " +
                                         "approver.userId, approver.forename, approver.surname, approver.role, " +
                                         "stakeholder.userId, stakeholder.forename, stakeholder.surname, stakeholder.role, " +
@@ -45,11 +46,13 @@ namespace change_management.Controllers
         private Change CreateChange(SqlDataReader reader){
             return new Change(reader.GetInt32(0), 
                                 new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
-                                reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11), reader.GetString(12),
-                                new User(reader.GetInt32(13), reader.GetString(14), reader.GetString(15), reader.GetString(16)),
-                                new User(reader.GetInt32(17), reader.GetString(18), reader.GetString(19), reader.GetString(20)),  
-                                new Team(reader.GetInt32(21), reader.GetString(22)),
-                                new User(reader.GetInt32(23), reader.GetString(24), reader.GetString(25), reader.GetString(26)));
+                                reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), 
+                                reader.GetInt32(11), reader.GetDateTime(12), reader.IsDBNull(13)? (DateTime?)null : (DateTime?)reader.GetDateTime(13),
+                                reader.GetString(14),
+                                new User(reader.GetInt32(15), reader.GetString(16), reader.GetString(17), reader.GetString(18)),
+                                new User(reader.GetInt32(19), reader.GetString(20), reader.GetString(21), reader.GetString(22)),  
+                                new Team(reader.GetInt32(23), reader.GetString(24)),
+                                new User(reader.GetInt32(25), reader.GetString(26), reader.GetString(27), reader.GetString(28)));
         }
 
         public IEnumerable<Change> SelectAll(){
@@ -120,9 +123,11 @@ namespace change_management.Controllers
                     String sql = ("SELECT changes.changeId, " +
                                         "systems.systemId, systems.name, systems.code, systems.description, systems.techStack, " +
                                         "changes.type, changes.description, changes.criticality, changes.deadline, changes.priority, changes.processingTimeDays, " +
+                                        "status.status, " +
                                         "responsible.userId, responsible.forename, responsible.surname, responsible.role " +
                                     "FROM changes " + 
                                     "JOIN systems ON systems.systemId = changes.systemId " +
+                                    "JOIN status ON status.statusId = changes.statusId " +
                                     "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " + 
                                     "JOIN teams ON teamId = changes.teamResponsibleId " +
                                     "WHERE changes.teamResponsibleId = " + id);
@@ -136,7 +141,8 @@ namespace change_management.Controllers
                                 changes.Add(new Change(reader.GetInt32(0), 
                                             new SystemEntity(reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5)),
                                             reader.GetString(6), reader.GetString(7), reader.GetBoolean(8), reader.GetDateTime(9), reader.GetInt32(10), reader.GetInt32(11),
-                                            new User(reader.GetInt32(12), reader.GetString(13), reader.GetString(14), reader.GetString(15))));
+                                            reader.GetString(12),
+                                            new User(reader.GetInt32(13), reader.GetString(14), reader.GetString(15), reader.GetString(16))));
                             }
                         }
                     }
@@ -226,7 +232,7 @@ namespace change_management.Controllers
                                 "SET description=@param1, criticality=@param2, " +
                                     "deadline=@param3, priority=@param4, approverId=@param5, " + 
                                     "stakeholderId=@param6, teamResponsibleId=@param7, userResponsibleId=@param8, " +
-                                    "processingTimeDays=@param9, statusId=@param10 " +
+                                    "processingTimeDays=@param9, statusId=@param10, dateStarted=@param11 " +
                                 "WHERE changeId = " + c.changeId;
 
                     using(SqlCommand cmd = new SqlCommand(sql,connection)) 
@@ -240,7 +246,8 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param7", SqlDbType.Int).Value = c.teamResponsibleId;
                         cmd.Parameters.Add("@param8", SqlDbType.Int).Value = c.userResponsibleId;
                         cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.processingTime;
-                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = 1;
+                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.statusId;
+                        cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = c.startedDate;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
@@ -249,6 +256,67 @@ namespace change_management.Controllers
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
+            }
+        }
+
+        public IEnumerable<Status> SelectStatuss(){
+            var statuss = new List<Status>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = "SELECT * FROM status";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                statuss.Add(new Status(reader.GetInt32(0), reader.GetString(1)));
+                            }
+                        }
+                    }
+                }
+                return statuss;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return statuss;
+            }
+        }
+
+        public int SelectChangeStatus(int changeId){
+            var status = 0;
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = "SELECT statusId " + 
+                                    "FROM changes " + 
+                                    // "JOIN status ON status.statusId = changes.statusId " + 
+                                     " WHERE changes.changeId = " + changeId;
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                status = (reader.GetInt32(0));
+                            }
+                        }
+                    }
+                }
+                return status;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return status;
             }
         }
     }

@@ -31,7 +31,9 @@ namespace change_management.Controllers
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT * FROM teams");
+                    String sql = ("SELECT teamId, name, " +
+                                "throughput = (SELECT SUM(throughput) FROM teamMembers WHERE teamMembers.teamId = teams.teamId) " +
+                                "FROM teams");
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -39,7 +41,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                teams.Add(new Team(reader.GetInt32(0), reader.GetString(1)));
+                                teams.Add(new Team(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2)));
                             }
                         }
                     }
@@ -90,6 +92,7 @@ namespace change_management.Controllers
                 {
                     connection.Open();       
                     String sql = ("SELECT teams.teamId, teams.name " +
+                                    "throughput = (SELECT SUM(throughput) FROM teamMembers WHERE teamMembers.teamId = teams.teamId), " +
                                     "FROM teams " +
                                     "JOIN teamMembers ON teamMembers.teamId = teams.teamId " +
                                     "WHERE teamMembers.userId = " + id);
@@ -100,7 +103,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                team = new Team(reader.GetInt32(0), reader.GetString(1));
+                                team = new Team(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
                             }
                         }
                     }
@@ -177,18 +180,19 @@ namespace change_management.Controllers
             }
         }
 
-        public void InsertUser(int t, int u){
+        public void InsertUser(int t, int u, int throughput){
             try {
                 var connection = DatabaseConnector();
                 using (connection)
                 {
                     connection.Open();       
-                    string sql2 = "INSERT INTO teamMembers(userId, teamId)   VALUES(@param1, @param2)";
+                    string sql2 = "INSERT INTO teamMembers(userId, teamId, throughput)   VALUES(@param1, @param2, @param3)";
                             
                     using(SqlCommand cmd = new SqlCommand(sql2,connection)) 
                     {
                         cmd.Parameters.Add("@param1", SqlDbType.Int).Value = u;
                         cmd.Parameters.Add("@param2", SqlDbType.Int).Value = t;
+                        cmd.Parameters.Add("@param3", SqlDbType.Int).Value = throughput;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }

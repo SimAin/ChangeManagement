@@ -9,7 +9,6 @@ namespace change_management.Services
     {
         public ScheduleService(){}
 
-        // TODO: If it does not work, first come first served. 
         // TODO: Boost up C0 if deadline has done etc
 
         public List<Change> scheduleChanges(List<Change> changeList) {
@@ -44,7 +43,7 @@ namespace change_management.Services
             List<Change> listOne = new List<Change>();
             List<Change> listTwo = new List<Change>();
 
-            for (int i = 0; i < (unOrdered.Count / 2);i++)  
+            for (int i = 0; i < (unOrdered.Count / 2); i++)  
             {
                 var di = (int) DateTime.Now.Subtract(unOrdered[i].deadline).TotalDays;
                 unOrdered[i].laxity = di - unOrdered[i].processingTime;
@@ -70,26 +69,37 @@ namespace change_management.Services
             {
                 if (listOne.Count > 0 && listTwo.Count > 0)
                 {
-                    if(listOne.First().laxity > listTwo.First().laxity){
+                    if (listOne.First().laxity > listTwo.First().laxity) {
 
                         result.Add(listOne.First());
                         listOne.Remove(listOne.First());
 
-                    } else if(listOne.First().laxity < listTwo.First().laxity){
+                    } else if(listOne.First().laxity < listTwo.First().laxity) {
 
                         result.Add(listTwo.First());
                         listTwo.Remove(listTwo.First());
 
                     } else {
-                        if(listOne.First().priority > listTwo.First().priority){
+                        if (listOne.First().priority > listTwo.First().priority) {
 
                             result.Add(listOne.First());
                             listOne.Remove(listOne.First());
 
-                        } else if(listOne.First().priority < listTwo.First().priority){
+                        } else if (listOne.First().priority < listTwo.First().priority) {
 
                             result.Add(listTwo.First());
                             listTwo.Remove(listTwo.First());
+                        } else {
+                            if (listOne.First().createdDate > listTwo.First().createdDate) {
+
+                                result.Add(listOne.First());
+                                listOne.Remove(listOne.First());
+
+                            } else if (listOne.First().createdDate < listTwo.First().createdDate) {
+
+                                result.Add(listTwo.First());
+                                listTwo.Remove(listTwo.First());
+                            }
                         }
                     }
                 }
@@ -105,6 +115,35 @@ namespace change_management.Services
                 }    
             }
             return result;
+        }
+
+        public List<Change> calculateDeadlineStatus(List<Change> changeList) {
+
+            foreach (var item in changeList)
+            {
+                item.deadlineStatus = 99;
+
+                if(item.status == "In progress"){
+                    //It is in progress therefore it wil have a start date. 
+                    int daysRemaining = item.processingTime - ((int) (item.startedDate ?? DateTime.Now).Subtract(DateTime.Now).TotalDays);
+                    int twentyP = (int) Math.Ceiling(item.processingTime * 0.2);
+                    
+                    if(DateTime.Now.AddDays(daysRemaining) < item.deadline.AddDays(- twentyP)){
+                        item.deadlineStatus = 1;
+                    } 
+                    if((DateTime.Now.AddDays(daysRemaining) >= item.deadline.AddDays(- twentyP)) && (DateTime.Now.AddDays(daysRemaining) < item.deadline)) {
+                        item.deadlineStatus = 2;
+                    }
+                    if(DateTime.Now.AddDays(daysRemaining) >= item.deadline) {
+                        item.deadlineStatus = 4;
+                    }
+                }
+                if ((item.status != "In Progress") && (item.laxity < item.processingTime)) {
+                    item.deadlineStatus = 5;
+                }
+            }
+
+            return changeList;
         }
     }
 }
