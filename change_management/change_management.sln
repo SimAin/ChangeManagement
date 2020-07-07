@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1145
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "change_management", "change_management\change_management.csproj", "{D7676C00-829C-47E6-BCC8-46BAF1E235E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "change_management", "change_management\change_management.csproj", "{D7676C00-829C-47E6-BCC8-46BAF1E235E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "change_management_tests", "change_management_tests\change_management_tests.csproj", "{1B3EE97C-1CA7-4E87-A598-5DAA7DA23FBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D7676C00-829C-47E6-BCC8-46BAF1E235E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7676C00-829C-47E6-BCC8-46BAF1E235E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7676C00-829C-47E6-BCC8-46BAF1E235E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3EE97C-1CA7-4E87-A598-5DAA7DA23FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3EE97C-1CA7-4E87-A598-5DAA7DA23FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3EE97C-1CA7-4E87-A598-5DAA7DA23FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3EE97C-1CA7-4E87-A598-5DAA7DA23FBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
