@@ -80,12 +80,12 @@ namespace change_management.Services
                         listTwo.Remove(listTwo.First());
 
                     } else {
-                        if (listOne.First().priority > listTwo.First().priority) {
+                        if (listOne.First().priority < listTwo.First().priority) {
 
                             result.Add(listOne.First());
                             listOne.Remove(listOne.First());
 
-                        } else if (listOne.First().priority < listTwo.First().priority) {
+                        } else if (listOne.First().priority > listTwo.First().priority) {
 
                             result.Add(listTwo.First());
                             listTwo.Remove(listTwo.First());
