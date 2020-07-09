@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using change_management.Services;
 
 using change_management.Models;
 
@@ -186,6 +187,8 @@ namespace change_management.Controllers
         }
 
         public void Insert(Change c){
+            c.statusId = 1;
+            c.createdDate = DateTime.Now;
             try {
                 var connection = DatabaseConnector();
                 using (connection)
@@ -193,7 +196,8 @@ namespace change_management.Controllers
                     connection.Open();
                     string sql = "INSERT INTO changes(systemId, type, description, criticality, deadline, priority, " +
                                     "approverId, stakeholderId, teamResponsibleId, userResponsibleId, processingTimeDays, statusId, dateCreated)" +
-                                    "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, @param9, @param10, @param11, @param12, @param13)";
+                                    "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, @param9, @param10, @param11, @param12, @param13) " + 
+                                    "SELECT IDENT_CURRENT('changes') AS newId";
                             
                     using(SqlCommand cmd = new SqlCommand(sql,connection)) 
                     {
@@ -208,12 +212,14 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.teamResponsibleId;
                         cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.userResponsibleId;
                         cmd.Parameters.Add("@param11", SqlDbType.Int).Value = c.processingTime;
-                        cmd.Parameters.Add("@param12", SqlDbType.Int).Value = 1;
-                        cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = DateTime.Now;
+                        cmd.Parameters.Add("@param12", SqlDbType.Int).Value = c.statusId;
+                        cmd.Parameters.Add("@param13", SqlDbType.DateTime).Value = c.createdDate;
                         cmd.CommandType = CommandType.Text;
-                        cmd.ExecuteNonQuery(); 
+                        
+                        c.changeId = Convert.ToInt32(cmd.ExecuteScalar());
                     }
                 }
+                Audit(c, "Insert");
             }
             catch (SqlException e)
             {
@@ -221,7 +227,13 @@ namespace change_management.Controllers
             }
         }
 
-        public void Update(Change c){
+        public void Update(Change c, string comments = "n/a"){
+
+            var startedDate = "";
+            if(c.startedDate.HasValue) {
+                startedDate = ", dateStarted=@param11 ";
+            } 
+
             try {
                 var connection = DatabaseConnector();
                 using (connection)
@@ -232,7 +244,7 @@ namespace change_management.Controllers
                                 "SET description=@param1, criticality=@param2, " +
                                     "deadline=@param3, priority=@param4, approverId=@param5, " + 
                                     "stakeholderId=@param6, teamResponsibleId=@param7, userResponsibleId=@param8, " +
-                                    "processingTimeDays=@param9, statusId=@param10, dateStarted=@param11 " +
+                                    "processingTimeDays=@param9, statusId=@param10 " + startedDate +
                                 "WHERE changeId = " + c.changeId;
 
                     using(SqlCommand cmd = new SqlCommand(sql,connection)) 
@@ -247,7 +259,53 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param8", SqlDbType.Int).Value = c.userResponsibleId;
                         cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.processingTime;
                         cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.statusId;
-                        cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = c.startedDate;
+                        if(c.startedDate.HasValue){
+                            cmd.Parameters.Add("@param11", SqlDbType.DateTime).Value = c.startedDate;
+                        }
+                        
+                        cmd.CommandType = CommandType.Text;
+                        cmd.ExecuteNonQuery(); 
+                    }
+                }
+                Audit(c, "Update", comments);
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public void Audit(Change c, string type = "n/a", string comment = "n/a"){
+            var originalChange = Select(c.changeId);
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();
+                    string sql = "INSERT INTO changeAudit(auditType, changeId, systemId, updateUserId, type, description, criticality, deadline, priority, " +
+                                    "approverId, stakeholderId, teamResponsibleId, userResponsibleId, processingTimeDays, statusId, comment, dateCreated)" +
+                                    "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, " + 
+                                    "@param9, @param10, @param11, @param12, @param13, @param14, @param15, @param16, @param17)";
+                            
+                    using(SqlCommand cmd = new SqlCommand(sql,connection)) 
+                    {
+                        cmd.Parameters.Add("@param1", SqlDbType.NVarChar, 50).Value = type;
+                        cmd.Parameters.Add("@param2", SqlDbType.Int).Value = c.changeId;
+                        cmd.Parameters.Add("@param3", SqlDbType.Int).Value = originalChange.system.systemId;
+                        cmd.Parameters.Add("@param4", SqlDbType.Int).Value = SessionService.loggedInUser.userID;
+                        cmd.Parameters.Add("@param5", SqlDbType.NVarChar, 50).Value = originalChange.type;
+                        cmd.Parameters.Add("@param6", SqlDbType.NVarChar, 50).Value = c.description;
+                        cmd.Parameters.Add("@param7", SqlDbType.Bit).Value = c.criticality;
+                        cmd.Parameters.Add("@param8", SqlDbType.DateTime).Value = c.deadline;
+                        cmd.Parameters.Add("@param9", SqlDbType.Int).Value = c.priority;
+                        cmd.Parameters.Add("@param10", SqlDbType.Int).Value = c.approverId;
+                        cmd.Parameters.Add("@param11", SqlDbType.Int).Value = c.stakeholderId;
+                        cmd.Parameters.Add("@param12", SqlDbType.Int).Value = c.teamResponsibleId;
+                        cmd.Parameters.Add("@param13", SqlDbType.Int).Value = c.userResponsibleId;
+                        cmd.Parameters.Add("@param14", SqlDbType.Int).Value = c.processingTime;
+                        cmd.Parameters.Add("@param15", SqlDbType.Int).Value = c.statusId;
+                        cmd.Parameters.Add("@param16", SqlDbType.NVarChar, 50).Value = comment;
+                        cmd.Parameters.Add("@param17", SqlDbType.DateTime).Value = originalChange.createdDate;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }
