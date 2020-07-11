@@ -31,8 +31,11 @@ namespace change_management.Controllers
         {
             ChangeDatabaseService dbService = new ChangeDatabaseService(_configuration);
             Change change = dbService.Select(changeId);
+            List<ChangeAudit> changeAudit = dbService.SelectChangeAudit(changeId).ToList();
 
-            return View(change);
+            var changeView = new ChangeViewModel(change, changeAudit);
+
+            return View(changeView);
         }
 
         public IActionResult AddChange()
@@ -205,8 +208,8 @@ namespace change_management.Controllers
                                             Convert.ToInt32(c.selectedProcessingTime), Convert.ToInt32(c.selectedApprover), Convert.ToInt32(c.selectedStakeholder), 
                                             Convert.ToInt32(c.selectedTeamResponsible), Convert.ToInt32(c.selectedUserResponsible), Convert.ToInt32(c.selectedStatus), started);
 
-            dbService.Update(updatedChange);
-            return RedirectToAction("Changes");
+            dbService.Update(updatedChange, c.comment);
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

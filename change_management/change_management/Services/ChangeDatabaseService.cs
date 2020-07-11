@@ -114,6 +114,43 @@ namespace change_management.Controllers
             }
         }
 
+        public IEnumerable<ChangeAudit> SelectChangeAudit(int changeId){
+            var audit = new List<ChangeAudit>();
+            try {
+                var connection = DatabaseConnector();
+                using (connection)
+                {
+                    connection.Open();       
+                    String sql = GetCompleteChangeSql() + 
+                        " JOIN users AS changer ON changer.userId = changeAudit.updateUserId " + 
+                        "WHERE changeAudit.changeId = " + changeId;
+                    
+                    sql = sql.Replace("FROM changes", ", changeAudit.changeAuditId,  changeAudit.auditType, changeAudit.comment, " +
+                                "changer.userId, changer.forename, changer.surname, changer.role,  changeAudit.auditDate FROM changeAudit");
+
+                    sql = sql.Replace("changes.", "changeAudit.");
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                audit.Add(new ChangeAudit(CreateChange(reader), reader.GetInt32(29), reader.GetString(30), reader.GetString(31),
+                                                        new User(reader.GetInt32(32), reader.GetString(33), reader.GetString(34), reader.GetString(35)), reader.GetDateTime(36)));
+                            }
+                        }
+                    }
+                }
+                return audit;
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+                return audit;
+            }
+        }
+
         public IEnumerable<Change> SelectTeamChanges(int id){
             var changes = new List<Change>();
             try {
@@ -283,15 +320,15 @@ namespace change_management.Controllers
                 {
                     connection.Open();
                     string sql = "INSERT INTO changeAudit(auditType, changeId, systemId, updateUserId, type, description, criticality, deadline, priority, " +
-                                    "approverId, stakeholderId, teamResponsibleId, userResponsibleId, processingTimeDays, statusId, comment, dateCreated)" +
+                                    "approverId, stakeholderId, teamResponsibleId, userResponsibleId, processingTimeDays, statusId, comment, dateCreated, auditDate)" +
                                     "VALUES(@param1, @param2, @param3, @param4, @param5, @param6, @param7, @param8, " + 
-                                    "@param9, @param10, @param11, @param12, @param13, @param14, @param15, @param16, @param17)";
+                                    "@param9, @param10, @param11, @param12, @param13, @param14, @param15, @param16, @param17, @param18)";
                             
                     using(SqlCommand cmd = new SqlCommand(sql,connection)) 
                     {
                         cmd.Parameters.Add("@param1", SqlDbType.NVarChar, 50).Value = type;
                         cmd.Parameters.Add("@param2", SqlDbType.Int).Value = c.changeId;
-                        cmd.Parameters.Add("@param3", SqlDbType.Int).Value = originalChange.system.systemId;
+                        cmd.Parameters.Add("@param3", SqlDbType.Int).Value = originalChange.system.systemID;
                         cmd.Parameters.Add("@param4", SqlDbType.Int).Value = SessionService.loggedInUser.userID;
                         cmd.Parameters.Add("@param5", SqlDbType.NVarChar, 50).Value = originalChange.type;
                         cmd.Parameters.Add("@param6", SqlDbType.NVarChar, 50).Value = c.description;
@@ -306,6 +343,7 @@ namespace change_management.Controllers
                         cmd.Parameters.Add("@param15", SqlDbType.Int).Value = c.statusId;
                         cmd.Parameters.Add("@param16", SqlDbType.NVarChar, 50).Value = comment;
                         cmd.Parameters.Add("@param17", SqlDbType.DateTime).Value = originalChange.createdDate;
+                        cmd.Parameters.Add("@param18", SqlDbType.DateTime).Value = DateTime.Now;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery(); 
                     }

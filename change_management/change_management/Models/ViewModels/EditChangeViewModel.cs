@@ -27,6 +27,7 @@ namespace change_management.Models.ViewModels
         public string selectedTeamResponsible {get;set;}
         public string selectedUserResponsible {get;set;}
         public string selectedStatus {get;set;}
+        public string comment {get;set;}
 
         public EditChangeViewModel() {}
 
@@ -49,6 +50,7 @@ namespace change_management.Models.ViewModels
             selectedPriority =ch.priority;
             selectedProcessingTime = ch.processingTime;
             selectedStatus = ch.status;
+            comment = "";
         }
     }
 }

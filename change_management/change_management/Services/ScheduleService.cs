@@ -95,7 +95,7 @@ namespace change_management.Services
                                 result.Add(listOne.First());
                                 listOne.Remove(listOne.First());
 
-                            } else if (listOne.First().createdDate < listTwo.First().createdDate) {
+                            } else if (listOne.First().createdDate <= listTwo.First().createdDate) {
 
                                 result.Add(listTwo.First());
                                 listTwo.Remove(listTwo.First());
