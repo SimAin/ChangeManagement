@@ -4,13 +4,12 @@
     ViewData["Title"] = "My Team";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3>@ViewData["Title"]: @Model.name</h3>
 
 <br/>
 <body>
-    <h4> My Team: @Model.name</h4>
     <div>
-        <table id="dataTable" style="width: 25%;">
+        <table id="dataTable" style="width: 30%;">
             <tr>
                 <th>Name</th>
                 <th>Role</th>

@@ -14,7 +14,6 @@ All Changes:
 </p>
 <table id="dataTable">
     <tr>
-        <th>Id</th>
         <th>Type</th>
         <th>Description</th>
         <th>Criticicality</th>
@@ -27,9 +26,6 @@ All Changes:
     </tr>
     @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.changeId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.type)
             </td>
