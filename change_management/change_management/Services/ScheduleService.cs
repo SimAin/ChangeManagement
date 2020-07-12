@@ -2,6 +2,7 @@ using change_management.Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using change_management.Services;
 
 namespace change_management.Services
 {
@@ -118,7 +119,8 @@ namespace change_management.Services
         }
 
         public List<Change> calculateDeadlineStatus(List<Change> changeList) {
-
+            var inProgressPlannedDays = 0;
+            //var spentDays = 0;
             foreach (var item in changeList)
             {
                 item.deadlineStatus = 99;
@@ -137,13 +139,48 @@ namespace change_management.Services
                     if(DateTime.Now.AddDays(daysRemaining) >= item.deadline) {
                         item.deadlineStatus = 4;
                     }
+
+                    inProgressPlannedDays = inProgressPlannedDays + daysRemaining;
                 }
                 if ((item.status != "In Progress") && (item.laxity < item.processingTime)) {
                     item.deadlineStatus = 5;
                 }
             }
+            
+            // var remainingDays = SessionService.loggedInTeam.throughput - inProgressPlannedDays;
+            // int daysUntilFriday = ((int) DayOfWeek.Friday - (int) DateTime.Now.DayOfWeek + 7) % 7;
 
             return changeList;
+        }
+
+        public int calculateDeadlineStatus(Change change) {
+            int conf = 99;
+            
+
+            if(change.status == "In progress"){
+                //It is in progress therefore it wil have a start date. 
+                int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract(DateTime.Now).TotalDays);
+                int twentyP = (int) Math.Ceiling(change.processingTime * 0.2);
+                
+                if(DateTime.Now.AddDays(daysRemaining) < change.deadline.AddDays(- twentyP)){
+                    conf = 1;
+                } 
+                if((DateTime.Now.AddDays(daysRemaining) >= change.deadline.AddDays(- twentyP)) && (DateTime.Now.AddDays(daysRemaining) < change.deadline)) {
+                    conf = 2;
+                }
+                if(DateTime.Now.AddDays(daysRemaining) >= change.deadline) {
+                    conf = 4;
+                }
+                if(DateTime.Now > change.deadline) {
+                    conf = 5;
+                }
+            }
+
+            if ((change.status == "Not Started") && (change.laxity < change.processingTime)) {
+                change.deadlineStatus = 5;
+            }
+
+            return conf;
         }
     }
 }

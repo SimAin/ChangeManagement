@@ -14,14 +14,18 @@
             <tr>
                 <th>Name</th>
                 <th>Role</th>
+                <th>Days per week</th>
             </tr>
             @foreach (var item in Model.teamMembers) {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.forename) @Html.DisplayFor(modelItem => item.surname) 
+                        @Html.DisplayFor(modelItem => item.user.forename) @Html.DisplayFor(modelItem => item.user.surname) 
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.role)
+                        @Html.DisplayFor(modelItem => item.user.role)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.throughput)
                     </td>
                 </tr>
             }

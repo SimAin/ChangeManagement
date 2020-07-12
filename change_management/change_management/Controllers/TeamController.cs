@@ -50,7 +50,7 @@ namespace change_management.Controllers
         public IActionResult TeamMembers(int id)
         {
             TeamDatabaseService dbService = new TeamDatabaseService(_configuration);
-            List<User> users = dbService.SelectAllMembers(id).ToList();
+            List<TeamMember> users = dbService.SelectAllMembers(id).ToList();
             ViewBag.teamId = id;
             ViewBag.teamName = dbService.SelectTeam(id);
             return View(users);

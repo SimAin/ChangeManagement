@@ -1,4 +1,4 @@
-@model IEnumerable<change_management.Models.User>
+@model IEnumerable<change_management.Models.TeamMember>
 
 @{
     ViewData["Title"] = "Teams Members";
@@ -21,13 +21,13 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.forename)
+                @Html.DisplayFor(modelItem => item.user.forename)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.surname)
+                @Html.DisplayFor(modelItem => item.user.surname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.role)
+                @Html.DisplayFor(modelItem => item.user.role)
             </td>
         </tr>
     }

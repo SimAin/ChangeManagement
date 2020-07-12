@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using change_management.Models;
 using change_management.Models.ViewModels;
+using change_management.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
@@ -33,7 +34,10 @@ namespace change_management.Controllers
             Change change = dbService.Select(changeId);
             List<ChangeAudit> changeAudit = dbService.SelectChangeAudit(changeId).ToList();
 
-            var changeView = new ChangeViewModel(change, changeAudit);
+            ScheduleService scheduleService = new ScheduleService();
+            var confidence = scheduleService.calculateDeadlineStatus(change);
+
+            var changeView = new ChangeViewModel(change, changeAudit, confidence);
 
             return View(changeView);
         }

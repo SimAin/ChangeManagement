@@ -33,10 +33,10 @@ All Teams:
             <tr>
                 <td></td>
                 <td>
-                    @Html.DisplayFor(modelItem => member.forename) @Html.DisplayFor(modelItem => member.surname)
+                    @Html.DisplayFor(modelItem => member.user.forename) @Html.DisplayFor(modelItem => member.user.surname)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => member.role)
+                    @Html.DisplayFor(modelItem => member.user.role)
                 </td>
             </tr>
         }

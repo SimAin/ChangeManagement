@@ -9,107 +9,139 @@
     }
 </div>
 <br/>
-<table id="dataTable" style="width: 50%;">
-    <tr>
-        <th>Description</th>
-        <td>
-            @Model.currentChange.description
-        </td>
-    </tr>
-    <tr>
-        <th>Criticical deadline</th>
-        <td>
-            @Model.currentChange.criticality
-        </td>
-    </tr>
-    <tr>
-        <th>Deadline</th>
-        <td>
-            @Model.currentChange.deadlineText
-        </td>
-    </tr>
-    <tr>
-        <th>Priority</th>
-        <td>
-            @Model.currentChange.priority
-        </td>
-    </tr>
-    <tr>
-        <th>Approver</th>
-        <td>
-            @Model.currentChange.approver.forename @Model.currentChange.approver.surname
-        </td>
-    </tr>
-    <tr>
-        <th>Steakholder</th>
-        <td>
-            @Model.currentChange.stakeholder.forename @Model.currentChange.stakeholder.surname
-        </td>
-    </tr>
-    <tr>
-        <th>Team Responsible</th>
-        <td>
-            @Model.currentChange.teamResponsible.name
-        </td>
-    </tr>
-    <tr>
-        <th>User Responsible</th>
-        <td>
-            @Model.currentChange.userResponsible.forename @Model.currentChange.userResponsible.surname
-        </td>
-    </tr>
-</table>
-<br/>
-<h3>Change History </h3>
+<body>
+    <div class="container">
+        <div class="row">
+            <table class="col-md-6" id="dataTable" style="width: 50%;">
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        @Model.currentChange.description
+                    </td>
+                </tr>
+                <tr>
+                    <th>Criticical deadline</th>
+                    <td>
+                        @Model.currentChange.criticality
+                    </td>
+                </tr>
+                <tr>
+                    <th>Deadline</th>
+                    <td>
+                        @Model.currentChange.deadlineText
+                    </td>
+                </tr>
+                <tr>
+                    <th>Priority</th>
+                    <td>
+                        @Model.currentChange.priority
+                    </td>
+                </tr>
+                <tr>
+                    <th>Processing Time</th>
+                    <td>
+                        @Model.currentChange.processingTime
+                    </td>
+                </tr>
+                <tr>
+                    <th>Approver</th>
+                    <td>
+                        @Model.currentChange.approver.forename @Model.currentChange.approver.surname
+                    </td>
+                </tr>
+                <tr>
+                    <th>Steakholder</th>
+                    <td>
+                        @Model.currentChange.stakeholder.forename @Model.currentChange.stakeholder.surname
+                    </td>
+                </tr>
+                <tr>
+                    <th>Team Responsible</th>
+                    <td>
+                        @Model.currentChange.teamResponsible.name
+                    </td>
+                </tr>
+                <tr>
+                    <th>User Responsible</th>
+                    <td>
+                        @Model.currentChange.userResponsible.forename @Model.currentChange.userResponsible.surname
+                    </td>
+                </tr>
+            </table>
+            <div class="col-md-6">
+                <p>
+                    The deadline confidence scale is 1-5. <br/> 
+                    1 = Indicates a high confidence that deadline <strong>will</strong> be met. <br/>
+                    5 = Indicates a high confidence that the deadline will <strong>not</strong> be met.
+                </p>
+                <table class="col-md-6" id="dataTable" style="width: 50%;">
+                <tr>
+                    <th>Deadline confidence</th>
+                    <td>
+                        @if(@Model.confidence == 99){
+                            <strong>Unable to calculate.</strong>
+                        } else {
+                            <strong>@Model.confidence</strong>
+                        }
+                        
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <h3>Change History </h3>
 
-<table id="dataTable" style="width: 100%;">
-    <tr>
-        <th>Type</th>
-        <th>Comment</th>
-        <th>Editor</th>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Criticicality</th>
-        <th>Deadline</th>
-        <th>Priority</th>
-        <th>Users</th>
-    </tr>   
-    @foreach (var item in Model.changeAudits) {
+    <table id="dataTable" style="width: 100%;">
         <tr>
-            <td>
-                @if (item.type == "Insert")
-                {
-                    <strong>Change created</strong>
-                } else {
-                    <p>Change updated</p>
-                }
-            </td>
-            <td>
-                @item.comment
-            </td>
-            <td>
-                @item.updater.forename @item.updater.surname
-            </td>
-            <td>
-                @item.auditDate
-            </td>
-            <td>
-                @item.changeDetails.description
-            </td>
-            <td>
-                @item.changeDetails.criticality
-            </td>
-            <td>
-                @item.changeDetails.deadlineText
-            </td>
-            <td>
-                @item.changeDetails.priority
-            </td>
-            <td>
-                Approver: @item.changeDetails.approver.forename @item.changeDetails.approver.surname <br/>
-                Steakholder: @item.changeDetails.stakeholder.forename @item.changeDetails.stakeholder.surname  <br/>
-                Actioner:  @item.changeDetails.userResponsible.forename @item.changeDetails.userResponsible.surname (@item.changeDetails.teamResponsible.name)
-            </td>
-        </tr>
-    }
-</table>
+            <th>Type</th>
+            <th>Comment</th>
+            <th>Editor</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Criticicality</th>
+            <th>Deadline</th>
+            <th>Priority</th>
+            <th>Users</th>
+        </tr>   
+        @foreach (var item in Model.changeAudits) {
+            <tr>
+                <td>
+                    @if (item.type == "Insert")
+                    {
+                        <strong>Change created</strong>
+                    } else {
+                        <p>Change updated</p>
+                    }
+                </td>
+                <td>
+                    @item.comment
+                </td>
+                <td>
+                    @item.updater.forename @item.updater.surname
+                </td>
+                <td>
+                    @item.auditDate
+                </td>
+                <td>
+                    @item.changeDetails.description
+                </td>
+                <td>
+                    @item.changeDetails.criticality
+                </td>
+                <td>
+                    @item.changeDetails.deadlineText
+                </td>
+                <td>
+                    @item.changeDetails.priority
+                </td>
+                <td>
+                    Approver: @item.changeDetails.approver.forename @item.changeDetails.approver.surname <br/>
+                    Steakholder: @item.changeDetails.stakeholder.forename @item.changeDetails.stakeholder.surname  <br/>
+                    Actioner:  @item.changeDetails.userResponsible.forename @item.changeDetails.userResponsible.surname (@item.changeDetails.teamResponsible.name)
+                </td>
+            </tr>
+        }
+    </table>
+</body>

@@ -8,7 +8,7 @@ namespace change_management.Models
         public int teamID { get; set; }
         public string name { get; set; }
         public int throughput {get;set;}
-        public IEnumerable<User> teamMembers {get;set;}
+        public IEnumerable<TeamMember> teamMembers {get;set;}
 
         public Team() {}
 
@@ -16,17 +16,17 @@ namespace change_management.Models
             teamID = id;
             name = n;
             throughput = th;
-            teamMembers = new List<User>();
+            teamMembers = new List<TeamMember>();
         }
 
         public Team(int id, string n) {
             teamID = id;
             name = n;
             throughput = 0;
-            teamMembers = new List<User>();
+            teamMembers = new List<TeamMember>();
         }
 
-        public Team(int id, string n, int th, IEnumerable<User> users) {
+        public Team(int id, string n, int th, IEnumerable<TeamMember> users) {
             teamID = id;
             name = n;
             throughput = th;

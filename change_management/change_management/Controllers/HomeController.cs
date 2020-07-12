@@ -32,7 +32,7 @@ namespace change_management.Controllers
             List<Change> orderedTeamChanges = scheduleService.scheduleChanges(teamChanges).ToList();
             scheduleService.calculateDeadlineStatus(orderedTeamChanges);
 
-            var m = new HomeViewModel(orderedTeamChanges);
+            var m = new HomeViewModel(orderedTeamChanges, SessionService.loggedInUser.userID);
             return View(m);
         }
 

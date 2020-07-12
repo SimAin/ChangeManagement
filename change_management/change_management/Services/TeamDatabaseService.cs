@@ -117,14 +117,14 @@ namespace change_management.Controllers
             }
         }
 
-        public IEnumerable<User> SelectAllMembers(int teamId){
-            var users = new List<User>();
+        public IEnumerable<TeamMember> SelectAllMembers(int teamId){
+            var users = new List<TeamMember>();
             try {
                 var connection = DatabaseConnector();
                 using (connection)
                 {
                     connection.Open();       
-                    String sql = ("SELECT users.userId, users.forename, users.surname, users.role " +
+                    String sql = ("SELECT users.userId, users.forename, users.surname, users.role, teamMembers.throughput " +
                                     "FROM teams " + 
                                     "JOIN teamMembers ON teamMembers.teamId = teams.teamId " + 
                                     "JOIN users ON users.userId = teamMembers.userId " +
@@ -135,7 +135,7 @@ namespace change_management.Controllers
                         {
                             while (reader.Read())
                             {
-                                users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)));
+                                users.Add(new TeamMember(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3)), reader.GetInt32(4)));
                             }
                         }
                     }
