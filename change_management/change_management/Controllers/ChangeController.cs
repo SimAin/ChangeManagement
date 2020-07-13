@@ -35,9 +35,9 @@ namespace change_management.Controllers
             List<ChangeAudit> changeAudit = dbService.SelectChangeAudit(changeId).ToList();
 
             ScheduleService scheduleService = new ScheduleService();
-            var confidence = scheduleService.calculateDeadlineStatus(change);
+            scheduleService.calculateDeadlineStatus(change);
 
-            var changeView = new ChangeViewModel(change, changeAudit, confidence);
+            var changeView = new ChangeViewModel(change, changeAudit);
 
             return View(changeView);
         }

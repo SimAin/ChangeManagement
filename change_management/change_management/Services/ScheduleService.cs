@@ -8,9 +8,10 @@ namespace change_management.Services
 {
     public class ScheduleService
     {
+        private int userWaitTime = 0;
         public ScheduleService(){}
 
-        // TODO: Boost up C0 if deadline has done etc
+        #region Ordering change
 
         public List<Change> scheduleChanges(List<Change> changeList) {
 
@@ -118,64 +119,17 @@ namespace change_management.Services
             return result;
         }
 
+        #endregion
+
         public List<Change> calculateDeadlineStatus(List<Change> changeList) {
-            var inProgressPlannedDays = 0;
+            //var inProgressPlannedDays = 0;
             //var spentDays = 0;
 
-            var userWaitTime = calculateUserBookedDays(changeList);
+            userWaitTime = calculateUserBookedDays(changeList);
             foreach (var item in changeList)
             {
                 item.deadlineStatus = 99;
-                int twentyP = (int) Math.Ceiling(item.processingTime * 0.2);
-
-                if(item.status == "In progress"){
-                    //It is in progress therefore it wil have a start date. 
-                    int daysRemaining = item.processingTime - ((int) (item.startedDate ?? DateTime.Now).Subtract(DateTime.Now).TotalDays);
-                    
-                    
-                    if(DateTime.Now.AddDays(daysRemaining).Date < item.deadline.AddDays(- twentyP).Date){
-                        item.deadlineStatus = 1;
-                    } 
-                    if((DateTime.Now.AddDays(daysRemaining).Date >= item.deadline.AddDays(- twentyP).Date) && (DateTime.Now.AddDays(daysRemaining).Date < item.deadline.Date)) {
-                        item.deadlineStatus = 2;
-                    }
-                    if(DateTime.Now.AddDays(daysRemaining).Date == item.deadline.Date) {
-                        item.deadlineStatus = 3;
-                    }
-                    if(DateTime.Now.AddDays(daysRemaining).Date > item.deadline.Date) {
-                        Console.WriteLine(DateTime.Now.AddDays(daysRemaining));
-                        item.deadlineStatus = 4;
-                    }
-
-                    inProgressPlannedDays = inProgressPlannedDays + daysRemaining;
-                }
-                if ((item.status != "In progress")) {
-                    
-                    if(item.userResponsible.userID == SessionService.loggedInUser.userID)
-                    {
-                        if (DateTime.Now.AddDays(userWaitTime + item.processingTime).Date < item.deadline.AddDays(- twentyP).Date){
-                            item.deadlineStatus = 1;
-                            userWaitTime = userWaitTime + item.processingTime;
-                        }
-                        if((DateTime.Now.AddDays(userWaitTime + item.processingTime).Date >= item.deadline.AddDays(- twentyP).Date) && (DateTime.Now.AddDays(userWaitTime + item.processingTime).Date < item.deadline.Date)) {
-                            item.deadlineStatus = 2;
-                            userWaitTime = userWaitTime + item.processingTime;
-                        }
-                        if(DateTime.Now.AddDays(userWaitTime + item.processingTime).Date >= item.deadline.Date) {
-                            item.deadlineStatus = 4;
-                            userWaitTime = userWaitTime + item.processingTime;
-                        }
-                        if(DateTime.Now.Date > item.deadline.Date) {
-                            item.deadlineStatus = 5;
-                            userWaitTime = userWaitTime + item.processingTime;
-                        }
-                    }
-
-                    // if (item.laxity < item.processingTime) {
-                    //     Console.WriteLine(item.laxity + " -  " + item.processingTime);
-                    //     item.deadlineStatus = 5;
-                    // }
-                }
+                calculateDeadlineStatus(item);
             }
             
             // var remainingDays = SessionService.loggedInTeam.throughput - inProgressPlannedDays;
@@ -184,36 +138,43 @@ namespace change_management.Services
             return changeList;
         }
 
-        public int calculateDeadlineStatus(Change change) {
-            int conf = 99;
+        public void calculateDeadlineStatus(Change change) {
             
-
             if(change.status == "In progress"){
                 //It is in progress therefore it wil have a start date. 
                 int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract(DateTime.Now).TotalDays);
-                int twentyP = (int) Math.Ceiling(change.processingTime * 0.2);
                 
-                if(DateTime.Now.AddDays(daysRemaining) < change.deadline.AddDays(- twentyP)){
-                    conf = 1;
-                } 
-                if((DateTime.Now.AddDays(daysRemaining) >= change.deadline.AddDays(- twentyP)) && (DateTime.Now.AddDays(daysRemaining) < change.deadline)) {
-                    conf = 2;
-                }
-                if(DateTime.Now.AddDays(daysRemaining) >= change.deadline) {
-                    conf = 4;
-                }
-                if(DateTime.Now > change.deadline) {
-                    conf = 5;
-                }
+                deadlineStatusSetter(change, daysRemaining);
             }
 
             if (change.status == "Not Started") {
-                if (change.laxity < change.processingTime) {
-                    change.deadlineStatus = 5;
-                }
+
+                deadlineStatusSetter(change, (userWaitTime + change.processingTime));
+                userWaitTime = userWaitTime + change.processingTime;
+            }
+        }
+
+        public Change deadlineStatusSetter(Change change, int days) {
+            
+            int twentyP = (int) Math.Ceiling(change.processingTime * 0.2);
+
+            if(DateTime.Now.AddDays(days).Date < change.deadline.AddDays(- twentyP).Date){
+                change.deadlineStatus = 1;
+            } 
+            if((DateTime.Now.AddDays(days).Date >= change.deadline.AddDays(- twentyP).Date) && (DateTime.Now.AddDays(days).Date < change.deadline.Date)) {
+                change.deadlineStatus = 2;
+            }
+            if(DateTime.Now.AddDays(days).Date == change.deadline.Date) {
+                change.deadlineStatus = 3;
+            }
+            if(DateTime.Now.AddDays(days).Date > change.deadline.Date) {
+                change.deadlineStatus = 4;
+            }
+            if (change.laxity > 0 ) {
+                change.deadlineStatus = 5;
             }
 
-            return conf;
+            return change;
         }
 
         public int calculateUserBookedDays(List<Change> changeList) {

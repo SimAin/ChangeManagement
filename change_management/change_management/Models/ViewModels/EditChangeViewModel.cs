@@ -49,7 +49,6 @@ namespace change_management.Models.ViewModels
             selectedDeadline = ch.deadline;
             selectedPriority =ch.priority;
             selectedProcessingTime = ch.processingTime;
-            selectedStatus = ch.status;
             comment = "";
         }
     }

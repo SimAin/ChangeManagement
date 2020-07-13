@@ -78,10 +78,10 @@
                 <tr>
                     <th>Deadline confidence</th>
                     <td>
-                        @if(@Model.confidence == 99){
+                        @if(@Model.currentChange.deadlineStatus == 99){
                             <strong>Unable to calculate.</strong>
                         } else {
-                            <strong>@Model.confidence</strong>
+                            <strong>@Model.currentChange.deadlineStatus</strong>
                         }
                         
                     </td>

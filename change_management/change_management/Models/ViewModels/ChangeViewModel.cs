@@ -8,14 +8,12 @@ namespace change_management.Models.ViewModels
     {
         public IEnumerable<ChangeAudit> changeAudits {get;set;}
         public Change currentChange {get;set;}
-        public int confidence {get;set;}
 
         public ChangeViewModel() {}
 
-        public ChangeViewModel(Change c, IEnumerable<ChangeAudit> a, int con) {
+        public ChangeViewModel(Change c, IEnumerable<ChangeAudit> a) {
             changeAudits = a;
             currentChange = c;
-            confidence = con;
         }
     }
 }
