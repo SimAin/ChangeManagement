@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\change_management\change_management.csproj" />
+    <ProjectReference Include="..\change_management\change_management.csproj"/>
   </ItemGroup>
 
 </Project>

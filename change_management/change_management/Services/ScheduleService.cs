@@ -110,7 +110,7 @@ namespace change_management.Services {
 
         public List<Change> calculateDeadlineStatus (List<Change> changeList) {
 
-            userWaitTime = calculateUserBookedDays (changeList);
+            userWaitTime = calculateUserBookedDays (changeList, SessionService.loggedInUser.userID);
             foreach (var item in changeList) {
                 item.deadlineStatus = 99;
                 calculateDeadlineStatus (item);
@@ -123,7 +123,7 @@ namespace change_management.Services {
 
             if (change.status == "In progress") {
                 //It is in progress therefore it wil have a start date. 
-                int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
+                int daysRemaining = change.processingTime - Math.Abs(((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays));
 
                 deadlineStatusSetter (change, daysRemaining);
             }
@@ -148,24 +148,24 @@ namespace change_management.Services {
             if (DateTime.Now.AddDays (days).Date == change.deadline.Date) {
                 change.deadlineStatus = 3;
             }
-            if (DateTime.Now.AddDays (days).Date > change.deadline.Date) {
+            if ((DateTime.Now.AddDays (days).Date <= change.deadline.AddDays (twentyP).Date) && (DateTime.Now.AddDays (days).Date > change.deadline.Date)) {
                 change.deadlineStatus = 4;
             }
-            if (change.laxity > 0) {
+            if ((DateTime.Now.AddDays (days).Date >= change.deadline.AddDays (twentyP).Date) && (DateTime.Now.AddDays (days).Date > change.deadline.Date)) {
                 change.deadlineStatus = 5;
             }
 
             return change;
         }
 
-        public int calculateUserBookedDays (List<Change> changeList) {
+        public int calculateUserBookedDays (List<Change> changeList, int userID) {
             var userPlannedDays = 0;
             foreach (var item in changeList) {
                 if (item.status == "In progress") {
                     //It is in progress therefore it wil have a start date. 
                     int daysRemaining = item.processingTime - ((int) (item.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
 
-                    if (item.userResponsible.userID == SessionService.loggedInUser.userID) {
+                    if (item.userResponsible.userID == userID) {
                         userPlannedDays = userPlannedDays + daysRemaining;
                     }
                 }
