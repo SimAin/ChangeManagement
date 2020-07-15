@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using change_management.Models;
 
-namespace change_management.Models
-{
-    public class TeamMember
-    {
-        public User user {get;set;}
-        public int throughput {get;set;}
+namespace change_management.Models {
+    public class TeamMember {
+        public User user { get; set; }
+        public int throughput { get; set; }
 
-        public TeamMember() {}
+        public TeamMember () { }
 
-        public TeamMember(User u, int tp) {
+        public TeamMember (User u, int tp) {
             user = u;
             throughput = tp;
         }

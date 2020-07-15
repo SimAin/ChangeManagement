@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Tests
 {
-    public class ScheduleServiceTest
+    public class ScheduleServiceOrderTest
     {
         private ScheduleService _scheduleService;
 
