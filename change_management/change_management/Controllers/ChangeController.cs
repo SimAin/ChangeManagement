@@ -25,13 +25,11 @@ namespace change_management.Controllers {
             return View (changes);
         }
 
-        public IActionResult Change (int changeId) {
+        public IActionResult Change (int changeId, int deadlineStatus ) {
             ChangeDatabaseService dbService = new ChangeDatabaseService (_configuration);
             Change change = dbService.Select (changeId);
+            change.deadlineStatus = deadlineStatus;
             List<ChangeAudit> changeAudit = dbService.SelectChangeAudit (changeId).ToList ();
-
-            ScheduleService scheduleService = new ScheduleService ();
-            scheduleService.calculateDeadlineStatus (change);
 
             var changeView = new ChangeViewModel (change, changeAudit);
 

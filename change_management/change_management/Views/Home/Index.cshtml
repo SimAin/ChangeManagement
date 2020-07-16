@@ -61,7 +61,7 @@
                             @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
                             <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                         </td>
                     </tr>
@@ -120,7 +120,7 @@
                             @Html.DisplayFor(modelItem => item.status)  @Html.DisplayFor(modelItem => item.deadlineStatus) 
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
                             <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                         </td>
                     </tr>
@@ -178,7 +178,7 @@
                             @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
                             <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                         </td>
                     </tr>
@@ -231,13 +231,13 @@
                             @Html.DisplayFor(modelItem => item.userResponsible.surname)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.processingTime) days asd asd 
+                            @Html.DisplayFor(modelItem => item.processingTime) days
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
                         </td>
                         <td>
-                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
                             <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                         </td>
                     </tr>

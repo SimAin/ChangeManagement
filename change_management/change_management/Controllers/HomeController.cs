@@ -23,7 +23,10 @@ namespace change_management.Controllers {
             }
 
             ChangeDatabaseService dbService_c = new ChangeDatabaseService (_configuration);
-            List<Change> teamChanges = dbService_c.SelectTeamChanges (SessionService.loggedInTeam.teamID).ToList ();
+            List<Change> teamChanges = dbService_c.SelectTeamPendingChanges (SessionService.loggedInTeam.teamID).ToList ();
+
+            TeamDatabaseService dbService_t = new TeamDatabaseService (_configuration);
+            SessionService.loggedInTeam.teamMembers = dbService_t.SelectAllMembers (SessionService.loggedInTeam.teamID).ToList ();
 
             ScheduleService scheduleService = new ScheduleService ();
             List<Change> orderedTeamChanges = scheduleService.scheduleChanges (teamChanges).ToList ();

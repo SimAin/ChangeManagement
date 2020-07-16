@@ -69,24 +69,47 @@
                 </tr>
             </table>
             <div class="col-md-6">
-                <p>
-                    The deadline confidence scale is 1-5. <br/> 
-                    1 = Indicates a high confidence that deadline <strong>will</strong> be met. <br/>
-                    5 = Indicates a high confidence that the deadline will <strong>not</strong> be met.
-                </p>
-                <table class="col-md-6" id="dataTable" style="width: 50%;">
-                <tr>
-                    <th>Deadline confidence</th>
-                    <td>
-                        @if(@Model.currentChange.deadlineStatus == 99){
-                            <strong>Unable to calculate.</strong>
-                        } else {
-                            <strong>@Model.currentChange.deadlineStatus</strong>
-                        }
-                        
-                    </td>
-                </tr>
-            </table>
+            <div class="container">
+                <div class="row">
+                    <table class="col-md-6" id="dataTable" style="width: 50%;">
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <strong>@Model.currentChange.status</strong>
+                            </td>
+                        </tr>
+                        @if (@Model.currentChange.status != "In Progress") {
+                            <tr>
+                                <th>Started date</th>
+                                <td>
+                                    @Model.currentChange.startedDate
+                                </td>
+                            </tr>
+                        } 
+                    </table>
+                </div>
+                <br/>
+                <div class="row">
+                    <p>
+                        The deadline confidence scale is 1-5. <br/> 
+                        1 = Indicates a high confidence that deadline <strong>will</strong> be met. <br/>
+                        5 = Indicates a high confidence that the deadline will <strong>not</strong> be met.
+                    </p>
+                </div>
+                <div class="row">
+                    <table class="col-md-6" id="dataTable" style="width: 25%;">
+                        <tr>
+                            <th>Deadline confidence</th>
+                            <td>
+                                @if(@Model.currentChange.deadlineStatus == 99){
+                                    <strong>Unable to calculate.</strong>
+                                } else {
+                                    <strong>@Model.currentChange.deadlineStatus</strong>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -6,7 +6,6 @@ using change_management.Services;
 
 namespace change_management.Services {
     public class ScheduleService {
-        private int userWaitTime = 0;
         public ScheduleService () { }
 
         #region Ordering change
@@ -110,16 +109,22 @@ namespace change_management.Services {
 
         public List<Change> calculateDeadlineStatus (List<Change> changeList) {
 
-            userWaitTime = calculateUserBookedDays (changeList, SessionService.loggedInUser.userID);
-            foreach (var item in changeList) {
-                item.deadlineStatus = 99;
-                calculateDeadlineStatus (item);
+            calculateUserBookedDays (changeList);
+            foreach (var member in SessionService.loggedInTeam.teamMembers)
+            {
+                var userWaitTime = member.userBookedDays;
+                var userChanges  = changeList.Where (c => c.userResponsible.userID == member.user.userID).ToList ();
+                foreach (var item in userChanges) {
+                    item.deadlineStatus = 99;
+                    calculateDeadlineStatus (item, userWaitTime);
+                }
             }
+            
 
             return changeList;
         }
 
-        public void calculateDeadlineStatus (Change change) {
+        public void calculateDeadlineStatus (Change change, int userWaitTime) {
 
             if (change.status == "In progress") {
                 //It is in progress therefore it wil have a start date. 
@@ -158,20 +163,30 @@ namespace change_management.Services {
             return change;
         }
 
-        public int calculateUserBookedDays (List<Change> changeList, int userID) {
-            var userPlannedDays = 0;
-            foreach (var item in changeList) {
-                if (item.status == "In progress") {
-                    //It is in progress therefore it wil have a start date. 
-                    int daysRemaining = item.processingTime - ((int) (item.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
-
-                    if (item.userResponsible.userID == userID) {
-                        userPlannedDays = userPlannedDays + daysRemaining;
-                    }
+        public void calculateUserBookedDays (List<Change> changeList) {
+            foreach (var member in SessionService.loggedInTeam.teamMembers)
+            {
+                member.userBookedDays = 0;
+                var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "In progress").ToList ();
+                foreach (var change in usersInProgChanges)
+                {
+                    int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
+                    member.userBookedDays = member.userBookedDays + daysRemaining;
                 }
             }
+        }
 
-            return userPlannedDays;
+        public void calculateUserPlannedDays (List<Change> changeList) {
+            foreach (var member in SessionService.loggedInTeam.teamMembers)
+            {
+                member.userBookedDays = 0;
+                var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "In progress").ToList ();
+                foreach (var change in usersInProgChanges)
+                {
+                    int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
+                    member.userBookedDays = member.userBookedDays + daysRemaining;
+                }
+            }
         }
     }
 }
