@@ -9,20 +9,27 @@ namespace Tests
 {
     public class ScheduleServiceDeadlineTest
     {
-        private ScheduleService _scheduleService;
+        private ScheduleService _scheduleService; 
+        private Team _team = new Team(1, "newTeam", 15 );
 
         [SetUp]
         public void SetUp()
         {
             _scheduleService = new ScheduleService();
             SessionService.loggedInUser = new User(1, "Test", "User", "Tester");
+
+            _team.teamMembers = new List<TeamMember>(){
+                new TeamMember(SessionService.loggedInUser, 5)
+            };
+
+            SessionService.loggedInTeam = _team;
         }
 
         private List<Change> generateTestData(User u) {
             var changeList = new List<Change>();
 
             changeList.Add(new Change(1, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(24), 3, 3, DateTime.Now.AddDays(-5), DateTime.Now, "In progress", u, u, new Team(), u));
-            changeList.Add(new Change(2, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(24), 3, 3, DateTime.Now.AddDays(-4), null, "Not Started", u, u, new Team(), u));
+            changeList.Add(new Change(2, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(46), 3, 3, DateTime.Now.AddDays(-4), null, "Not Started", u, u, new Team(), u));
             changeList.Add(new Change(3, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(2), 2, 6, DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4), "In progress", u, u, new Team(), u));
             changeList.Add(new Change(4, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(14), 1, 4, DateTime.Now.AddDays(-2), null, "Not Started", u, u, new Team(), u));
             changeList.Add(new Change(5, new SystemEntity(), "type", "description", true, DateTime.Now.AddDays(5), 2, 6, DateTime.Now.AddDays(-5), DateTime.Now.AddDays(-2), "In progress", u, u, new Team(), u));
@@ -40,9 +47,11 @@ namespace Tests
         {
             var changeList = generateTestData(SessionService.loggedInUser);
             ScheduleService scheduleService = new ScheduleService();
-            int userPlannedDays = scheduleService.calculateUserBookedDays(changeList, SessionService.loggedInUser.userID);
+            scheduleService.calculateUserBookedDays(changeList);
 
-            Assert.AreEqual(41, userPlannedDays);
+            List<TeamMember> members = SessionService.loggedInTeam.teamMembers.ToList();
+            
+            Assert.AreEqual(41, members[0].userBookedDays );
         }
         
         [Test]
@@ -105,9 +114,9 @@ namespace Tests
             var changeList = generateTestData(SessionService.loggedInUser);
             ScheduleService scheduleService = new ScheduleService();
 
-            scheduleService.calculateDeadlineStatus(changeList[1]);
+            var changes = scheduleService.calculateDeadlineStatus(changeList);
 
-            Assert.AreEqual(1, changeList[1].deadlineStatus);
+            Assert.AreEqual(1, changes[1].deadlineStatus);
         }
 
         [Test]
@@ -116,9 +125,9 @@ namespace Tests
             var changeList = generateTestData(SessionService.loggedInUser);
             ScheduleService scheduleService = new ScheduleService();
 
-            scheduleService.calculateDeadlineStatus(changeList[0]);
+            var changes = scheduleService.calculateDeadlineStatus(changeList);
 
-            Assert.AreEqual(1, changeList[0].deadlineStatus);
+            Assert.AreEqual(1, changes[0].deadlineStatus);
         }
     }
 }

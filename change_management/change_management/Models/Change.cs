@@ -29,6 +29,8 @@ namespace change_management.Models {
         public int userResponsibleId { get; set; }
         public int statusId { get; set; }
 
+        public DateTime expectedCompleation {get;set;}
+
         public Change () { }
 
         //Creating a change from the database
@@ -52,7 +54,7 @@ namespace change_management.Models {
         }
 
         //Creating a changelite view from the database
-        public Change (int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, string stat, User responsible) {
+        public Change (int id, SystemEntity sys, string t, string desc, bool critical, DateTime due, int pri, int pt, DateTime create, DateTime? start, string stat, User responsible) {
             changeId = id;
             system = sys;
             type = t;
@@ -62,6 +64,8 @@ namespace change_management.Models {
             deadlineText = due.ToString ("dd/MM/yyyy");
             priority = pri;
             processingTime = pt;
+            createdDate = create;
+            startedDate = start;
             status = stat;
             userResponsible = responsible;
         }

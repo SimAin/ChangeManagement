@@ -19,11 +19,14 @@ namespace Tests
         public void SetUp()
         {
             _scheduleService = new ScheduleService();
+
             _team.teamMembers = new List<TeamMember>(){
                 new TeamMember(_userA, 5),
                 new TeamMember(_userB, 5),
                 new TeamMember(_userC, 5)
             };
+
+            SessionService.loggedInTeam = _team;
         }
 
         private List<Change> generateTestChanges() {
@@ -56,14 +59,14 @@ namespace Tests
             scheduleService.scheduleChanges(changeList);
             int[] userPlannedDays = new int[3];
 
-            for (int i = 0; i < _team.teamMembers.Count(); i++)
-            {
-                userPlannedDays[i] = (scheduleService.calculateUserBookedDays(changeList, _team.teamMembers.ElementAt(i).user.userID));
-            }
+            scheduleService.calculateUserBookedDays(changeList);
+
+            List<TeamMember> members = SessionService.loggedInTeam.teamMembers.ToList();
+
             
-            Assert.AreEqual(5, userPlannedDays[0]);
-            Assert.AreEqual(6, userPlannedDays[1]);
-            Assert.AreEqual(6, userPlannedDays[2]);
+            Assert.AreEqual(5,members[0].userBookedDays);
+            Assert.AreEqual(6,members[1].userBookedDays);
+            Assert.AreEqual(6,members[2].userBookedDays);
         }
     }
 }

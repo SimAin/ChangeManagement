@@ -120,7 +120,6 @@ namespace change_management.Services {
                 }
             }
             
-
             return changeList;
         }
 
