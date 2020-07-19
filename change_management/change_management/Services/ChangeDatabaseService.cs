@@ -37,7 +37,7 @@ namespace change_management.Controllers {
                 "JOIN status ON status.statusId = changes.statusId " +
                 "JOIN users AS approver ON approver.userId = changes.approverId " +
                 "JOIN users AS stakeholder ON stakeholder.userId = changes.stakeholderId " +
-                "JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " +
+                "LEFT JOIN users AS responsible ON responsible.userId = changes.userResponsibleId " +
                 "JOIN teams ON teamId = changes.teamResponsibleId");
         }
 
@@ -50,7 +50,7 @@ namespace change_management.Controllers {
                 new User (reader.GetInt32 (15), reader.GetString (16), reader.GetString (17), reader.GetString (18)),
                 new User (reader.GetInt32 (19), reader.GetString (20), reader.GetString (21), reader.GetString (22)),
                 new Team (reader.GetInt32 (23), reader.GetString (24)),
-                new User (reader.GetInt32 (25), reader.GetString (26), reader.GetString (27), reader.GetString (28)));
+                new User (reader.IsDBNull (25) ? (int) 0 : (int) reader.GetInt32 (25), reader.IsDBNull (26) ? "" : (string) reader.GetString (26), reader.IsDBNull (27) ? "" : (string) reader.GetString (27), reader.IsDBNull (28) ? "" : (string) reader.GetString(28)));
         }
 
         public IEnumerable<Change> SelectAll () {

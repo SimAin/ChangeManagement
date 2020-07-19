@@ -101,6 +101,12 @@
                             As this change has not been started, this may change as other changes are requested.  
                         </p>
                     }
+                    @if (@Model.currentChange.userResponsible.userID == 0) {
+                        <p>
+                            As this change does not have a user responsible for the work, the current confidence  <br/>
+                            is based on the change being picked up by the team member who could get to it first. 
+                        </p>
+                    }
                     
                 </div>
                 <div class="row">

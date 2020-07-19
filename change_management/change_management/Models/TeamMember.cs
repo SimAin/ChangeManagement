@@ -6,6 +6,7 @@ namespace change_management.Models {
         public User user { get; set; }
         public int throughput { get; set; }
         public int userBookedDays {get; set;}
+        public int userPlannedDays {get; set;}
 
         public TeamMember () { }
 
