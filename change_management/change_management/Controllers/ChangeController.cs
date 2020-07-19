@@ -60,6 +60,12 @@ namespace change_management.Controllers {
                 });
             }
 
+            users.Add (new SelectListItem {
+                    Text = "Any user in selected team",
+                        Value = "0",
+                            Selected = true
+                });
+
             foreach (var u in dbusers) {
                 users.Add (new SelectListItem {
                     Text = u.forename + " " + u.surname,

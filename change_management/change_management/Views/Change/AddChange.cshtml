@@ -30,7 +30,8 @@
         </tr>
         <tr>
             <th><label for="priority">Priority (High 1-5 Low):</label></th>
-            <td><input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" /></td>
+            <td><input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" data-toggle="popover" data-placement="right" data-html="true" title="Priority" 
+                    data-content="1 - Critical (Vulnerabilities, Financial, etc) </br> 2 - Significant (Customer facing issues) <br> 3 - Buisness (Project work/releases) <br/> 4 - Cosmetic (UI updates, etc) <br/> 5 - Required but not time critical "/></td>
         </tr>
         <tr>
             <th><label for="processingTime">Processing time (days):</label></th>

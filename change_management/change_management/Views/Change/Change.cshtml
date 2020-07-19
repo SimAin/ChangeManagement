@@ -93,8 +93,15 @@
                     <p>
                         The deadline confidence scale is 1-5. <br/> 
                         1 = Indicates a high confidence that deadline <strong>will</strong> be met. <br/>
-                        5 = Indicates a high confidence that the deadline will <strong>not</strong> be met.
+                        5 = Indicates a high confidence that the deadline will <strong>not</strong> be met. <br/>
                     </p>
+                    @if (@Model.currentChange.status != "In Progress") {
+                        <p>
+                            Deadline confidence is based on current priority and workload. <br/>
+                            As this change has not been started, this may change as other changes are requested.  
+                        </p>
+                    }
+                    
                 </div>
                 <div class="row">
                     <table class="col-md-6" id="dataTable" style="width: 25%;">
