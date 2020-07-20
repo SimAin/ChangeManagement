@@ -7,17 +7,19 @@
 <h3>@ViewData["Message"]</h3>
 
 <form asp-controller="User" asp-action="SubmitNewUser" >
-    <div>
-        <label for="Forename">Forename:</label>
-        <input asp-for="@Model.forename"  type="text" name="forename" value="" />
-    </div>
-    <div>
-        <label for="Surname">Surname:</label>
-        <input asp-for="@Model.surname" type="text" name="surname" value="" />
-    </div>
-    <div>
-        <label for="Role">Job Role:</label>
-        <input asp-for="@Model.forename" type="text" name="role" value="" />
-    </div>
-    <button type="submit">Submit Form</button>
+    <table id="inputTable" style="width: 50%;">
+        <tr>
+            <th><label for="Forename">Forename:</label></th>
+            <td><input asp-for="@Model.forename"  type="text" name="forename" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="Surname">Surname:</label></th>
+            <td><input asp-for="@Model.surname" type="text" name="surname" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="Role">Job Role:</label></th>
+            <td><input asp-for="@Model.forename" type="text" name="role" value="" /></td>
+        </tr>
+    </table>
+    <button type="submit">Submit Change</button>
 </form>

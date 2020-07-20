@@ -1,5 +1,251 @@
-﻿@{
+﻿@model change_management.Models.ViewModels.HomeViewModel
+@using System.Linq
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <h3>@ViewData["Message"]</h3>
+
+<br/>
+<body>
+<div>
+    @if((Model.changes.Where(c => c.status == "In progress" && c.userResponsible.userID == @Model.userID).Count()) == 0) {
+        <h4> No changes in progress. </h4>
+    } else {
+        <h4> My current changes: </h4>
+    <div>
+        <table id="dataTable" style="width: 100%;">
+            <tr>
+                <th>System</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Deadline (C)</th>
+                <th>User Responsible</th>
+                <th>Effort</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.changes) {
+                @if(@item.status == "In progress" && @item.userResponsible.userID == @Model.userID) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.priority)
+                        </td>
+                        @if(@item.criticality){
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10004)
+                            </td>
+                        } else {
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10007) 
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userResponsible.forename)
+                            @Html.DisplayFor(modelItem => item.userResponsible.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.processingTime) days
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    }
+    
+    <h4> My pending changes: </h4>
+    <div>
+        <table id="dataTable" style="width: 100%;">
+            <tr>
+                <th>System</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Deadline (C)</th>
+                <th>User Responsible</th>
+                <th>Effort</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.changes) {
+                @if(@item.status != "In progress" && @item.userResponsible.userID == @Model.userID) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.priority)
+                        </td>
+                        @if(@item.criticality){
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10004)
+                            </td>
+                        } else {
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10007) 
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userResponsible.forename)
+                            @Html.DisplayFor(modelItem => item.userResponsible.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.processingTime) days
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.status)  @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <br/>
+    <h4> Team changes: </h4>
+    <div>
+        <table id="dataTable" style="width: 100%;">
+            <tr>
+                <th>System</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Deadline (C)</th>
+                <th>User Responsible</th>
+                <th>Effort</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.changes) {
+                @if(@item.status == "In progress") {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.priority)
+                        </td>
+                        @if(@item.criticality){
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10004)
+                            </td>
+                        } else {
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10007) 
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userResponsible.forename)
+                            @Html.DisplayFor(modelItem => item.userResponsible.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.processingTime) days
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <br/>
+    <div>
+        <h4> Team pending changes: </h4>
+        <div>
+            <table id="dataTable" style="width: 100%;">
+                <tr>
+                    <th>System</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Deadline (C)</th>
+                    <th>User Responsible</th>
+                    <th>Effort</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.changes) {
+                    @if(@item.status != "In progress") {
+                        <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.system.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.priority)
+                        </td>
+                        @if(@item.criticality){
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10004)
+                            </td>
+                        } else {
+                            <td class="Critical-@item.criticality">
+                                @item.deadlineText (&#10007) 
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.userResponsible.forename)
+                            @Html.DisplayFor(modelItem => item.userResponsible.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.processingTime) days
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
+                            <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
+                        </td>
+                    </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</body>
+
+

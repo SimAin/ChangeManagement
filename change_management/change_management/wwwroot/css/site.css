@@ -21,6 +21,12 @@ table {
     width: 100%;
 }
 
+th {
+    height: 25px;
+    vertical-align: bottom;
+    text-align: center;
+}
+
 td {
     height: 25px;
     vertical-align: bottom;
@@ -36,12 +42,16 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: grey; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
+    background-color: #D7D7D7; 
+    overflow-x: hidden; 
     padding-top: 60px;
     text-align: center;
     color: black;
 }
+.menunav ul li a:hover, ul li a:focus {
+    color: white;
+    background-color: rgb(44, 102, 53);
+   }
 
 /* Carousel */
 .carousel-caption p {
@@ -65,4 +75,57 @@ a {
     .carousel-caption {
         display: none;
     }
+}
+
+#dataTable{
+    border-collapse: collapse;
+}
+
+#dataTable td, th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#dataTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#dataTable tr:hover {background-color: #ddd;}
+
+#dataTable th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: rgb(44, 102, 53);
+    color: white;
+}
+
+#inputTable{
+    border-collapse: collapse;
+}
+
+#inputTable td, th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#inputTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#inputTable tr:hover {background-color: #ddd;}
+
+#inputTable th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+    background-color: rgb(44, 102, 53);
+    color: white;
+}
+
+.Critical-True {
+    color:red;
+}
+.Critical-False {
+    color:green;
+}
+
+.popover {
+    color: black;
 }

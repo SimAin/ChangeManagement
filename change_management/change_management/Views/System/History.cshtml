@@ -1,17 +1,16 @@
 @model IEnumerable<change_management.Models.Change>
 
 @{
-    ViewData["Title"] = "Changes";
+    ViewData["Title"] = "System History";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<div>
-    <input type="button" value="Add Change" onclick="location.href='@Url.Action("AddChange", "Change")'" />
-</div>
-<br/>
+<p>
+Changes:
+</p>
 <table id="dataTable">
     <tr>
+        <th>Id</th>
         <th>Type</th>
         <th>Description</th>
         <th>Criticicality</th>
@@ -21,9 +20,13 @@
         <th>Steakholder</th>
         <th>Team Responsible</th>
         <th>User Responsible</th>
+        <th></th>
     </tr>
     @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.changeId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.type)
             </td>
@@ -34,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.criticality)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.deadline)
+                @Html.DisplayFor(modelItem => item.deadlineText)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.priority)
@@ -53,6 +56,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.userResponsible.forename)
                 @Html.DisplayFor(modelItem => item.userResponsible.surname)
+            </td>
+            <td>
+                <input type="button" value="View Details" onclick="location.href='@Url.Action("Change", "Change", new { changeId = item.changeId })'" />
             </td>
         </tr>
     }

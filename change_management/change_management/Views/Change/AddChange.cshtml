@@ -1,51 +1,58 @@
 @model change_management.Models.ViewModels.AddChangeViewModel
 
 @{
-    ViewData["Title"] = "Changes";
+    ViewData["Title"] = "Create change ";
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
 <form asp-controller="Change" asp-action="SubmitNewChange" >
-    <div>
-        <label for="selectedSystem">System:</label>
-        <select asp-for="@Model.selectedSystem" asp-items="Model.systems" name="selectedSystem" > </select>
-    </div>
-    <div>
-        <label for="type">Type:</label>
-        <input asp-for="@Model.type"  type="text" name="type" value="" />
-    </div>
-    <div>
-        <label for="description">Description:</label>
-        <input asp-for="@Model.description" type="text" name="description" value="" />
-    </div>
-    <div>
-        <label for="criticality">Criticality (Hard deadline 1-5 Soft deadline):</label>
-        <input asp-for="@Model.criticality" type="text" name="criticality" value="" />
-    </div>
-    <div>
-        <label for="deadline">Deadline:</label>
-        <input type="date" asp-for="@Model.deadline"  name="deadline" value="" />
-    </div>
-    <div>
-        <label for="priority">Priority (High 1-5 Low):</label>
-        <input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" />
-    </div>
-    <div>
-        <label for="selectedApprover">Approver:</label>
-        <select asp-for="@Model.selectedApprover" asp-items="Model.approver" name="selectedApprover" > </select>
-    </div>
-    <div>
-        <label for="selectedStakeholder">Stakeholder:</label>
-        <select asp-for="@Model.selectedStakeholder" asp-items="Model.stakeholder" name="selectedStakeholder" > </select>
-    </div>
-    <div>
-        <label for="selectedTeamResponsible">Team responsible:</label>
-        <select asp-for="@Model.selectedTeamResponsible" asp-items="Model.teamResponsible" name="selectedTeamResponsible" > </select>
-    </div>
-    <div>
-        <label for="selectedUserResponsible">User responsible:</label>
-        <select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select>
-    </div>
-    <button type="submit">Submit Form</button>
+    <table id="inputTable" style="width: 50%;">
+        <tr>
+            <th><label id="inputLabel" for="selectedSystem">System:</label></th>
+            <td><select asp-for="@Model.selectedSystem" asp-items="Model.systems" name="selectedSystem" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="type">Type:</label></th>
+            <td><input asp-for="@Model.type"  type="text" name="type" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="description">Description:</label></th>
+            <td><input asp-for="@Model.description" type="text" name="description" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="criticality">Criticality (Hard deadline):</label></th>
+            <td><input asp-for="@Model.criticality" type="checkbox" name="criticality" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="deadline">Deadline:</label></th>
+            <td><input type="date" asp-for="@Model.deadline"  name="deadline" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="priority">Priority (High 1-5 Low):</label></th>
+            <td><input type="text" asp-for="@Model.priority"  type="text" name="priority" value="" data-toggle="popover" data-placement="right" data-html="true" title="Priority" 
+                    data-content="1 - Critical (Vulnerabilities, Financial, etc) </br> 2 - Significant (Customer facing issues) <br> 3 - Buisness (Project work/releases) <br/> 4 - Cosmetic (UI updates, etc) <br/> 5 - Required but not time critical "/></td>
+        </tr>
+        <tr>
+            <th><label for="processingTime">Processing time (days):</label></th>
+            <td><input type="text" asp-for="@Model.processingTime"  type="text" name="processingTime" value="" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedApprover">Approver:</label></th>
+            <td><select asp-for="@Model.selectedApprover" asp-items="Model.approver" name="selectedApprover" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedStakeholder">Stakeholder:</label></th>
+            <td><select asp-for="@Model.selectedStakeholder" asp-items="Model.stakeholder" name="selectedStakeholder" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedTeamResponsible">Team responsible:</label></th>
+            <td><select asp-for="@Model.selectedTeamResponsible" asp-items="Model.teamResponsible" name="selectedTeamResponsible" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedUserResponsible">User responsible:</label></th>
+            <td><select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select></td>
+        </tr>
+    </table>
+    <button type="submit">Submit Change</button>
 </form>

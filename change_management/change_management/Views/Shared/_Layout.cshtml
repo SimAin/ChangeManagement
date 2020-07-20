@@ -3,7 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - change_management</title>
+    <title>Change management</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -21,7 +29,16 @@
     <div class="container menunav" >
         <ul class="nav">
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="User" asp-action="Users">Users</a></li>
+            <li><a asp-area="" asp-controller="Team" asp-action="Team">Team</a></li>
+            <li><a asp-area="" asp-controller="System" asp-action="TeamSystems">Systems</a></li>
+            <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
+
+            <br/>
+            <br/>
+            <br/>
+            <li> Admin </li>
+            <li> __ </li>
+
             <li><a asp-area="" asp-controller="Team" asp-action="Teams">Teams</a></li>
             <li><a asp-area="" asp-controller="System" asp-action="Systems">Systems</a></li>
             <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>

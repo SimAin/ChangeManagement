@@ -1,0 +1,69 @@
+@model change_management.Models.ViewModels.EditChangeViewModel
+
+@{
+    ViewData["Title"] = "Edit change ";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<form asp-controller="Change" asp-action="SubmitEditChange" >
+    <table id="inputTable" style="width: 50%;">
+        <tr>
+            <th><label id="inputLabel" for="selectedSystem">System:</label></th>
+            <td>
+                <input asp-for="@Model.changeId" type="text" name="changeId" value="@Model.currentChange.changeId"hidden/>
+                <input asp-for="@Model.currentChange.system.name"  type="text" name="name" value="@Model.currentChange.system.name" readonly/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="type">Type:</label></th>
+            <td><input asp-for="@Model.currentChange.type"  type="text" name="type" value="@Model.currentChange.type" readonly/></td>
+        </tr>
+        <tr>
+            <th><label for="selectedDescription">Description:</label></th>
+            <td><input asp-for="@Model.selectedDescription" type="text" name="selectedDescription" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedCriticality">Criticality (Hard deadline):</label></th>
+            <td><input asp-for="@Model.selectedCriticality" type="checkbox" name="selectedCriticality"/></td>
+        </tr>
+        <tr>
+            <th><label for="selectedDeadline">Deadline:</label></th>
+            <td><input type="date" asp-for="@Model.selectedDeadline"  name="selectedDeadline"/></td>
+        </tr>
+        <tr>
+            <th><label for="selectedPriority">Priority (High 1-5 Low):</label></th>
+            <td><input type="text" asp-for="@Model.selectedPriority"  type="text" name="selectedPriority" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedProcessingTime">Processing time (days):</label></th>
+            <td><input type="text" asp-for="@Model.selectedProcessingTime"  type="text" name="selectedProcessingTime" /></td>
+        </tr>
+        <tr>
+            <th><label for="selectedApprover">Approver:</label></th>
+            <td><select asp-for="@Model.selectedApprover" asp-items="Model.approver" name="selectedApprover" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedStakeholder">Stakeholder:</label></th>
+            <td><select asp-for="@Model.selectedStakeholder" asp-items="Model.stakeholder" name="selectedStakeholder" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedTeamResponsible">Team responsible:</label></th>
+            <td><select asp-for="@Model.selectedTeamResponsible" asp-items="Model.teamResponsible" name="selectedTeamResponsible" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedUserResponsible">User responsible:</label></th>
+            <td><select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select></td>
+        </tr>
+        <tr>
+            <th><label for="selectedStatus">Change status:</label></th>
+            <td><select asp-for="@Model.selectedStatus" asp-items="Model.statuss" name="selectedStatus" > </select></td>
+        </tr>
+    </table>
+    <br/>
+    <label for="comment">Comment:</label>
+    <input type="text" asp-for="@Model.comment"  type="text" name="comment" size="50"/>
+    <br/>
+    <br/>
+    <button type="submit">Submit Change</button>
+</form>
