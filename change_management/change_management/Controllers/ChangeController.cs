@@ -36,6 +36,17 @@ namespace change_management.Controllers {
             return View (changeView);
         }
 
+        public IActionResult TeamChanges () {
+            ChangeDatabaseService dbService_c = new ChangeDatabaseService (_configuration);
+            List<Change> teamChanges = dbService_c.SelectTeamPendingChanges (SessionService.loggedInTeam.teamID).ToList ();
+            ScheduleService scheduleService = new ScheduleService ();
+            List<Change> orderedTeamChanges = scheduleService.scheduleChanges (teamChanges).ToList ();
+            scheduleService.calculateDeadlineStatus (orderedTeamChanges);
+
+            var m = new TeamChangesViewModel (orderedTeamChanges, SessionService.loggedInUser.userID);
+            return View (m);
+        }
+
         public IActionResult AddChange () {
             var dbusers = new UserDatabaseService (_configuration).SelectAll ();
             var dbteams = new TeamDatabaseService (_configuration).SelectAll ();

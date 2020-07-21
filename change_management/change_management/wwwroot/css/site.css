@@ -129,3 +129,10 @@ a {
 .popover {
     color: black;
 }
+
+.right {
+    /* position: relative; */
+    position: absolute;
+    z-index:10;
+    right: 16px;
+  }

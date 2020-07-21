@@ -8,27 +8,29 @@
 
 <br/>
 <body>
-    <div>
-        <table id="dataTable" style="width: 30%;">
-            <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Days per week</th>
-            </tr>
-            @foreach (var item in Model.teamMembers) {
+    <div class="container">
+        <div class="row">
+            <table class="col-md-6" id="dataTable" style="width: 30%;">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.user.forename) @Html.DisplayFor(modelItem => item.user.surname) 
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.user.role)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.throughput)
-                    </td>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Days per week</th>
                 </tr>
-            }
-        </table>
+                @foreach (var item in Model.teamMembers) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.user.forename) @Html.DisplayFor(modelItem => item.user.surname) 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.user.role)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.throughput)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
     <br/>
     <div>
