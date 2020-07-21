@@ -135,6 +135,7 @@ namespace change_management.Services {
 
             if (change.status == "In progress") {
                 //It is in progress therefore it wil have a start date. 
+                //TODO IF this is not greater than 0 then set to 0, (any day now) 
                 int daysRemaining = change.processingTime - Math.Abs(((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays));
 
                 deadlineStatusSetter (change, daysRemaining);

@@ -65,6 +65,28 @@ namespace change_management.Controllers {
             }
         }
 
+        public bool SelectAdmin (int userID) {
+            bool admin = false;
+            try {
+                var connection = DatabaseConnector ();
+                using (connection) {
+                    connection.Open ();
+                    String sql = ("SELECT admin FROM users WHERE userId = " + userID);
+                    using (SqlCommand command = new SqlCommand (sql, connection)) {
+                        using (SqlDataReader reader = command.ExecuteReader ()) {
+                            while (reader.Read ()) {
+                                admin = reader.GetBoolean (0);
+                            }
+                        }
+                    }
+                }
+                return admin;
+            } catch (SqlException e) {
+                Console.WriteLine (e.ToString ());
+                return admin;
+            }
+        }
+
         public Team SelectUserTeam (int userID) {
             var teamMembers = new List<TeamMember> ();
             var team = new Team ();
@@ -116,12 +138,13 @@ namespace change_management.Controllers {
                 var connection = DatabaseConnector ();
                 using (connection) {
                     connection.Open ();
-                    string sql2 = "INSERT INTO users(forename, surname, role)   VALUES(@param2,@param3, @param4)";
+                    string sql2 = "INSERT INTO users(forename, surname, role, admin)   VALUES(@param2,@param3, @param4, @param5)";
 
                     using (SqlCommand cmd = new SqlCommand (sql2, connection)) {
                         cmd.Parameters.Add ("@param2", SqlDbType.NVarChar, 50).Value = u.forename;
                         cmd.Parameters.Add ("@param3", SqlDbType.NVarChar, 50).Value = u.surname;
                         cmd.Parameters.Add ("@param4", SqlDbType.NVarChar, 50).Value = u.role;
+                        cmd.Parameters.Add ("@param5", SqlDbType.Bit).Value = u.admin;
                         cmd.CommandType = CommandType.Text;
                         cmd.ExecuteNonQuery ();
                     }

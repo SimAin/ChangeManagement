@@ -31,7 +31,7 @@ namespace change_management.Controllers {
 
         public IActionResult SubmitNewUser (User user) {
             UserDatabaseService dbService = new UserDatabaseService (_configuration);
-            dbService.Insert (new User (user.forename, user.surname, user.role));
+            dbService.Insert (new User (user.forename, user.surname, user.role, user.admin));
             return RedirectToAction ("Users");
         }
 
@@ -46,11 +46,9 @@ namespace change_management.Controllers {
         public IActionResult userLogin (LoginViewModel u) {
             UserDatabaseService dbService_u = new UserDatabaseService (_configuration);
             UserDatabaseService dbService_t = new UserDatabaseService (_configuration);
-            var activeUser = dbService_u.Select (Convert.ToInt32 (u.userId));
-            var activeUserTeam = dbService_t.SelectUserTeam (Convert.ToInt32 (u.userId));
-
-            SessionService.loggedInUser = activeUser;
-            SessionService.loggedInTeam = activeUserTeam;
+            SessionService.loggedInUser = dbService_u.Select (Convert.ToInt32 (u.userId));
+            SessionService.admin = dbService_u.SelectAdmin (Convert.ToInt32 (u.userId));
+            SessionService.loggedInTeam = dbService_t.SelectUserTeam (Convert.ToInt32 (u.userId));
 
             return RedirectToAction ("Index", "Home");
         }

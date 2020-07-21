@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using change_management.Services;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -32,16 +33,18 @@
             <li><a asp-area="" asp-controller="Team" asp-action="Team">Team</a></li>
             <li><a asp-area="" asp-controller="System" asp-action="TeamSystems">Systems</a></li>
             <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
+            <br/>
+            <br/>
+            <br/>
+            @if(@SessionService.admin == true) {
+                <li> Admin </li>
+                <li> __ </li>
 
-            <br/>
-            <br/>
-            <br/>
-            <li> Admin </li>
-            <li> __ </li>
-
-            <li><a asp-area="" asp-controller="Team" asp-action="Teams">Teams</a></li>
-            <li><a asp-area="" asp-controller="System" asp-action="Systems">Systems</a></li>
-            <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
+                <li><a asp-area="" asp-controller="User" asp-action="Users">Users</a></li>
+                <li><a asp-area="" asp-controller="Team" asp-action="Teams">Teams</a></li>
+                <li><a asp-area="" asp-controller="System" asp-action="Systems">Systems</a></li>
+                <li><a asp-area="" asp-controller="Change" asp-action="Changes">Changes</a></li>
+            }
         </ul>
     </div>
 

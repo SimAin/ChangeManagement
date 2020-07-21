@@ -6,6 +6,8 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
+@* TODO: Add link to this page on admin panel (Or from admin panel page) *@
+
 <form asp-controller="User" asp-action="SubmitNewUser" >
     <table id="inputTable" style="width: 50%;">
         <tr>
@@ -20,6 +22,11 @@
             <th><label for="Role">Job Role:</label></th>
             <td><input asp-for="@Model.forename" type="text" name="role" value="" /></td>
         </tr>
+        <tr>
+            <th><label for="admin">Admin:</label></th>
+            <td><input asp-for="@Model.admin" type="checkbox" name="admin" value="" /></td>
+        </tr>
     </table>
+    <br/>
     <button type="submit">Submit Change</button>
 </form>

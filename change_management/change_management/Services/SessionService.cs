@@ -5,6 +5,7 @@ namespace change_management.Services {
         private static SessionService sessionService;
         public static User loggedInUser { get; set; }
         public static Team loggedInTeam { get; set; }
+        public static bool admin {get;set;}
 
         private SessionService () { }
 
