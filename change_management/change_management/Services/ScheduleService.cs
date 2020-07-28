@@ -181,18 +181,6 @@ namespace change_management.Services {
             }
         }
 
-        public void calculateUserPlannedDays (List<Change> changeList) {
-            foreach (var member in SessionService.loggedInTeam.teamMembers) {
-                member.userPlannedDays = member.userBookedDays;
-
-                var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "Not Started").ToList ();
-                foreach (var change in usersInProgChanges) {
-                    int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
-                    member.userPlannedDays = member.userPlannedDays + daysRemaining;
-                }
-            }
-        }
-
         public TeamMember calculateTeamMemberWithLeastPlanned (List<Change> changeList) {
             foreach (var member in SessionService.loggedInTeam.teamMembers) {
                 member.userPlannedDays = member.userBookedDays;
