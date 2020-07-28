@@ -39,18 +39,28 @@ namespace change_management.Controllers {
 
         #region User Login
 
-        public IActionResult Login () {
+        public IActionResult Login (bool retry = false) {
+            if (retry){
+                ViewData["Message"] = "User not found, please retry.";
+            }
             return View ();
         }
 
         public IActionResult userLogin (LoginViewModel u) {
             UserDatabaseService dbService_u = new UserDatabaseService (_configuration);
             UserDatabaseService dbService_t = new UserDatabaseService (_configuration);
-            SessionService.loggedInUser = dbService_u.Select (Convert.ToInt32 (u.userId));
-            SessionService.admin = dbService_u.SelectAdmin (Convert.ToInt32 (u.userId));
-            SessionService.loggedInTeam = dbService_t.SelectUserTeam (Convert.ToInt32 (u.userId));
+            var exists = dbService_u.Check (Convert.ToInt32 (u.userId));
+            if (exists) {
+                SessionService.loggedInUser = dbService_u.Select (Convert.ToInt32 (u.userId));
+                SessionService.admin = dbService_u.SelectAdmin (Convert.ToInt32 (u.userId));
+                SessionService.loggedInTeam = dbService_t.SelectUserTeam (Convert.ToInt32 (u.userId));
 
-            return RedirectToAction ("Index", "Home");
+                return RedirectToAction ("Index", "Home");
+            } else {
+                return RedirectToAction ("Login", new { retry = true });
+            }
+
+            
         }
 
         #endregion

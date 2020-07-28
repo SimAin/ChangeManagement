@@ -65,6 +65,32 @@ namespace change_management.Controllers {
             }
         }
 
+        public bool Check (int userID) {
+            var exists = false;
+            var users = new List<User> ();
+            try {
+                var connection = DatabaseConnector ();
+                using (connection) {
+                    connection.Open ();
+                    String sql = ("SELECT * FROM users WHERE userId = " + userID);
+                    using (SqlCommand command = new SqlCommand (sql, connection)) {
+                        using (SqlDataReader reader = command.ExecuteReader ()) {
+                            while (reader.Read ()) {
+                                users.Add(new User (reader.GetInt32 (0), reader.GetString (1), reader.GetString (2), reader.GetString (3)));
+                            }
+                        }
+                    }
+                }
+                if (users.Count == 1){
+                    exists = true;
+                }  
+                return exists;
+            } catch (SqlException e) {
+                Console.WriteLine (e.ToString ());
+                return exists;
+            }
+        }
+
         public bool SelectAdmin (int userID) {
             bool admin = false;
             try {

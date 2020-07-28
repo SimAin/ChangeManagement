@@ -17,6 +17,7 @@
                 <label for="userId">User Id:</label>
                 <input asp-for="@Model.userId"  type="text" name="userId" value="" />
             </div>
+            <p style="color: red;">@ViewData["Message"]<p>
             <br/>
             <button type="submit">Login</button>
         </form>
