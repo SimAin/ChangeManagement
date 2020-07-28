@@ -29,7 +29,7 @@ namespace change_management.Models {
         public int userResponsibleId { get; set; }
         public int statusId { get; set; }
 
-        public DateTime expectedCompleation {get;set;}
+        public DateTime expectedCompleation { get; set; }
 
         public Change () { }
 

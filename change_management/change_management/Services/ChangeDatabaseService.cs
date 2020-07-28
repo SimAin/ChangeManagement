@@ -50,7 +50,7 @@ namespace change_management.Controllers {
                 new User (reader.GetInt32 (15), reader.GetString (16), reader.GetString (17), reader.GetString (18)),
                 new User (reader.GetInt32 (19), reader.GetString (20), reader.GetString (21), reader.GetString (22)),
                 new Team (reader.GetInt32 (23), reader.GetString (24)),
-                new User (reader.IsDBNull (25) ? (int) 0 : (int) reader.GetInt32 (25), reader.IsDBNull (26) ? "" : (string) reader.GetString (26), reader.IsDBNull (27) ? "" : (string) reader.GetString (27), reader.IsDBNull (28) ? "" : (string) reader.GetString(28)));
+                new User (reader.IsDBNull (25) ? (int) 0 : (int) reader.GetInt32 (25), reader.IsDBNull (26) ? "" : (string) reader.GetString (26), reader.IsDBNull (27) ? "" : (string) reader.GetString (27), reader.IsDBNull (28) ? "" : (string) reader.GetString (28)));
         }
 
         public IEnumerable<Change> SelectAll () {
@@ -157,7 +157,7 @@ namespace change_management.Controllers {
                                     reader.GetString (6), reader.GetString (7), reader.GetBoolean (8), reader.GetDateTime (9), reader.GetInt32 (10),
                                     reader.GetInt32 (11), reader.GetDateTime (12), reader.IsDBNull (13) ? (DateTime?) null : (DateTime?) reader.GetDateTime (13),
                                     reader.GetString (14),
-                                    new User (reader.IsDBNull (15) ? (int) 0 : (int) reader.GetInt32 (15), reader.IsDBNull (16) ? "" : (string) reader.GetString (16), reader.IsDBNull (17) ? "" : (string) reader.GetString (17), reader.IsDBNull (18) ? "" : (string) reader.GetString(18))));
+                                    new User (reader.IsDBNull (15) ? (int) 0 : (int) reader.GetInt32 (15), reader.IsDBNull (16) ? "" : (string) reader.GetString (16), reader.IsDBNull (17) ? "" : (string) reader.GetString (17), reader.IsDBNull (18) ? "" : (string) reader.GetString (18))));
                             }
                         }
                     }
@@ -231,7 +231,7 @@ namespace change_management.Controllers {
                         c.changeId = Convert.ToInt32 (cmd.ExecuteScalar ());
                     }
                 }
-                
+
                 Audit (c, "Insert");
             } catch (SqlException e) {
                 Console.WriteLine (e.ToString ());
@@ -239,7 +239,7 @@ namespace change_management.Controllers {
         }
 
         public void Update (Change c, string comments = "n/a") {
-            
+
             var startedDate = "";
             if (c.startedDate.HasValue) {
                 startedDate = ", dateStarted=@param11 ";
@@ -257,7 +257,7 @@ namespace change_management.Controllers {
                     string sql = "UPDATE changes " +
                         "SET description=@param1, criticality=@param2, " +
                         "deadline=@param3, priority=@param4, approverId=@param5, " +
-                        "stakeholderId=@param6, teamResponsibleId=@param7, " + userResponsibleText  +
+                        "stakeholderId=@param6, teamResponsibleId=@param7, " + userResponsibleText +
                         "processingTimeDays=@param9, statusId=@param10 " + startedDate +
                         "WHERE changeId = " + c.changeId;
 
@@ -269,7 +269,7 @@ namespace change_management.Controllers {
                         cmd.Parameters.Add ("@param5", SqlDbType.Int).Value = c.approverId;
                         cmd.Parameters.Add ("@param6", SqlDbType.Int).Value = c.stakeholderId;
                         cmd.Parameters.Add ("@param7", SqlDbType.Int).Value = c.teamResponsibleId;
-                        if (c.userResponsibleId != 0){
+                        if (c.userResponsibleId != 0) {
                             cmd.Parameters.Add ("@param8", SqlDbType.Int).Value = c.userResponsibleId;
                         }
                         cmd.Parameters.Add ("@param9", SqlDbType.Int).Value = c.processingTime;
@@ -289,14 +289,14 @@ namespace change_management.Controllers {
         }
 
         public void Audit (Change c, string type = "n/a", string comment = "n/a") {
-            
-            if(type == "Update"){
+
+            if (type == "Update") {
                 var originalChange = Select (c.changeId);
                 c.systemId = originalChange.systemId;
                 c.type = originalChange.type;
                 c.createdDate = originalChange.createdDate;
             }
-            
+
             string userResponsible = "";
             string userResponsibleText = "";
             if (c.userResponsibleId != 0) {
@@ -325,7 +325,7 @@ namespace change_management.Controllers {
                         cmd.Parameters.Add ("@param10", SqlDbType.Int).Value = c.approverId;
                         cmd.Parameters.Add ("@param11", SqlDbType.Int).Value = c.stakeholderId;
                         cmd.Parameters.Add ("@param12", SqlDbType.Int).Value = c.teamResponsibleId;
-                        if(c.userResponsibleId != 0){
+                        if (c.userResponsibleId != 0) {
                             cmd.Parameters.Add ("@param13", SqlDbType.Int).Value = c.userResponsibleId;
                         }
                         cmd.Parameters.Add ("@param14", SqlDbType.Int).Value = c.processingTime;

@@ -25,7 +25,7 @@ namespace change_management.Controllers {
             return View (changes);
         }
 
-        public IActionResult Change (int changeId, int deadlineStatus ) {
+        public IActionResult Change (int changeId, int deadlineStatus) {
             ChangeDatabaseService dbService = new ChangeDatabaseService (_configuration);
             Change change = dbService.Select (changeId);
             change.deadlineStatus = deadlineStatus;
@@ -72,10 +72,10 @@ namespace change_management.Controllers {
             }
 
             users.Add (new SelectListItem {
-                    Text = "Any user in selected team",
-                        Value = "0",
-                            Selected = true
-                });
+                Text = "Any user in selected team",
+                    Value = "0",
+                    Selected = true
+            });
 
             foreach (var u in dbusers) {
                 users.Add (new SelectListItem {
@@ -158,10 +158,10 @@ namespace change_management.Controllers {
             }
 
             users.Add (new SelectListItem {
-                    Text = "Any user in selected team",
-                        Value = "0",
-                            Selected = true
-                });
+                Text = "Any user in selected team",
+                    Value = "0",
+                    Selected = true
+            });
 
             foreach (var u in dbusers) {
                 if (u.userID == change.userResponsible.userID) {

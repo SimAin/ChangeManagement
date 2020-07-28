@@ -4,7 +4,7 @@ namespace change_management.Models {
         public string forename { get; set; }
         public string surname { get; set; }
         public string role { get; set; }
-        public bool admin {get;set;}
+        public bool admin { get; set; }
 
         public User () { }
 
