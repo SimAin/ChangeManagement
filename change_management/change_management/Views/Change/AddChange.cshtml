@@ -51,7 +51,8 @@
         </tr>
         <tr>
             <th><label for="selectedUserResponsible">User responsible:</label></th>
-            <td><select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible" > </select></td>
+            <td><select asp-for="@Model.selectedUserResponsible" asp-items="Model.userResponsible" name="selectedUserResponsible"  data-toggle="popover" data-placement="right" data-html="true"
+                data-content="Unless spesific user is required for this task, it is advised to leave this as 'Any user in selected team'. </br> This allows the change to appear in the correct priority position. " > </select></td>
         </tr>
     </table>
     <button type="submit">Submit Change</button>

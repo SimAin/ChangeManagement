@@ -59,8 +59,6 @@ namespace change_management.Controllers {
             } else {
                 return RedirectToAction ("Login", new { retry = true });
             }
-
-            
         }
 
         #endregion

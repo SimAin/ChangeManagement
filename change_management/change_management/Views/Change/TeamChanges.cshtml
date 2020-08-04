@@ -22,6 +22,7 @@
                             <th>User Responsible</th>
                             <th>Effort</th>
                             <th>Status</th>
+                            <th>Confidence</th>
                             <th></th>
                         </tr>
                         @foreach (var item in Model.changes) {
@@ -65,6 +66,9 @@
                                         @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                                    </td>
+                                    <td>
                                         <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |
                                         <a asp-area="" asp-controller="Change" asp-action="EditChange" asp-route-changeId=@item.changeId>Edit</a>
                                     </td>
@@ -90,6 +94,7 @@
                             <th>User Responsible</th>
                             <th>Effort</th>
                             <th>Status</th>
+                            <th>Confidence</th>
                             <th></th>
                         </tr>
                         @foreach (var item in Model.changes) {
@@ -130,7 +135,10 @@
                                         @Html.DisplayFor(modelItem => item.processingTime) days
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.status) @Html.DisplayFor(modelItem => item.deadlineStatus) 
+                                        @Html.DisplayFor(modelItem => item.status)
+                                    </td>
+                                    <td>
+                                       @Html.DisplayFor(modelItem => item.deadlineStatus) 
                                     </td>
                                     <td>
                                         <a asp-area="" asp-controller="Change" asp-action="Change" asp-route-changeId=@item.changeId asp-route-deadlineStatus=@item.deadlineStatus>View</a> |

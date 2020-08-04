@@ -7,6 +7,7 @@ namespace change_management.Models {
         public int throughput { get; set; }
         public int userBookedDays { get; set; }
         public int userPlannedDays { get; set; }
+        public int userLowestDays { get; set; }
 
         public TeamMember () { }
 
