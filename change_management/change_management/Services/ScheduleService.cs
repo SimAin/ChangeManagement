@@ -119,12 +119,15 @@ namespace change_management.Services {
                 }
             }
 
-            var shortestPickUpTime = calculateTeamMemberWithLeastPlanned (changeList);
+
+            calculateUserPlannedDays(changeList);
+
+            //var shortestPickUpTime = calculateTeamMemberWithLeastPlanned (changeList);
             var unassignedChanges = changeList.Where (c => c.userResponsible.userID == 0).ToList ();
 
             foreach (var item in unassignedChanges) {
                 item.deadlineStatus = 99;
-                calculateDeadlineStatus (item, shortestPickUpTime.userPlannedDays);
+                calculateDeadlineStatus (item, calculateTeamMemberWithLeastPlanned(item).userLowestDays);
             }
 
             return changeList;
@@ -175,24 +178,37 @@ namespace change_management.Services {
                 member.userBookedDays = 0;
                 var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "In progress").ToList ();
                 foreach (var change in usersInProgChanges) {
-                    int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
+                    int daysRemaining = 0;
+                    int daysCheck =  -((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
+                    if(daysCheck < change.processingTime){
+                        daysRemaining = change.processingTime - daysCheck;
+                    }
+                    
                     member.userBookedDays = member.userBookedDays + daysRemaining;
                 }
             }
         }
 
-        public TeamMember calculateTeamMemberWithLeastPlanned (List<Change> changeList) {
+        public void calculateUserPlannedDays (List<Change> changeList) {
             foreach (var member in SessionService.loggedInTeam.teamMembers) {
                 member.userPlannedDays = member.userBookedDays;
-
+                
                 var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "Not Started").ToList ();
                 foreach (var change in usersInProgChanges) {
                     int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
                     member.userPlannedDays = member.userPlannedDays + daysRemaining;
                 }
-            }
 
-            return SessionService.loggedInTeam.teamMembers.Where (m => m.userPlannedDays == (SessionService.loggedInTeam.teamMembers.Min (l => l.userPlannedDays))).FirstOrDefault ();;
+                member.userLowestDays = member.userPlannedDays;
+            }
+        }
+
+        public TeamMember calculateTeamMemberWithLeastPlanned (Change change) {
+            
+            var member = SessionService.loggedInTeam.teamMembers.Where (m => m.userLowestDays == (SessionService.loggedInTeam.teamMembers.Min (l => l.userLowestDays))).FirstOrDefault ();
+            member.userLowestDays = member.userLowestDays + change.processingTime;
+
+            return member;
         }
     }
 }

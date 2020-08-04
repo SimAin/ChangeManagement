@@ -51,7 +51,7 @@ namespace Tests
 
             List<TeamMember> members = SessionService.loggedInTeam.teamMembers.ToList();
             
-            Assert.AreEqual(41, members[0].userBookedDays );
+            Assert.AreEqual(21, members[0].userBookedDays );
         }
         
         [Test]
