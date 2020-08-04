@@ -119,10 +119,7 @@ namespace change_management.Services {
                 }
             }
 
-
             calculateUserPlannedDays(changeList);
-
-            //var shortestPickUpTime = calculateTeamMemberWithLeastPlanned (changeList);
             var unassignedChanges = changeList.Where (c => c.userResponsible.userID == 0).ToList ();
 
             foreach (var item in unassignedChanges) {
@@ -183,7 +180,6 @@ namespace change_management.Services {
                     if(daysCheck < change.processingTime){
                         daysRemaining = change.processingTime - daysCheck;
                     }
-                    
                     member.userBookedDays = member.userBookedDays + daysRemaining;
                 }
             }
@@ -192,13 +188,11 @@ namespace change_management.Services {
         public void calculateUserPlannedDays (List<Change> changeList) {
             foreach (var member in SessionService.loggedInTeam.teamMembers) {
                 member.userPlannedDays = member.userBookedDays;
-                
                 var usersInProgChanges = changeList.Where (c => c.userResponsible.userID == member.user.userID && c.status == "Not Started").ToList ();
                 foreach (var change in usersInProgChanges) {
                     int daysRemaining = change.processingTime - ((int) (change.startedDate ?? DateTime.Now).Subtract (DateTime.Now).TotalDays);
                     member.userPlannedDays = member.userPlannedDays + daysRemaining;
                 }
-
                 member.userLowestDays = member.userPlannedDays;
             }
         }
