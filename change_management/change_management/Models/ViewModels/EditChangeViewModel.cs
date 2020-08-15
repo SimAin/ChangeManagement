@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace change_management.Models.ViewModels {
     public class EditChangeViewModel {
+        
         public Change currentChange { get; set; }
         public int changeId { get; set; }
 

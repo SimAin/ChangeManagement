@@ -34,7 +34,11 @@ namespace change_management.Controllers {
                     using (SqlCommand command = new SqlCommand (sql, connection)) {
                         using (SqlDataReader reader = command.ExecuteReader ()) {
                             while (reader.Read ()) {
-                                teams.Add (new Team (reader.GetInt32 (0), reader.GetString (1), reader.GetInt32 (2)));
+                                if(!reader.IsDBNull (2)){
+                                    teams.Add (new Team (reader.GetInt32 (0), reader.GetString (1), reader.GetInt32 (2)));
+                                } else {
+                                    teams.Add (new Team (reader.GetInt32 (0), reader.GetString (1), 0));
+                                }                           
                             }
                         }
                     }
