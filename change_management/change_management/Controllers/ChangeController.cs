@@ -98,7 +98,7 @@ namespace change_management.Controllers {
 
         public IActionResult SubmitNewChange (AddChangeViewModel c) {
             var change = new Change (Convert.ToInt32 (c.selectedSystem), c.type, c.description, c.criticality, c.deadline,
-                Convert.ToInt32 (c.priority), Convert.ToInt32 (c.selectedApprover), Convert.ToInt32 (c.selectedStakeholder),
+                Convert.ToInt32 (c.priority), Convert.ToInt32 (c.processingTime), Convert.ToInt32 (c.selectedApprover), Convert.ToInt32 (c.selectedStakeholder),
                 Convert.ToInt32 (c.selectedTeamResponsible), Convert.ToInt32 (c.selectedUserResponsible));
             ChangeDatabaseService dbService = new ChangeDatabaseService (_configuration);
             dbService.Insert (change);

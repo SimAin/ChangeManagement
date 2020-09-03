@@ -221,7 +221,7 @@ namespace change_management.Controllers {
                         cmd.Parameters.Add ("@param8", SqlDbType.Int).Value = c.stakeholderId;
                         cmd.Parameters.Add ("@param9", SqlDbType.Int).Value = c.teamResponsibleId;
                         if (c.userResponsibleId != 0) {
-                            cmd.Parameters.Add ("@param10", SqlDbType.Int).Value = userResponsible;
+                            cmd.Parameters.Add ("@param10", SqlDbType.Int).Value = c.userResponsibleId;
                         }
                         cmd.Parameters.Add ("@param11", SqlDbType.Int).Value = c.processingTime;
                         cmd.Parameters.Add ("@param12", SqlDbType.Int).Value = c.statusId;
@@ -292,7 +292,7 @@ namespace change_management.Controllers {
 
             if (type == "Update") {
                 var originalChange = Select (c.changeId);
-                c.systemId = originalChange.systemId;
+                c.systemId = originalChange.system.systemID;
                 c.type = originalChange.type;
                 c.createdDate = originalChange.createdDate;
             }

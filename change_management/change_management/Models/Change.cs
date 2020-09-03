@@ -71,7 +71,7 @@ namespace change_management.Models {
         }
 
         //Initializing a change to be added
-        public Change (int sys, string t, string desc, bool critical, DateTime due, int pri, int app, int stake, int team, int responsible) {
+        public Change (int sys, string t, string desc, bool critical, DateTime due, int pri, int pt, int app, int stake, int team, int responsible) {
             changeId = 0;
             systemId = sys;
             type = t;
@@ -79,6 +79,7 @@ namespace change_management.Models {
             criticality = critical;
             deadline = due;
             priority = pri;
+            processingTime = pt;
             approverId = app;
             stakeholderId = stake;
             teamResponsibleId = team;
@@ -86,7 +87,7 @@ namespace change_management.Models {
         }
 
         //Initializing a change to be edited
-        public Change (int id, string desc, bool critical, DateTime due, int process, int pri, int app, int stake, int team, int responsible, int status, DateTime? start) {
+        public Change (int id, string desc, bool critical, DateTime due, int pri, int process, int app, int stake, int team, int responsible, int status, DateTime? start) {
             changeId = id;
             description = desc;
             criticality = critical;
